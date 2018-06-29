@@ -21,7 +21,7 @@ import heartCue  from '../components/pages/cuesPage/heartCue'
 import followCue from '../components/pages/cuesPage/followCue'
 
 //线索详情
-import cueDetail from '../components/pages/cuesPage/cueDetail'
+import cueDetail from '../components/pages/cuesPage/cueDetail/cueDetail'
 
 //知识库
 import knowledge from  '../components/pages/knowledgePage/knowledgePage'
@@ -43,71 +43,85 @@ export default new Router({
     {
       path:'/',
       component: indexPage,
+      name: '主页',
       children:[
         {
           path:'/',
           component:homePage,
+          name: '主页',
         },
         {
           path:'reportCue',
           name:reportCue,
           component:reportCue,
+          name: '举报线索',
         },
         {
           path:'internetCue',
           name:internetCue,
           component:internetCue,
+          name: '互联网线索',
         },
         {
           path:'welfareCue',
           name:welfareCue,
           component:welfareCue,
+          name: '公益组织线索',
         },
         {
           path:'heartCue',
           name:heartCue,
           component:heartCue,
+          name: '热点线索',
         },
         {
           path:'followCue',
           name:followCue,
           component:followCue,
+          name: '关注线索',
         },
         {
           path:'cueDetail',
           name:cueDetail,
           component:cueDetail,
+          name: '线索详情',
         },
         {
           path:'knowledge',
           name:knowledge,
           component:knowledge,
+          name: '知识库',
         },
         {
           path:'knowledgeDetail',
           name:knowledgeDetail,
           component:knowledgeDetail,
+          name: '知识库详情',
         },
         {
           path:'news',
           name:news,
           component:news,
+          name: '新闻页',
         },
         {
           path:'newsDetail',
           name:newsDetail,
           component:newsDetail,
+          name: '新闻页详情',
         },
         {
           path:'dataAnalysis',
           name:dataAnalysis,
           component:dataAnalysis,
+          name: '数据分析',
         },
       ]
     },
     {
       path:'/login',
-      component:login
+      component:login,
+      name: '登陆',
     },
 
 

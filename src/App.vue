@@ -13,6 +13,7 @@ export default {
 <style>
   html,body{
     height: 100%;
+    font-size: 14px;
   }
   body{
     min-width: 648px;
@@ -37,4 +38,11 @@ a:hover{
 	color: inherit;
 	text-decoration: none;
 }
+.el-menu-item-group{
+  overflow: hidden;
+}
+.el-menu-item-group__title{
+  display: none;
+}
+
 </style>
