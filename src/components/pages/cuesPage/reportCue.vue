@@ -77,6 +77,7 @@
              ref="oTable"
             :data="tableData"
              :max-height="tableH"
+             :height="tableH"
             style="width: 100%">
             <el-table-column
               fixed
@@ -87,17 +88,17 @@
             <el-table-column
               prop="name"
               label="姓名"
-              width="120">
+              >
             </el-table-column>
             <el-table-column
               prop="province"
               label="省份"
-              width="120">
+              >
             </el-table-column>
             <el-table-column
               prop="city"
               label="市区"
-              width="120">
+              >
             </el-table-column>
             <el-table-column
               prop="address"
@@ -122,8 +123,6 @@
         </div>
         <div class="page-wrap">
           <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
             :page-size="100"
             layout="total, prev, pager, next, jumper"
             :total="400">
@@ -134,7 +133,6 @@
 </template>
 
 <script>
-
   export default {
     data() {
       return {
@@ -153,59 +151,18 @@
           city: '普陀区',
           address: '上海市普陀区金沙江路 1518 弄',
           zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },{
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },{
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
         },]
       }
     },
     mounted(){
-        // console.log(this.$refs.cueList.clientHeight)
-        console.log(this)
-      var _this = this;
+      let _this = this;
+      this.$nextTick(function () {
         _this.tableH = _this.$refs.cueList.clientHeight;
-      window.onresize=function () {
-        _this.tableH = _this.$refs.cueList.clientHeight;
-      }
+        window.onresize=function () {
+          _this.tableH = _this.$refs.cueList.clientHeight;
+        }
+      })
+
     },
     methods:{
 
@@ -375,12 +332,105 @@
         height: calc( 100% - 210px);
         max-height: calc( 100% - 210px);
         overflow-y: hidden;
-
       }
       .page-wrap{
         margin-top: 24px;
         height: 40px;
       }
     }
+  }
+
+  @media (max-width: 1440px) {
+
+      #reportCue{
+        .report-cue-head{
+          height: 40px;
+          line-height: 40px;
+          /*标题*/
+          .title-wrap{
+            .title-icon{
+              width: 40px;
+              .iconfont{
+                font-size: 18px;
+              }
+            }
+            .title{
+              font-size: 16px;
+            }
+          }
+
+          /*搜索框*/
+          .search-wrap{
+            height: 32px;
+            width: 300px;
+            .search-ipt{
+              width: 260px;
+              font-size: 14px;
+            }
+            .search-btn{
+              line-height: 32px;
+              width: 38px;
+            }
+            .search-btn:after{
+              content: '';
+              left: 0;
+              top: 8px;
+              width: 2px;
+              height: 14px;
+            }
+          }
+        }
+        .main-body{
+          margin-top: 16px;
+          height: calc(100% - 56px);
+          max-height: calc(100% - 56px);
+          .cue-types-wrap{
+            .title-wrap{
+              height: 32px;
+              line-height: 32px;
+            }
+            .types-wrap{
+              height: 68px;
+              .type-item{
+                position: relative;
+                float: left;
+                width: 86px;
+                text-align: center;
+                font-size: 14px;
+                cursor: pointer;
+                .type-icon{
+                  padding-top: 8px;
+                  .iconfont{
+                    font-size: 24px;
+                  }
+                }
+                .type-name{
+                  color: #333333;
+                }
+              }
+              .type-item:after{
+                position: absolute;
+                content: '';
+                width: 1px;
+                height: 44px;
+                background: #dcdcdc;
+                top: 16px;
+                right: 0;
+              }
+            }
+          }
+          .cue-list{
+            margin-top: 16px;
+            height: calc( 100% - 174px);
+            max-height: calc( 100% - 174px);
+            overflow-y: hidden;
+          }
+          .page-wrap{
+            margin-top: 16px;
+            height: 40px;
+          }
+        }
+      }
+
   }
 </style>
