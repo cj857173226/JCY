@@ -65,6 +65,7 @@
       }
       #main-area{
         float: left;
+        box-sizing: border-box;
         width: calc(100% - 230px);
         height: 100%;
         max-height: 100%;

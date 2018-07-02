@@ -1,5 +1,5 @@
 <template>
-  <el-menu id="menu" class="el-menu-vertical-demo">
+  <el-menu id="menu" class="el-menu-vertical-demo"  :default-openeds="openeds">
     <router-link to="/">
       <el-menu-item index="1" :class="isThisNav == '主页'?'is-active':''" @click="switchNav('主页')">
         <i class="el-icon-menu"></i>
@@ -12,10 +12,10 @@
         <i class="el-icon-location"></i>
         <span slot="title">线索</span>
       </template>
-      <el-menu-item-group>
+      <el-menu-item-group >
         <template slot="title" id="menu-group-title" style="display:none"></template>
         <router-link to="/reportCue">
-          <el-menu-item index="2-1" :class="isThisNav == '举报线索'?'is-active':''" @click="switchNav('举报线索')">
+          <el-menu-item index="2-1" :class="isThisNav == '举报线索'?'is-active':''" @click="switchNav('举报线索')" >
             <i class="el-icon-location"></i>
             <span slot="title">举报线索</span>
           </el-menu-item>
@@ -87,6 +87,7 @@
     name:'side_menu',
     data(){
       return{
+        openeds: ['2'],
         isThisNav: '',
       }
     },

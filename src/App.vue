@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style>
+  @import "assets/font/iconfont.css";
   html,body{
     height: 100%;
     font-size: 14px;
@@ -38,11 +39,67 @@ a:hover{
 	color: inherit;
 	text-decoration: none;
 }
+
+input:focus{
+  outline: none;
+}
 .el-menu-item-group{
   overflow: hidden;
 }
 .el-menu-item-group__title{
   display: none;
 }
+
+.clearfix:after{
+  content: '';
+  height: 0;
+  width: 0;
+  display: block;
+  visibility: hidden;
+  clear: both;
+}
+
+
+
+  /*表格组件样式覆盖*/
+  .el-table td,
+  .el-table th{
+    padding: 0;
+    height: 40px;
+    text-align: center;
+  }
+
+  .el-table th{
+    color: #333333;
+    background: #C0ECAA;
+  }
+
+  .el-table td:hover{
+    background: none;
+  }
+
+  .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed{
+    border: none;
+  }
+  .el-table--border, .el-table--group{
+    border: none;
+  }
+  .el-table--border::after, .el-table--group::after, .el-table::before{
+    background: none;
+  }
+  .el-table__fixed-right::before, .el-table__fixed::before{
+    background: none;
+  }
+  .el-table__fixed-right-patch{
+    background: #C0ECAA;
+  }
+  .el-table td, .el-table th.is-leaf{
+    border: none;
+  }
+
+  /*分页插件*/
+  .el-pagination{
+    text-align: center;
+  }
 
 </style>
