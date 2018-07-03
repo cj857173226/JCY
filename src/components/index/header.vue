@@ -134,12 +134,5 @@
       }
     }
   }
-  .clearfix:after{
-    content: '';
-    height: 0;
-    width: 0;
-    display: block;
-    visibility: hidden;
-    clear: both;
-  }
+
 </style>
