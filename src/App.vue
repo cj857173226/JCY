@@ -74,12 +74,20 @@ input:focus{
     background: #C0ECAA;
   }
 
-  .el-table td:hover{
-    background: none;
+  .el-table__body tr:nth-child(2n){
+    background: #EEEEEE;
   }
 
   .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed{
     border: none;
+  }
+  .el-table--striped .el-table__body tr.el-table__row--striped.current-row td,
+  .el-table__body tr.current-row>td,
+  .el-table__body tr.hover-row.current-row>td,
+  .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+  .el-table__body tr.hover-row.el-table__row--striped>td,
+  .el-table__body tr.hover-row>td{
+    background: none;
   }
   .el-table--border, .el-table--group{
     border: none;
@@ -100,6 +108,16 @@ input:focus{
   /*分页插件*/
   .el-pagination{
     text-align: center;
+  }
+
+  @media (max-width: 1440px) {
+    .el-table td,
+    .el-table th{
+      padding: 0;
+      height: 32px;
+      text-align: center;
+    }
+
   }
 
 </style>

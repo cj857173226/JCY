@@ -6,7 +6,7 @@ import router from './router'
 import axios from 'axios' //引入axios
 import 'element-ui/lib/theme-chalk/index.css'; //element-ui主题css
 import ElementUI from 'element-ui'; //引入element-ui
-
+import 'font-awesome/css/font-awesome.css'; //引入font awsome字体图标
 
 
 Vue.use(ElementUI);   //使用elementUi
