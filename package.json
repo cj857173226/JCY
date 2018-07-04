@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
+    "mixin-object": "^3.0.0",
+    "true-case-path": "^1.0.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
