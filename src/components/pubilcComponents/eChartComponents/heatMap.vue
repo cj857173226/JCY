@@ -91,7 +91,7 @@
       //窗口改变重绘图表
       resizeWindow() {
         let _this = this;
-        window.addEventListener('resize',_this.initChart)
+        window.addEventListener('resize',_this.initChart);
       }
     },
     mounted() {

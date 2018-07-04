@@ -121,7 +121,6 @@ export default new Router({
     {
       path:'/login',
       component:login,
-<<<<<<< HEAD
       name: '登录',
     },
     {
@@ -129,10 +128,7 @@ export default new Router({
       component:login,
       redirect:'/login',
       name: '登录',
-=======
-      name: '登陆',
-      redirect: '/login'
->>>>>>> 30b7a7de482e5bcb4daef16832bdec627e1bc025
+
     },
 
 

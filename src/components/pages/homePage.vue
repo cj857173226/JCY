@@ -2,7 +2,7 @@
   <div id="homePage">
     <!--数据分析-->
     <el-row :gutter="26" class="dataAnalysis">
-      <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="item,index in dataCount" :key="index">
+      <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="(item,index) in dataCount" :key="index">
         <div class="analysisBox">
           <div class="analysisBox_top">
             <span v-text="item.val"></span>
@@ -141,6 +141,94 @@
           {title: "接收线索", val: 0,icon:'fa-check-circle'}
         ]
       }
+    },
+    watch:{
+      dataCount:function(){
+        console.log(1);
+      }
+    },
+    methods: {
+      getNewsData() {//获取新闻动态信息、知识库信息
+        let _this = this;
+        _this.axios({//新闻动态
+          method: 'post',
+          url: (webApi.News.GetTopNews).format({top: 6}),
+          timeout: 1000,
+        }).then(function(res){
+          console.log(res)
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({//知识库
+          method: 'post',
+          url: (webApi.Knowledge.Knowledge).format({top: 6}),
+          timeout: 1000,
+        }).then(function(res){
+          console.log(res)
+        }).catch(function(err){
+          console.log(err)
+        })
+      },
+      getDataCount() {//获取数据统计信息
+        let _this = this;
+        let setDataCount = function(obj,newObj) {
+          for(let i in obj) {
+            _this.$set(obj, i, newObj[i]);
+          }
+        }
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountMonthClues,
+          timeout: 1000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[0],{title: '本月线索', val: res.data.data.Total,icon:'fa-list'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountFollowClues,
+          timeout: 1000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[1],{title: '关注总线索', val: res.data.data,icon:'fa-heart-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountUnReciveClues,
+          timeout: 1000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[2],{title: '未接收线索', val: res.data.data,icon:'fa-envelope-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountReciveClues,
+          timeout: 1000
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[3],{title: '接收线索', val: res.data.data,icon:'fa-check-circle'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+      }
+    },
+    mounted() {
+      this.getDataCount();//数据统计信息
+      this.getNewsData();//新闻和知识库信息
     }
   }
 </script>
