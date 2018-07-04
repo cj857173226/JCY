@@ -1,5 +1,6 @@
 var webApi = {
 //文本分析接口。根据方法设置token
+  Host:  'http://daniu.51vip.biz:10698/gyssApp_test',
   TextAnalysis : {
     GetSummary: '/api/TextAnalysis/GetSummary', //获取摘要; 方式:POST; 是否需要token:不需要；参数说明:[p=》未注释；]
     GetKeyword: '/api/TextAnalysis/GetKeyword', //获取关键词; 方式:POST; 是否需要token:不需要；参数说明:[p=》未注释；]

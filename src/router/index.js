@@ -41,7 +41,7 @@ Vue.use(Router)
 export default new Router({
  	routes:[
     {
-      path:'/',
+      path:'/home',
       component: indexPage,
       name: '主页',
       children:[
@@ -121,7 +121,13 @@ export default new Router({
     {
       path:'/login',
       component:login,
-      name: '登陆',
+      name: '登录',
+    },
+    {
+      path:'/',
+      component:login,
+      redirect:'/login',
+      name: '登录',
     },
 
 
