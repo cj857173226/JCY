@@ -138,7 +138,7 @@
             width="100">
             <template slot-scope="scope">
               <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small">编辑</el-button>
+              <el-button type="text" size="small">关注</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -187,14 +187,26 @@
       },
     mounted(){
       let _this = this;
-      this.$nextTick(function () {
-        _this.tableH = _this.$refs.cueList.clientHeight;
-        window.onresize=function () {
-          _this.tableH = _this.$refs.cueList.clientHeight;
-        }
-      })
-
+     _this.tableResize();
     },
+    methods:{
+      tableResize(){
+        let _this = this;
+        this.$nextTick(function () {
+          _this.tableH = _this.$refs.cueList.clientHeight;
+          window.onresize = _this.resize;
+        })
+      },
+      resize(){
+        let _this = this;
+        _this.tableH = _this.$refs.cueList.clientHeight;
+      }
+    },
+    destroyed(){
+      let _this = this;
+      window.removeEventListener('onresize',_this.resize)
+    }
+
   }
 </script>
 
@@ -383,6 +395,9 @@
             width: calc(100% - 144px);
             padding: 0 20px;
             color: #333;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
             .site-item{
               height: 100%;
               float: left;
@@ -510,6 +525,7 @@
           }
           .cue-sort{
             border-top:none;
+
           }
         }
         .cue-list{

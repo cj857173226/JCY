@@ -83,7 +83,7 @@
               fixed
               prop="date"
               label="日期"
-              width="150">
+              min-width="150">
             </el-table-column>
             <el-table-column
               prop="name"
@@ -98,15 +98,12 @@
             <el-table-column
               prop="city"
               label="市区"
-<<<<<<< HEAD
-             >
-=======
               >
->>>>>>> 08671aebba83f0b2b4db7f0a81055289361acdc4
             </el-table-column>
             <el-table-column
               prop="address"
               label="地址"
+              min-width="300"
               >
             </el-table-column>
             <el-table-column
@@ -120,7 +117,7 @@
               width="100">
               <template slot-scope="scope">
                 <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                <el-button type="text" size="small">编辑</el-button>
+                <el-button type="text" size="small">关注</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -160,16 +157,25 @@
     },
     mounted(){
       let _this = this;
-      this.$nextTick(function () {
-        _this.tableH = _this.$refs.cueList.clientHeight;
-        window.onresize=function () {
-          _this.tableH = _this.$refs.cueList.clientHeight;
-        }
-      })
-
+      _this.tableResize();
     },
     methods:{
+      tableResize(){
+        let _this = this;
+        this.$nextTick(function () {
+          _this.tableH = _this.$refs.cueList.clientHeight;
+          window.onresize = _this.resize;
+        })
+      },
+      resize(){
+        let _this = this;
+        _this.tableH = _this.$refs.cueList.clientHeight;
+      }
 
+    },
+    destroyed(){
+      let _this = this;
+      window.removeEventListener('onresize',_this.resize)
     }
   }
 </script>

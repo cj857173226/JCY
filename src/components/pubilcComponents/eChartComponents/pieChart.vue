@@ -16,7 +16,6 @@
         let myChart = echarts.init(document.getElementById('pieChart_main'));
         let  option =  this.getOption();
         myChart.setOption(option);
-        this.resizeWindow();
       },
       //获取option设置
       getOption(data) {
@@ -55,16 +54,15 @@
       //窗口改变重绘图表
       resizeWindow() {
         let _this = this;
-        window.addEventListener('resize',function(){
-          let myChart = echarts.init(document.getElementById('pieChart_main'));
-          let heatData = _this.optionData;
-          let  option =  _this.getOption(heatData);
-          myChart.setOption(option);
-        })
+        window.addEventListener('resize',_this.initChart)
       },
     },
     mounted() {
       this.initChart();//初始化图表
+      this.resizeWindow();
+    },
+    destroyed() {
+      window.removeEventListener('resize',this.initChart);
     }
   }
 </script>
