@@ -75,40 +75,43 @@
         <div class="cue-list" ref="cueList">
           <el-table
              ref="oTable"
-            :data="tableData"
+            :data="reportCueList"
              :max-height="tableH"
              :height="tableH"
             style="width: 100%">
             <el-table-column
-              fixed
-              prop="date"
-              label="日期"
-              min-width="150">
+              prop=""
+              label="举报内容"
+              min-width="300">
             </el-table-column>
             <el-table-column
               prop="name"
-              label="姓名"
+              label="举报时间"
+              min-width="150"
               >
             </el-table-column>
             <el-table-column
               prop="province"
-              label="省份"
+              label="举报门类"
+              min-width="100"
               >
             </el-table-column>
             <el-table-column
               prop="city"
-              label="市区"
+              label="事发地点"
+              min-width="120"
               >
             </el-table-column>
             <el-table-column
               prop="address"
-              label="地址"
-              min-width="300"
+              label="举报人姓名"
+              min-width="100"
               >
             </el-table-column>
             <el-table-column
               prop="zip"
-              label="邮编"
+              label="联系方式"
+              min-width="200"
               >
             </el-table-column>
             <el-table-column
@@ -137,29 +140,38 @@
   export default {
     data() {
       return {
-        tableH:0,
-        tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        },]
+        tableH: 0,  //表格高度
+        reportCueList:[       //举报列表
+
+        ],
+        keyword:'',//查询列表关键字
+        type:'', //线索类型
+        page:1, //页码
+        pageSize: 20,//每页条数
       }
     },
     mounted(){
       let _this = this;
       _this.tableResize();
+      _this.getReportCue();
     },
     methods:{
+
+      //获取举报线索列表
+      getReportCue:function(){
+        let _this = this;
+        let url = webApi.Clue.GetReportClues.format({keyword:_this.keyword,type:_this.type,p:_this.page,ps:_this.pageSize})
+        _this.axios({
+          methods:'get',
+          url:url
+        }).then(function(res){
+
+        }).catch(function(err){
+
+        })
+      },
+
+      //表格高度自适应
       tableResize(){
         let _this = this;
         this.$nextTick(function () {
@@ -173,6 +185,7 @@
       }
 
     },
+    //实例销毁钩子
     destroyed(){
       let _this = this;
       window.removeEventListener('onresize',_this.resize)

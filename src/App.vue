@@ -106,7 +106,13 @@ input:focus{
   .el-table td, .el-table th.is-leaf{
     border: none;
   }
-
+  .el-table .cell{
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   /*分页插件*/
   .el-pagination{
     text-align: center;
@@ -118,6 +124,13 @@ input:focus{
       padding: 0;
       height: 32px;
       text-align: center;
+    }
+    .el-table .cell{
+      height: 32px;
+      line-height: 32px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
   }
