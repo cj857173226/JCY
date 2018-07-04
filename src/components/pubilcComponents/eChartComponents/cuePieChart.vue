@@ -35,7 +35,6 @@ export default {
             isLoad:false,
             isNav:1, //饼状图切换
             //饼状图图标参数设置
-            
         }
     },
     mounted(){
@@ -165,15 +164,14 @@ export default {
             //         })
             //     }
             // })
-            console.log(this.axios);
-            this.axios.delete('/api/WxClue/GetClue').then((response)=>{
+            this.axios({
+                method: 'post',
+                url: webApi.Stats.CountMonthCluesType,
+                timeout:10000,
+            }).then(function(response){
                 console.log(response);
-            })
-            .then((response) => {
-                console.log(response)
-            })
-            .catch(function(err){
-                console.log(err);
+            }).catch(function(error){
+
             })
         }
     }
