@@ -2,40 +2,13 @@
   <div id="homePage">
     <!--数据分析-->
     <el-row :gutter="26" class="dataAnalysis">
-      <el-col :lg="6" :sm="12" class="analysisBox_wrap">
+      <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="item,index in dataCount" :key="index">
         <div class="analysisBox">
           <div class="analysisBox_top">
-            <span>150</span>
-            <img src="../../assets/index/img_1.png" class="analysis_icon" alt="今日新线索">
+            <span v-text="item.val"></span>
+            <i class="fa  fa-3x" :class="item.icon"></i>
           </div>
-          <div class="analysis_more">今日新线索</div>
-        </div>
-      </el-col>
-      <el-col :lg="6" :sm="12" class="analysisBox_wrap">
-        <div class="analysisBox">
-          <div class="analysisBox_top">
-            <span>100</span>
-            <img src="../../assets/index/img_2.png" class="analysis_icon" alt="未办理线索">
-          </div>
-          <div class="analysis_more">未办理线索</div>
-        </div>
-      </el-col>
-      <el-col :lg="6" :sm="12" class="analysisBox_wrap">
-        <div class="analysisBox">
-          <div class="analysisBox_top">
-            <span>300</span>
-            <img src="../../assets/index/img_3.png" class="analysis_icon" alt="已办理线索">
-          </div>
-          <div class="analysis_more">已办理线索</div>
-        </div>
-      </el-col>
-      <el-col :lg="6" :sm="12" class="analysisBox_wrap">
-        <div class="analysisBox">
-          <div class="analysisBox_top">
-            <span>200</span>
-            <img src="../../assets/index/img_4.png" class="analysis_icon" alt="关注总线索">
-          </div>
-          <div class="analysis_more">关注总线索</div>
+          <div class="analysis_more" v-text="item.title"></div>
         </div>
       </el-col>
     </el-row>
@@ -158,7 +131,17 @@
   import wordCloud from '../pubilcComponents/eChartComponents/wordCloud'
   import pieChart from '../pubilcComponents/eChartComponents/pieChart'
   export default {
-    components: {heatmap,wordCloud,pieChart}
+    components: {heatmap,wordCloud,pieChart},
+    data() {
+      return {
+        dataCount: [//数据统计
+          {title: "本月线索", val: 0,icon:'fa-list'},
+          {title: "关注总线索", val: 0,icon:'fa-heart-o'},
+          {title: "未接收线索", val: 0,icon:'fa-envelope-o'},
+          {title: "接收线索", val: 0,icon:'fa-check-circle'}
+        ]
+      }
+    }
   }
 </script>
 
@@ -203,10 +186,9 @@
             float: left;
             font-weight: bold;
           }
-          &>img {
+          &>i {
             float: right;
-            width: 36px;
-            height: 36px;
+            color: rgba(0,0,0,0.15);
           }
         }
         .analysis_more {
