@@ -22,7 +22,8 @@
         </div>
         <div id="content">
             <div id="detail" v-show="isThisNav == 1">
-                <internet-detail></internet-detail>
+                <!-- <internet-detail></internet-detail> -->
+                <report-detail></report-detail>
             </div>
             <div id="approval" v-show="isThisNav == 2">
                 <approval></approval>

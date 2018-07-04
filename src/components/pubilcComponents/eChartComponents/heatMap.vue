@@ -87,7 +87,6 @@
             }
           ]
         };
-        console.log(JSON.stringify(heatData));
         return option;
       },
       //窗口改变重绘图表
