@@ -12,11 +12,9 @@ import '../src/static/common.js';
 
 //统一添加token
 axios.interceptors.request.use(config=>{
-  console.log(1);
-  config.headers.token = 'dasd';
-  // if(localStorage.getItem('token')){
-  //     config.headers.token = localStorage.getItem('token');
-  // }
+  if(localStorage.getItem('token')){
+      config.headers.token = localStorage.getItem('token');
+  }
   return config;
 },err => {
   return Promise.reject(err);
