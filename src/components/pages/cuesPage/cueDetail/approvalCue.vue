@@ -1,25 +1,26 @@
 <template>
     <div id="main">
         <div class="advise">
-            <i class="timeline-icon fa fa-circle-o"></i>
-            <div class="advise-title">初核意见:</div>
+            <i class="timeline-icon fa fa-circle-thin"></i>
+            <div class="advise-title">初核意见</div>
             <div class="advise-content">
                 <span v-html="textData"></span>
             </div>
         </div>
-        <div class="advise">
-            <i class="timeline-icon fa fa-circle-o"></i>
-            <div class="advise-tip">已提交，等待领导审批</div>
+        <div class="advise advise-notice">
+            <i class="timeline-icon fa fa-circle-thin"></i>
+            <span>已提交，等待领导审批</span>
+            <span>已审批</span>
         </div>
         <div class="advise">
-            <i class="timeline-icon fa fa-circle-o"></i>
-            <div class="advise-title">审批意见:</div>
+            <i class="timeline-icon fa fa-circle-thin"></i>
+            <div class="advise-title">审批意见</div>
             <div class="advise-content">
                 <span v-html="textData"></span>
             </div>
         </div>
         <div class="advise edit-advise">
-            <div class="advise-title">编写意见:</div>
+            <div class="advise-title">编写意见</div>
             <kindedite ref="kindedite"></kindedite>
             <div id="submit-btn" @click="submitBtn">
                 提交
@@ -52,39 +53,43 @@ export default {
 
 <style lang="scss" scoped>
     #main{
-        width: 100%;
-        padding-left: 20px;
-        padding-top: 10px;
+        width: 100%;    
+        padding: 20px;
         .advise{
             position: relative;
-            padding-left: 20px;
+            padding-left: 40px;
             .timeline-icon{
                 position: absolute;
                 width: 20px;
                 height: 20px;
                 text-align: center;
                 line-height: 20px;
-                top: 2px;
+                top: 10px;
                 left: 0;
                 background-color: #fff;
-                color: #5FB878;
+                color: #c0ecaa;
                 font-size: 18px;
             }
             .advise-tip{
                 height: 30px;
             }
             .advise-title{
-                float: left;
-                width: 70px;
+                width: 240px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                background: #c0ecaa;    
+                color: #333;
             }
             .advise-content{
                 min-height: 30px;
-                min-width: 200px;
+                min-width: 240px;
                 display: inline-block;
                 border: solid 1px #ddd;
-                border-radius: 5px;
-                max-width: 80%;
-                padding: 5px;
+                max-width: 90%;
+                padding: 5px;    
+                word-break: break-all;
+                color: #666;
                 pre{
                     width: 100%;
                     white-space: pre-wrap;
@@ -92,6 +97,13 @@ export default {
                     line-height: 20px;
                     font-size: 12px;
                 }
+            }
+        }
+        .advise-notice{
+            height: 50px;
+            line-height: 50px;
+            .timeline-icon{
+                top: 15px;
             }
         }
         .edit-advise{
@@ -106,7 +118,13 @@ export default {
                 border-radius: 5px;
                 color: #fff;
                 margin-top: 10px;
-                margin-left: 70px;
+                cursor: pointer;
+            }
+            #submit-btn:hover{
+                background: #0aba69;
+            }
+            #submit-btn:active{
+                background: #059553;
             }
         }
         .advise:before{
@@ -115,7 +133,7 @@ export default {
             width: 1px;
             height: 100%;
             background: #dfdfdf;
-            top: 3px;
+            top: 15px;
             left: 9px;
         }
         .advise:nth-child(3):before{

@@ -25,7 +25,7 @@
                 </div>
                 <div class="text-name">
                     <span class="text-title-item">人名:</span><span>人名</span>
-                    <br />
+                    </br>
                     <span class="text-title-item">地名:</span><span>地名</span>
                     <br />
                     <span class="text-title-item">机构名:</span><span>机构名</span>

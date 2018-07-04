@@ -10,10 +10,21 @@ import 'font-awesome/css/font-awesome.css'; //引入font awsome字体图标
 import '../src/static/webApi.js'; //引入接口
 import '../src/static/common.js';
 
+//统一添加token
+axios.interceptors.request.use(config=>{
+  if(localStorage.getItem('token')){
+      config.headers.token = localStorage.getItem('token');
+  }
+  return config;
+},err => {
+  return Promise.reject(err);
+})
 
 Vue.use(ElementUI);   //使用elementUi
 Vue.prototype.axios = axios; //vue原型上挂载axios
 Vue.config.productionTip = false
+
+
 
 /* eslint-disable no-new */
 new Vue({
@@ -22,3 +33,4 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
