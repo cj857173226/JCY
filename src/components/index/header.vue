@@ -4,9 +4,9 @@
         <b>公益诉讼线索采集系统</b>
       </a>
       <nav class="navbar clearfix" >
-        <a href="#" class="menu-toggle">
-          <i class="el-icon-sort"></i>
-        </a>
+        <!--<a href="#" class="menu-toggle">-->
+          <!--<i class="el-icon-sort"></i>-->
+        <!--</a>-->
 
         <div class="navbar-right">
             <ul class="navbar-menu clearfix">
