@@ -4,7 +4,7 @@
             <span class="heart-icon">
                 <i class="fa fa-heart"></i>
             </span>
-            <span class="header-title">关注线索/线索</span>
+            <span class="header-title"><span class="back-btn" @click="backBtn">关注线索</span>/线索</span>
         </div>
         <div id="nav">
             <ul>
@@ -22,8 +22,8 @@
         </div>
         <div id="content">
             <div id="detail" v-show="isThisNav == 1">
-                <!-- <internet-detail></internet-detail> -->
-                <report-detail></report-detail>
+                <report-detail v-if="cueType == 1"></report-detail>
+                <internet-detail v-if="cueType == 2" :cueData = "cueData"></internet-detail>
             </div>
             <div id="approval" v-show="isThisNav == 2">
                 <approval></approval>
@@ -45,12 +45,52 @@ export default {
     components: {internetDetail,reportDetail,approval,send},
     data(){
         return {
-            isThisNav: 1
+            isThisNav: 1, //导航
+            cueType:0, //线索类型
+            cueId: '' ,//线索编号
+            cueData: {}, //线索数据
         }
     },
+    mounted(){
+        if(!this.$route.query.type || !this.$route.query.id){
+            this.$router.go(-1);
+        }
+        this.cueType = this.$route.query.type;
+        this.cueId = this.$route.query.id;
+        this.cueDataGet();
+    },
     methods: {
+        //返回上页
+        backBtn(){
+            this.$router.go(-1);
+        },
+        //切换顶部导航 
         chooseNav(index){
             this.isThisNav = index;
+        },
+        //线索数据获取
+        cueDataGet(){
+            var _this = this;
+            if(this.cueType == 1){
+                //举报线索
+            }else if(this.cueType == 2){
+                //互联网线索
+                this.axios({
+                    method: 'get',
+                    url:webApi.Clue.GetWebClueData.format({id:this.cueId}),
+                    timeout: 10000
+                }).then(function(response){
+                    console.log(response)
+                    if(response.data.code == 0){
+                        _this.cueData = response.data.data[0];
+                        console.log(_this.cueData);
+                    }else{
+
+                    }
+                }).catch(function(error){
+                    console.log(error);
+                })
+            }
         }
     }
 }
@@ -75,13 +115,19 @@ export default {
         .header-title{
             padding-left: 15px;
         }
+        .back-btn{
+            cursor: pointer;
+        }
+        .back-btn:hover{
+            text-decoration: underline;
+        }
     }
     #nav{
         border-bottom: solid 1px #ddd;
         height: 80px;
         ul{
             height: 100%;
-            padding-left: 49px;
+            padding-left: 39px;
             li:first-child{
                 border-left: solid 1px #ddd;
             }

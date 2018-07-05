@@ -19,7 +19,7 @@ export default {
     font-size: 14px;
   }
   body{
-    min-width: 648px;
+    min-width: 1220px;
   }
   #app{
     height: 100%;

@@ -88,9 +88,9 @@
               排序字段:
             </div>
             <div class="right">
-                <div class="sort-item">发布时间</div>
-                <div class="sort-item">采集时间</div>
-                <div class="sort-item">(倒序排列)</div>
+                <div class="sort-item" :class='{"sort-item-on":order== "cjsj"}' @click="clueOrder('cjsj')">采集时间</div>
+                <div class="sort-item" :class='{"sort-item-on":order== "fbsj"}' @click="clueOrder('fbsj')">发布时间</div>
+                <div class="sort-item-tip">(倒序排列)</div>
             </div>
           </div>
       </div>
@@ -171,7 +171,9 @@
       </div>
       <div class="page-wrap">
         <el-pagination
-          :page-size="100"
+          @current-change="pageTo"
+          :page-size="pageSize"
+          :current-page="page"
           layout="total, prev, pager, next, jumper"
           :total="400">
         </el-pagination>
@@ -182,6 +184,7 @@
 
 <script>
   export default {
+      name:'cue-list',
       data(){
         return{
           //来源地址
@@ -195,7 +198,7 @@
           type:'', //线索类型
           page:1, //页码
           pageSize: 20,//每页条数
-          order:'',//排序方式
+          order:'cjsj',//排序方式
           site:'',//来源站点
         }
       },
@@ -214,6 +217,7 @@
           methods:'get',
           url:url
         }).then(function(res){
+          console.log(res)
           if(res.data.code == 0){
             let data = res.data.data.data;
             let ZYstr = '';
@@ -238,7 +242,6 @@
           methods:'get',
           url:webApi.Host + webApi.Clue.GetClueSites
         }).then(function(res){
-          console.log(res);
           if(res.data.code == 0){
             let data = res.data.data;
             _this.siteList = data;
@@ -249,12 +252,28 @@
 
         })
       },
+      //线索排序
+      clueOrder(order){
+        let _this = this;
+        if(_this.order != order){
+          _this.page = 1;
+          _this.order = order;
+          _this.getInternetCueList();
+        }
+      },
+      //按线索来源筛选
 
+      // 页码跳转
+      pageTo(curr) {
+        let _this = this ;
+        _this.page = curr;
+        _this.getInternetCueList();
+      },
       // 查看详情
       details(index,id){
         this.$router.push({
           path:'/home/cueDetail',
-          query:{id:id}
+          query:{type:2,id:id}
         });
       },
        //表格高度自适应
@@ -472,15 +491,34 @@
               float: left;
               margin-right: 20px;
               cursor: pointer;
+              -webkit-transition: all 0.3s;
+              -moz-transition: all 0.3s;
+              -ms-transition: all 0.3s;
+              -o-transition: all 0.3s;
+              transition: all 0.3s;
             }
-            .site-item:last-child{
-              margin-right: 0;
+            .site-item{
+              
+            }
+            .sort-item-tip{
+              height: 100%;
+              float: left;
+              cursor: default;
             }
             .sort-item{
               height: 100%;
               float: left;
               margin-right: 40px;
               cursor: pointer;
+              -webkit-transition: all 0.3s;
+              -moz-transition: all 0.3s;
+              -ms-transition: all 0.3s;
+              -o-transition: all 0.3s;
+              transition: all 0.3s;
+            }
+            .sort-item:hover,
+            .sort-item-on{
+              color: #FF6600;
             }
             .sort-item:last-child{
               margin-right: 0;
