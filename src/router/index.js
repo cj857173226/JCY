@@ -132,7 +132,5 @@ export default new Router({
       redirect:'/login',
       name: '登录',
     },
-
-
  	]
 })

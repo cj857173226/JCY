@@ -2,7 +2,7 @@
   <div id="homePage">
     <!--数据分析-->
     <el-row :gutter="26" class="dataAnalysis">
-      <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="item,index in dataCount" :key="index">
+      <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="(item,index) in dataCount" :key="index">
         <div class="analysisBox">
           <div class="analysisBox_top">
             <span v-text="item.val"></span>
@@ -33,42 +33,13 @@
             <router-link tag="span" to="#">更多>></router-link>
           </div>
           <!--内容-->
-          <ul class="text_body">
-            <li>
+          <ul class="text_body" v-loading="newsLoading">
+            <li v-for="(item, index) in newsData.slice(0,6)" :key="index">
               <p class="text_title">
-                <span>标题文字</span>
-                <span>来源: 微信公众号  发布时间: 2018-06-12</span>
+                <span v-text="item.BT"></span>
+                <span>来源: {{item.LY}}  发布时间: {{item.FBSJ}}</span>
               </p>
-              <p class="text_content">
-                近期，中央纪委和云南省纪委相继通报曝光了生态环境损害责任追究典型问题，持续释放出对损害生态环境的地方和单位的领导干部真追责、敢追责、严追责、终身追责，用问责利器压实政治责任的强烈信号。第二次世界大战结...
-              </p>
-            </li>
-            <li>
-              <p class="text_title">
-                <span>标题文字</span>
-                <span>来源: 微信公众号  发布时间: 2018-06-12</span>
-              </p>
-              <p class="text_content">
-                近期，中央纪委和云南省纪委相继通报曝光了生态环境损害责任追究典型问题，持续释放出对损害生态环境的地方和单位的领导干部真追责、敢追责、严追责、终身追责，用问责利器压实政治责任的强烈信号。第二次世界大战结...
-              </p>
-            </li>
-            <li>
-              <p class="text_title">
-                <span>标题文字</span>
-                <span>来源: 微信公众号  发布时间: 2018-06-12</span>
-              </p>
-              <p class="text_content">
-                近期，中央纪委和云南省纪委相继通报曝光了生态环境损害责任追究典型问题，持续释放出对损害生态环境的地方和单位的领导干部真追责、敢追责、严追责、终身追责，用问责利器压实政治责任的强烈信号。第二次世界大战结...
-              </p>
-            </li>
-            <li>
-              <p class="text_title">
-                <span>标题文字</span>
-                <span>来源: 微信公众号  发布时间: 2018-06-12</span>
-              </p>
-              <p class="text_content">
-                近期，中央纪委和云南省纪委相继通报曝光了生态环境损害责任追究典型问题，持续释放出对损害生态环境的地方和单位的领导干部真追责、敢追责、严追责、终身追责，用问责利器压实政治责任的强烈信号。第二次世界大战结...
-              </p>
+              <p class="text_content" v-text="item.NR"></p>
             </li>
           </ul>
         </div>
@@ -82,42 +53,13 @@
             <router-link tag="span" to="#">更多>></router-link>
           </div>
           <!--内容-->
-          <ul class="text_body">
-            <li>
+          <ul class="text_body" v-loading="knowLoading">
+            <li v-for="(item, index) in knowledgeData.slice(0,6)" :key="index">
               <p class="text_title">
-                <span>标题文字</span>
-                <span>来源: 微信公众号  发布时间: 2018-06-12</span>
+                <span v-text="item.BT"></span>
+                <span>来源: {{item.LY}}  发布时间: {{item.FBSJ}}</span>
               </p>
-              <p class="text_content">
-                近期，中央纪委和云南省纪委相继通报曝光了生态环境损害责任追究典型问题，持续释放出对损害生态环境的地方和单位的领导干部真追责、敢追责、严追责、终身追责，用问责利器压实政治责任的强烈信号。第二次世界大战结...
-              </p>
-            </li>
-            <li>
-              <p class="text_title ">
-                <span>标题文字</span>
-                <span>来源: 微信公众号  发布时间: 2018-06-12</span>
-              </p>
-              <p class="text_content">
-                近期，中央纪委和云南省纪委相继通报曝光了生态环境损害责任追究典型问题，持续释放出对损害生态环境的地方和单位的领导干部真追责、敢追责、严追责、终身追责，用问责利器压实政治责任的强烈信号。第二次世界大战结...
-              </p>
-            </li>
-            <li>
-              <p class="text_title">
-                <span>标题文字</span>
-                <span>来源: 微信公众号  发布时间: 2018-06-12</span>
-              </p>
-              <p class="text_content">
-                近期，中央纪委和云南省纪委相继通报曝光了生态环境损害责任追究典型问题，持续释放出对损害生态环境的地方和单位的领导干部真追责、敢追责、严追责、终身追责，用问责利器压实政治责任的强烈信号。第二次世界大战结...
-              </p>
-            </li>
-            <li>
-              <p class="text_title">
-                <span>标题文字</span>
-                <span>来源: 微信公众号  发布时间: 2018-06-12</span>
-              </p>
-              <p class="text_content">
-                近期，中央纪委和云南省纪委相继通报曝光了生态环境损害责任追究典型问题，持续释放出对损害生态环境的地方和单位的领导干部真追责、敢追责、严追责、终身追责，用问责利器压实政治责任的强烈信号。第二次世界大战结...
-              </p>
+              <p class="text_content" v-text="item.NR"></p>
             </li>
           </ul>
         </div>
@@ -134,6 +76,10 @@
     components: {heatmap,wordCloud,pieChart},
     data() {
       return {
+        knowLoading: false,
+        newsLoading: false,
+        newsData: [],//新闻动态信息
+        knowledgeData: [],//知识库信息
         dataCount: [//数据统计
           {title: "本月线索", val: 0,icon:'fa-list'},
           {title: "关注总线索", val: 0,icon:'fa-heart-o'},
@@ -141,6 +87,113 @@
           {title: "接收线索", val: 0,icon:'fa-check-circle'}
         ]
       }
+    },
+    watch:{
+      dataCount:function(){
+        console.log(1);
+      }
+    },
+    methods: {
+      getNewsData() {//获取新闻动态信息、知识库信息
+        let _this = this;
+        let setDataContent = function(data) {
+          if(data.length > 0) {
+            for(let i=0;i<data.length;i++){
+              (data[i].NR) && (data[i].NR = data[i].NR.slice(0,200) + '...')
+            }
+          }
+        };
+        _this.knowLoading = true;
+        _this.newsLoading = true;
+        _this.axios({//新闻动态
+          method: 'get',
+          url: (webApi.News.GetTopNews).format({'top': 6}),
+          timeout: 4000,
+        }).then(function(res){
+          if(res.data.code==0) {
+            setDataContent(res.data.data.data);
+            _this.newsData = res.data.data.data;
+            _this.newsLoading = false;
+          }
+        }).catch(function(err){
+          _this.newsLoading = false;
+          console.log(err)
+        })
+
+        _this.axios({//知识库
+          method: 'get',
+          url: (webApi.Knowledge.GetTop).format({'top': 6}),
+          timeout: 4000,
+        }).then(function(res){
+          if(res.data.code==0) {
+            setDataContent(res.data.data.data);
+            _this.knowledgeData = res.data.data.data;
+            _this.knowLoading = false;
+          }
+        }).catch(function(err){
+          _this.knowLoading = false;
+          console.log(err)
+        })
+      },
+      getDataCount() {//获取数据统计信息
+        let _this = this;
+        let setDataCount = function(obj,newObj) {
+          for(let i in obj) {
+            _this.$set(obj, i, newObj[i]);
+          }
+        }
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountMonthClues,
+          timeout: 1000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[0],{title: '本月线索', val: res.data.data.Total,icon:'fa-list'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountFollowClues,
+          timeout: 1000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[1],{title: '关注总线索', val: res.data.data,icon:'fa-heart-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountUnReciveClues,
+          timeout: 1000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[2],{title: '未接收线索', val: res.data.data,icon:'fa-envelope-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountReciveClues,
+          timeout: 1000
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[3],{title: '接收线索', val: res.data.data,icon:'fa-check-circle'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+      }
+    },
+    mounted() {
+      this.getDataCount();//数据统计信息
+      this.getNewsData();//新闻和知识库信息
     }
   }
 </script>
@@ -246,6 +299,7 @@
       padding-left: 0;
       margin: 0;
       font-size: 18px;
+      min-height: 150px;
       li {
         margin-top: 15px;
         overflow: hidden;
