@@ -1,11 +1,129 @@
 <template>
-  <div>
-    新闻详情
+  <div id="news-detail">
+    <div id="news-header">
+      <span class="news-icon">
+        <i class="fa fa-camera" ></i>
+      </span>
+      <span class="news-title">新闻动态/详情</span>
+    </div>
+    <div id="news-content">
+      <div id="news-name">
+        <i class="back-btn fa fa-arrow-left"  @click="backNav"></i>
+        {{newsData.BT}}
+      </div>
+      <div id="news-info">
+        <span>时间:{{newsData.FBSJ}}</span>
+        <span style="max-width: 66%">作者:{{newsData.RENM}}</span>
+        <span>来源:{{newsData.LY}}</span>
+        <span class="origin-address" @click="originAddress">查看源地址</span>
+      </div>
+      <div id="news-text">
+        <span v-html="newsData.NR"></span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+export default {
+  data(){
+    return{
+      newsData:{}
+    }
+  },
+  mounted(){
+    this.getNewsData();
+  },
+  methods:{
+    //返回
+    backNav(){
+      console.log(1);
+      this.$router.go(-1);
+    },
+    //查看源地址
+    originAddress(){
+      window.open(this.newsData.SJDZ);
+    },
+    //获取数据
+    getNewsData(){
+      var _this = this;
+      this.axios({
+        method: 'get',
+        url: webApi.News.Get.format({id:this.$route.query.id}),
+        timeout: 1000
+      }).then(function(response){
+        _this.newsData = response.data.data[0];
+      }).catch(function(error){
+
+      })
+    }
+  }
+}
 </script>
 
-<style>
+
+<style lang="scss" scoped>
+#news-detail{
+  #news-header{
+    width: 100%;
+    height: 40px;
+    background: #EEEEEE;
+    border-bottom: 1px solid #dcdcdc;
+    .news-icon{
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      font-size: 16px;
+      border-right: 1px solid #dcdcdc;
+      color: #666666;
+    }
+    .news-title{
+      padding-left: 10px;
+    }
+  }
+  #news-content{
+    
+    #news-name{
+      text-align: center;
+      font-size: 18px;
+      height: 60px;
+      line-height: 60px;
+      color: #00a65a;
+      position: relative;
+      .back-btn{
+        position: absolute;    
+        top: 50%;
+        left: 10px; 
+        margin-top: -10px;
+        color: #00a65a;
+        cursor: pointer;
+      }
+    }
+    #news-info{
+      border-bottom: solid 1px #ddd;
+      font-size: 12px;
+      padding-bottom: 5px;
+      color: #969696;
+      span{
+        display: inline-block;
+        padding: 0 10px;
+      }
+      .origin-address{
+        float: right;
+        color: #00a65a;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+    #news-text{
+      padding: 10px;
+      span{
+        line-height: 35px;
+        display: block;
+      }
+    }
+  }
+}
 </style>

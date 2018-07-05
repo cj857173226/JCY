@@ -40,9 +40,7 @@ export default {
     mounted(){
         var _this = this;
         this.pieDataGet();
-        window.addEventListener('resize',function(){
-            _this.changeNav(_this.isNav);
-        })
+        window.addEventListener('resize',_this.changeNav(_this.isNav))
     },
     methods: {
         chartInit(data){
@@ -69,8 +67,8 @@ export default {
             var chart = document.getElementById('pieChart');
             var width = document.getElementById('pie-chart').clientWidth;
             var height = document.getElementById('pie-chart').clientHeight;
-            chart.style.width = width;
-            chart.style.height = height;
+            chart.style.width = width + 'px';
+            chart.style.height = height + 'px';
             var myChart = echarts.init(chart);
             myChart.setOption(option);
         },
@@ -94,86 +92,72 @@ export default {
         },
         //数据获取
         pieDataGet(){
-            // var _this = this;
-            // this.isLoad = true;
-            // $.ajax({
-            //     type: 'POST',
-            //     url: window.webApi.Host + '/api/Stats/CountMonthCluesType',
-            //     dataType: "json",
-            //     success: function(msg){
-            //         _this.isLoad = false;
-            //         if(msg.code == 0){
-            //             //其他类型
-            //             if(msg.data.internetCluesType.length > 0){
-            //                 for(var i = 0;i<msg.data.internetCluesType.length;i++){
-            //                     var obj = {
-            //                         value:'',
-            //                         name:'',
-            //                     };
-            //                     obj.value = msg.data.internetCluesType[i].AMOUNT;
-            //                     obj.name = msg.data.internetCluesType[i].XSLB;
-            //                     _this.internetType.push(obj);
-            //                 }
-            //             }else if(msg.data.reportCluesType.length > 0){
-            //                 for(var i = 0;i<msg.data.internetCluesType.length;i++){
-            //                     var obj = {
-            //                         value:'',
-            //                         name:'',
-            //                     };
-            //                     obj.value = msg.data.internetCluesType[i].AMOUNT;
-            //                     obj.name = msg.data.internetCluesType[i].XSLB;
-            //                     _this.reportType.push(obj);
-            //                 }
-            //             }
-            //             var obj = {};
-            //             for(var i in msg.data){
-            //                 if(msg.data[i].length > 0){
-            //                     for(var j = 0;j<msg.data[i].length;j++){
-            //                         var XSLB = msg.data[i][j].XSLB;
-            //                         var AMOUNT = msg.data[i][j].AMOUNT;
-            //                         if(!obj[XSLB]){
-            //                             obj[XSLB] = AMOUNT;
-            //                         }else{
-            //                             obj[XSLB] += AMOUNT;
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //             for(var i in obj){
-            //                 var a = {
-            //                     name: '',
-            //                     value: '',
-            //                 }
-            //                 a.name = i;
-            //                 a.value = obj[i];
-            //                 _this.allType.push(a);
-            //             }
-            //             _this.changeNav(_this.isNav);
-            //         }else{
-            //             layer.msg('饼状图出现异常,请联系维护人员',{
-            //                 anim: 6,
-            //                 time: 1500
-            //             })
-            //         }
-            //     },
-            //     error: function(err){
-            //         _this.isLoad = false;
-            //         layer.msg('饼状图出现异常,请联系维护人员',{
-            //             anim: 6,
-            //             time: 1500
-            //         })
-            //     }
-            // })
+             var _this = this;
             this.axios({
                 method: 'post',
-                url: webApi.Stats.CountMonthCluesType,
+                url: webApi.Host + webApi.Stats.CountMonthCluesType,
                 timeout:10000,
             }).then(function(response){
                 console.log(response);
+                var msg = response.data;
+                _this.isLoad = false;
+                if(msg.code == 0){
+                    //其他类型
+                    if(msg.data.internetCluesType.length > 0){
+                        for(var i = 0;i<msg.data.internetCluesType.length;i++){
+                            var obj = {
+                                value:'',
+                                name:'',
+                            };
+                            obj.value = msg.data.internetCluesType[i].AMOUNT;
+                            obj.name = msg.data.internetCluesType[i].XSLB;
+                            _this.internetType.push(obj);
+                        }
+                    }else if(msg.data.reportCluesType.length > 0){
+                        for(var i = 0;i<msg.data.internetCluesType.length;i++){
+                            var obj = {
+                                value:'',
+                                name:'',
+                            };
+                            obj.value = msg.data.internetCluesType[i].AMOUNT;
+                            obj.name = msg.data.internetCluesType[i].XSLB;
+                            _this.reportType.push(obj);
+                        }
+                    }
+                    var obj = {};
+                    for(var i in msg.data){
+                        if(msg.data[i].length > 0){
+                            for(var j = 0;j<msg.data[i].length;j++){
+                                var XSLB = msg.data[i][j].XSLB;
+                                var AMOUNT = msg.data[i][j].AMOUNT;
+                                if(!obj[XSLB]){
+                                    obj[XSLB] = AMOUNT;
+                                }else{
+                                    obj[XSLB] += AMOUNT;
+                                }
+                            }
+                        }
+                    }
+                    for(var i in obj){
+                        var a = {
+                            name: '',
+                            value: '',
+                        }
+                        a.name = i;
+                        a.value = obj[i];
+                        _this.allType.push(a);
+                    }
+                    _this.changeNav(_this.isNav);
+                }else{
+
+                }
             }).catch(function(error){
 
             })
         }
+    },
+    destroyed(){
+        window.removeEventListener('resize',this.changeNav);
     }
 }
 </script>

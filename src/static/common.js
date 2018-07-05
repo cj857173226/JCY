@@ -1,4 +1,4 @@
-
+//接口参数替换
 String.prototype.format = function() {
   if(arguments.length == 0) return this;
   var param = arguments[0];
@@ -13,3 +13,9 @@ String.prototype.format = function() {
     return webApi.Host + s;
   }
 };
+
+//删除字符两端空格
+String.prototype.trim=function()
+{
+  return this.replace(/(^\s*)|(\s*$)/g,'');
+}
