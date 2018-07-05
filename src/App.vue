@@ -113,6 +113,12 @@ input:focus{
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .el-table .cell .td-content{
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   /*分页插件*/
   .el-pagination{
     text-align: center;

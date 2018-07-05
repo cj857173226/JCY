@@ -105,11 +105,22 @@
             prop="SFYD"
             label=""
             width="40">
+            <template slot-scope="scope" >
+                <i v-show="scope.row.SFYD == 1" class="fa fa-circle isRead"></i>
+            </template>
           </el-table-column>
           <el-table-column
             prop="ZY"
             label="内容"
             min-width="300">
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="top" max-width="400">
+                <p style="text-indent: 2em;">{{ scope.row.ZY }}</p>
+                <div slot="reference" class="td-content">
+                  {{ scope.row.ZY}}
+                </div>
+              </el-popover>
+            </template>
           </el-table-column>
           <el-table-column
             prop="FBSJ"
@@ -138,6 +149,14 @@
             prop="GJC"
             label="关键词"
             width="200">
+            <template slot-scope="scope">
+              <el-popover trigger="hover" placement="top" max-width="400">
+                <p>{{ scope.row.GJC }}</p>
+                <div slot="reference" class="td-content">
+                  {{ scope.row.GJC}}
+                </div>
+              </el-popover>
+            </template>
           </el-table-column>
           <el-table-column
             fixed="right"
@@ -167,13 +186,6 @@
         return{
           //来源地址
           siteList:[
-            "某某某网站",
-            "某某某网站",
-            "某某某网站",
-            "某某某网站",
-            "某某某网站",
-            "某某某网站",
-            "某某某网站",
           ],
           tableH:0, //表格高度
           internetCueList: [  //互联网线索列表
@@ -189,8 +201,9 @@
       },
     mounted(){
       let _this = this;
-     _this.tableResize();
-     _this.getInternetCueList();
+     _this.tableResize();//表格高度自适应
+     _this.getInternetCueList(); //获取互联网线索列表
+     _this.getClueSites(); //获取来源网站
     },
     methods:{
         //获取互联网线索列表
@@ -214,6 +227,25 @@
             _this.internetCueList = data;
           }
         }).catch(function(err){
+
+        })
+      },
+
+      //获取线索来源网站
+      getClueSites(){
+        let _this = this;
+        _this.axios({
+          methods:'get',
+          url:webApi.Host + webApi.Clue.GetClueSites
+        }).then(function(res){
+          console.log(res);
+          if(res.data.code == 0){
+            let data = res.data.data;
+            _this.siteList = data;
+          }else {
+            _this.siteList = [];
+          }
+        }).catch(function(){
 
         })
       },
@@ -464,6 +496,9 @@
         height: calc( 100% - 314px);
         max-height: calc( 100% - 314px);
         overflow-y: hidden;
+        .isRead{
+          color: #F66;
+        }
       }
       .page-wrap{
         margin-top: 24px;
