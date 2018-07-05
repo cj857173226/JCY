@@ -92,7 +92,21 @@
       }
     },
     mounted(){
-      this.isThisNav = this.$route.name;
+      if(this.$route.query.type){
+        if(this.$route.query.type == 1){
+          this.isThisNav = '举报线索';
+        }else if(this.$route.query.type == 2){
+          this.isThisNav = '互联网线索';
+        }else if(this.$route.query.type == 3){
+          this.isThisNav = '公益诉讼线索';
+        }else if(this.$route.query.type == 4){
+          this.isThisNav = '热点线索';
+        }else if(this.$route.query.type == 5){
+          this.isThisNav = '关注线索';
+        }
+      }else{
+        this.isThisNav = this.$route.meta.name;
+      }
     },
     methods:{
       switchNav(title){

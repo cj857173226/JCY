@@ -4,7 +4,7 @@
             <span class="heart-icon">
                 <i class="fa fa-heart"></i>
             </span>
-            <span class="header-title"><span class="back-btn" @click="backBtn">关注线索</span>/线索</span>
+            <span class="header-title"><span class="back-btn" @click="backBtn">{{cueFrom}}</span>/线索</span>
         </div>
         <div id="nav">
             <ul>
@@ -15,21 +15,27 @@
                     <i class="fa fa-pencil-square-o"></i>
                     审批信息
                 </li><li :class="isThisNav == 3?'active':''" @click="chooseNav(3)">
-                    <i class="fa fa-random"></i>
+                    <i class="fa fa-sitemap"></i>
                     分流下级院
+                </li><li :class="isThisNav == 4?'active':''" @click="chooseNav(4)">
+                    <i class="fa fa-random"></i>
+                    结果反馈
                 </li>
             </ul>
         </div>
         <div id="content">
             <div id="detail" v-show="isThisNav == 1">
                 <report-detail v-if="cueType == 1"></report-detail>
-                <internet-detail v-if="cueType == 2" :cueData = "cueData"></internet-detail>
+                <internet-detail v-if="cueType == 2"></internet-detail>
             </div>
             <div id="approval" v-show="isThisNav == 2">
                 <approval></approval>
             </div>
             <div id="send" v-show="isThisNav == 3">
                 <send></send>
+            </div>
+            <div id="result" v-show="isThisNav == 4">
+                <result></result>
             </div>
         </div>
     </div>
@@ -40,15 +46,17 @@ import internetDetail from './internetCueDetail'; //导入互联网线索详情�
 import reportDetail from './reportCueDetail'; //导入举报线索详情页组件
 import approval from './approvalCue'; // 导入提交审批组件
 import send from './sendCue'; //导入分流下院组件
+import result from './result'; //导入分流下院组件
 
 export default {
-    components: {internetDetail,reportDetail,approval,send},
+    components: {internetDetail,reportDetail,approval,send,result},
     data(){
         return {
             isThisNav: 1, //导航
             cueType:0, //线索类型
             cueId: '' ,//线索编号
             cueData: {}, //线索数据
+            cueFrom:'', //线索类别
         }
     },
     mounted(){
@@ -56,6 +64,21 @@ export default {
             this.$router.go(-1);
         }
         this.cueType = this.$route.query.type;
+        if(this.cueType == 1){
+            this.cueFrom = '举报线索';
+        }else if(this.cueType == 2){
+            this.cueFrom = '互联网线索';
+        }else if(this.cueType == 3){
+            this.cueFrom = '公益诉讼线索';
+        }else if(this.cueType == 4){
+            this.cueFrom = '热点线索';
+        }else if(this.cueType == 5){
+            this.cueFrom = '关注线索';
+            if(this.$route.query.type2){
+                this.cueType = this.$route.query.type2;
+            }
+        };
+        this.$route.meta.name = this.cueFrom;
         this.cueId = this.$route.query.id;
         this.cueDataGet();
     },
@@ -75,21 +98,7 @@ export default {
                 //举报线索
             }else if(this.cueType == 2){
                 //互联网线索
-                this.axios({
-                    method: 'get',
-                    url:webApi.Clue.GetWebClueData.format({id:this.cueId}),
-                    timeout: 10000
-                }).then(function(response){
-                    console.log(response)
-                    if(response.data.code == 0){
-                        _this.cueData = response.data.data[0];
-                        console.log(_this.cueData);
-                    }else{
-
-                    }
-                }).catch(function(error){
-                    console.log(error);
-                })
+                
             }
         }
     }
@@ -98,6 +107,7 @@ export default {
 
 <style lang="scss" scoped>
 #main{
+    height: 100%;
     #header{
         height: 40px;
         line-height: 40px;
@@ -156,7 +166,8 @@ export default {
         }
     }
     #content{
-
+        height: calc(100% - 120px - 15px);
+        overflow: auto;
     }
 }
 </style>

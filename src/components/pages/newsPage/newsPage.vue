@@ -75,7 +75,7 @@ export default {
     },
     //查看详情
     checkDetail(item){
-      this.$router.push({name: '新闻页详情',query:{id:item.BH}});
+      this.$router.push({path: '/home/newsDetail',query:{id:item.BH}});
     },
     //获取新闻数据
     newsDataGet(){

@@ -241,7 +241,7 @@
           }
           &>i {
             float: right;
-            color: rgba(0,0,0,0.15);
+            color: rgba(255, 255, 255, 0.25);
           }
         }
         .analysis_more {
@@ -286,8 +286,9 @@
           float: right;
           font-size: 14px;
           margin-top: 2.5px;
+          color: #e5e5e5;
           &:hover {
-            color: red;
+            color: #f4f4f4;
             cursor: pointer;
           }
         }
