@@ -97,47 +97,54 @@
       <div class="cue-list" ref="cueList">
         <el-table
           ref="oTable"
-          :data="tableData"
+          :data=" internetCueList"
           :max-height="tableH"
           :height="tableH"
           style="width: 100%">
           <el-table-column
-            fixed
-            prop="date"
-            label="日期"
+            prop="SFYD"
+            label=""
+            width="40">
+          </el-table-column>
+          <el-table-column
+            prop="ZY"
+            label="内容"
+            min-width="300">
+          </el-table-column>
+          <el-table-column
+            prop="FBSJ"
+            label="发布时间"
+            min-width="180"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="CJSJ"
+            label="采集时间"
+            min-width="180"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="XSLB"
+            label="线索类别"
+            min-width="100"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="XSLY"
+            label="线索来源"
             width="150">
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="姓名"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="province"
-            label="省份"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="city"
-            label="市区"
-          >
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="地址"
-            width="300">
-          </el-table-column>
-          <el-table-column
-            prop="zip"
-            label="邮编"
-            width="120">
+            prop="GJC"
+            label="关键词"
+            width="200">
           </el-table-column>
           <el-table-column
             fixed="right"
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+              <el-button @click="details(scope.$index, scope.row.XSBH)" type="text" size="small">查看</el-button>
               <el-button type="text" size="small">关注</el-button>
             </template>
           </el-table-column>
@@ -158,6 +165,7 @@
   export default {
       data(){
         return{
+          //来源地址
           siteList:[
             "某某某网站",
             "某某某网站",
@@ -167,29 +175,57 @@
             "某某某网站",
             "某某某网站",
           ],
-          tableH:0,
-          tableData: [{
-            date: '2016-05-03',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          }, {
-            date: '2016-05-02',
-            name: '王小虎',
-            province: '上海',
-            city: '普陀区',
-            address: '上海市普陀区金沙江路 1518 弄',
-            zip: 200333
-          },]
+          tableH:0, //表格高度
+          internetCueList: [  //互联网线索列表
+
+          ],
+          keyword:'',//查询列表关键字
+          type:'', //线索类型
+          page:1, //页码
+          pageSize: 20,//每页条数
+          order:'',//排序方式
+          site:'',//来源站点
         }
       },
     mounted(){
       let _this = this;
      _this.tableResize();
+     _this.getInternetCueList();
     },
     methods:{
+        //获取互联网线索列表
+      getInternetCueList(){
+        let _this = this;
+        let url = webApi.Clue.GetWebClues.format({keyword:_this.keyword,type:_this.type,site:_this.site,order:_this.order,p:_this.page,ps:_this.pageSize})
+        _this.axios({
+          methods:'get',
+          url:url
+        }).then(function(res){
+          if(res.data.code == 0){
+            let data = res.data.data.data;
+            let ZYstr = '';
+            for(let i = 0;i < data.length; i++){
+             let str = data[i].ZY.split("<br/>");
+             for(let j= 0;j<str.length;j++){
+               ZYstr += str[j];
+             }
+              data[i].ZY = ZYstr;
+            }
+            _this.internetCueList = data;
+          }
+        }).catch(function(err){
+
+        })
+      },
+
+      // 查看详情
+      details(index,id){
+        this.$router.push({
+          path:'/home/cueDetail',
+          query:{id:id}
+        });
+      },
+       //表格高度自适应
       tableResize(){
         let _this = this;
         this.$nextTick(function () {
@@ -202,6 +238,8 @@
         _this.tableH = _this.$refs.cueList.clientHeight;
       }
     },
+
+    //实例销毁钩子
     destroyed(){
       window.removeEventListener('resize',this.resize)
     }
