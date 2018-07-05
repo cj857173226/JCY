@@ -101,7 +101,7 @@
             that.isLogin = false;
             let data =  res.data;
             if(data.code == 0){
-              localStorage.setItem("token", res.data);
+              localStorage.setItem("token", data.data);
               that.$router.push({
                 path: '/home'
               });

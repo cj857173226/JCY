@@ -1,5 +1,5 @@
 <template>
-  <div id="wordCloud_main" style="width: 100%;height: 350px;"></div>
+  <div id="wordCloud_main" style="width: 100%;height: 250px;" v-loading="isLoading"></div>
 </template>
 
 <script>
@@ -7,18 +7,17 @@
         name: "word-cloud",
         data() {
           return {
-            optionData: ""
+            optionData: "",
+            isLoading: false,
           }
         },
         methods : {
           //图表初始化
           initChart() {
             let myChart = echarts.init(document.getElementById('wordCloud_main'));
-            let  option =  this.getOption();
-            myChart.setOption(option);
-          },
-          //获取option设置
-          getOption(data) {
+            let _this = this;
+            let  option ;
+            let data = [];
             function createRandomItemStyle() {
               return {
                 normal: {
@@ -30,112 +29,40 @@
                 }
               };
             }
-            data =  [
-              {
-                name: "Sam S Club",
-                value: 10000,
-                itemStyle: {
-                  normal: {
-                    color: 'black'
+            if(!_this.optionData) {
+              _this.isLoading = true;
+              _this.axios({
+                url: webApi.Host + webApi.Clue.GetWebClueKeywordFreq,
+                timeout: 2000,
+              })
+                .then(function(res){
+                  if(res.data.code==0) {
+                    data = res.data.data;
+                    data.forEach(function(item){
+                      let color = createRandomItemStyle();
+                      item['name'] = item['Key'];
+                      delete item['Key']
+                      item['value'] = item['Value'];
+                      delete item['Value']
+                      item['itemStyle'] = color;
+                    })
+                    option =  _this.getOption(data);
+                    myChart.setOption(option);
+                    _this.optionData = data;
+                    _this.isLoading = false;
                   }
-                }
-              },
-              {
-                name: "Macys",
-                value: 6181,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Amy Schumer",
-                value: 4386,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Jurassic World",
-                value: 4055,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Charter Communications",
-                value: 2467,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Chick Fil A",
-                value: 2244,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Planet Fitness",
-                value: 1898,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Pitch Perfect",
-                value: 1484,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Express",
-                value: 1112,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Home",
-                value: 965,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Johnny Depp",
-                value: 847,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Lena Dunham",
-                value: 582,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Lewis Hamilton",
-                value: 555,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "KXAN",
-                value: 550,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Mary Ellen Mark",
-                value: 462,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Farrah Abraham",
-                value: 366,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Rita Ora",
-                value: 360,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Serena Williams",
-                value: 282,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "NCAA baseball tournament",
-                value: 273,
-                itemStyle: createRandomItemStyle()
-              },
-              {
-                name: "Point Break",
-                value: 265,
-                itemStyle: createRandomItemStyle()
-              }
-            ];
+                }).catch(function(err) {
+                _this.isLoading = false;
+                console.log(err)
+              })
+            }else {
+              data = _this.optionData;
+              option =  _this.getOption(data);
+              myChart.setOption(option);
+            }
+          },
+          //获取option设置
+          getOption(data) {
             let option = {
               backgroundColor: '#fff',
               title: {
@@ -148,7 +75,7 @@
               series: [{
                 name: '活跃关键词',
                 type: 'wordCloud',
-                size: ['80%', '80%'],
+                size: ['100%', '80%'],
                 textRotation : [0,0],
                 textPadding: 0,
                 autoSize: {

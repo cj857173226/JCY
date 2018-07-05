@@ -128,9 +128,6 @@ export default new Router({
       component:login,
       redirect:'/login',
       name: '登录',
-
     },
-
-
  	]
 })

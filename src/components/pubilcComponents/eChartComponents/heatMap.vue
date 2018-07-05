@@ -1,5 +1,5 @@
 <template>
-    <div id="heatmap_main" ref="heatmap" style="width: 100%;height: 700px;">
+    <div id="heatmap_main" ref="heatmap" style="width: 100%;height: 700px;" v-loading="isLoading">
 
     </div>
 </template>
@@ -8,38 +8,50 @@
   export default {
     data() {
       return {
-        optionData: ""
+        optionData: "",
+        isLoading: false,
       }
     },
     methods : {
       //图表初始化
       initChart() {
         let myChart = echarts.init(document.getElementById('heatmap_main'));
-        let  option =  this.getOption();
-        myChart.setOption(option);
+        let _this = this;
+        let option;
+        let data = [];
+        if(!_this.optionData) {
+          _this.isLoading = true;
+          _this.axios({
+            url: webApi.Host + webApi.News.GetCityFreq,
+            timeout: 2000,
+          })
+            .then(function(res){
+              if(res.data.code==0) {
+                res.data.data.forEach(function(item,index){
+                  let x = item.JWD.split(",")[0];
+                  let y = item.JWD.split(",")[1];
+                  let val = item.PC;
+                  if(index%5==0) {
+                    data.push([x, y, val]);
+                  }
+                });
+                option =  _this.getOption(data);
+                myChart.setOption(option);
+                _this.optionData = data;
+                _this.isLoading = false;
+              }
+            }).catch(function(err) {
+            _this.isLoading = false;
+            console.log(err)
+          })
+        }else {
+          data = _this.optionData;
+          option =  _this.getOption(data);
+          myChart.setOption(option);
+        }
       },
       //获取option设置
       getOption(data) {
-        let heatData = [];
-        for (var i = 0; i < 200; ++i) {
-          heatData.push([
-            100 + Math.random() * 20,
-            24 + Math.random() * 16,
-            Math.random()
-          ]);
-        }
-        for (var j = 0; j < 10; ++j) {
-          var x = 100 + Math.random() * 16;
-          var y = 24 + Math.random() * 12;
-          var cnt = 30 * Math.random();
-          for (var i = 0; i < cnt; ++i) {
-            heatData.push([
-              x + Math.random() * 2,
-              y + Math.random() * 2,
-              Math.random()
-            ]);
-          }
-        }
         let option =  {
           backgroundColor: '#fff',
           title : {
@@ -64,7 +76,7 @@
               data:[],
               heatmap: {
                 minAlpha: 0.1,
-                data: heatData
+                data: data
               },
               itemStyle:{
                 normal:{
