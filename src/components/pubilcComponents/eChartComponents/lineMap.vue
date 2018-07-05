@@ -63,9 +63,7 @@ export default {
     },
     mounted(){
         var _this = this;
-        window.addEventListener('resize',function(){
-            _this.chartInit();
-        })
+        window.addEventListener('resize',_this.chartInit)
         this.chartInit();
         this.timeDataGet();
     },
@@ -87,6 +85,9 @@ export default {
         lineChart(){
 
         }
+    },
+    destroyed(){
+        window.removeEventListener('resize',this.chartInit);
     }
 }
 </script>

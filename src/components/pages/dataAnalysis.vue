@@ -1,10 +1,10 @@
 <template>
   <div id="analysis">
     <el-row>
-      <el-col :xs="24" :sm="14" :lg="14" :xl="16">
+      <el-col :xs="24" :sm="24" :lg="14" :xl="16">
         <heat-map></heat-map>
       </el-col>
-      <el-col :xs="24" :sm="10" :lg="10" :xl="8">
+      <el-col :xs="24" :sm="24" :lg="10" :xl="8">
         <el-row>
             <el-col :span="24">
               <line-map></line-map>

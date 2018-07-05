@@ -59,8 +59,8 @@ export default {
 <style lang="scss" scoped>
 #main{
     #header{
-        height: 50px;
-        line-height: 50px;
+        height: 40px;
+        line-height: 40px;
         color: #666;
         font-size: 16px;
         border-bottom: solid 1px #dcdcdc;
@@ -68,7 +68,7 @@ export default {
         .heart-icon{
             display: inline-block;
             height: 100%;
-            width: 50px;
+            width: 40px;
             text-align: center;
             border-right:solid 1px #ddd;
         }

@@ -262,7 +262,7 @@
         let _this = this;
         this.$nextTick(function () {
           _this.tableH = _this.$refs.cueList.clientHeight;
-          window.onresize = _this.resize;
+          window.addEventListener('resize',_this.resize);
         })
       },
       resize(){
@@ -273,8 +273,7 @@
 
     //实例销毁钩子
     destroyed(){
-      let _this = this;
-      window.removeEventListener('onresize',_this.resize)
+      window.removeEventListener('resize',this.resize)
     }
 
   }
