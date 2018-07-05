@@ -140,7 +140,7 @@
           :page-size="pageSize"
           :current-page="page"
           layout="total, prev, pager, next, jumper"
-          :total="400">
+          :total="totalPages">
         </el-pagination>
       </div>
     </div>
@@ -164,6 +164,7 @@
           type:'', //线索类型
           page:1, //页码
           pageSize: 20,//每页条数
+          totalPages:0,//总条数
           order:'cjsj',//排序方式
           site:'',//来源站点
           isLoad:false,//数据是否在加载

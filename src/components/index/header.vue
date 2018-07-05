@@ -124,15 +124,15 @@
     }
   }
 
-  @media (max-width: 767px){
-    #header{
-      .logo{
-        width: 100%;
-      }
-      .navbar{
-        margin-left: 0;
-      }
-    }
-  }
+  /*@media (max-width: 767px){*/
+    /*#header{*/
+      /*.logo{*/
+        /*width: 100%;*/
+      /*}*/
+      /*.navbar{*/
+        /*margin-left: 0;*/
+      /*}*/
+    /*}*/
+  /*}*/
 
 </style>

@@ -8,8 +8,8 @@
             <div class="title">举报线索</div>
           </div>
         <div class="search-wrap clearfix">
-          <input class="search-ipt" type="text" placeholder="请输入内容">
-          <span class="search-btn">
+          <input class="search-ipt" type="text" v-model="keyword" @keyup.13="getReportCue()" placeholder="请输入内容">
+          <span class="search-btn" @click="getReportCue()" >
             <i class="iconfont icon-sousuo"></i>
           </span>
         </div>
@@ -21,58 +21,22 @@
             <span>举报门类</span>
           </div>
           <div class="types-wrap clearfix">
-            <div class="type-item">
-                <div class="type-icon">
-                  <i class="iconfont icon-shipinshengchanqiye"></i>
-                </div>
-                <div class="type-name">
-                    食药安全
-                </div>
-            </div>
-            <div class="type-item">
+            <div v-for="(item ,index) in typeList" class="type-item" :class="{'type-item-on':type == item}" @click = "clueTypeOder(item)">
               <div class="type-icon">
-                <i class="iconfont icon-44"></i>
+                <i v-if="item == '食药安全'" class="iconfont icon-shipinshengchanqiye"></i>
+                <i v-else-if="item == '英烈保护'" class="iconfont icon-44"></i>
+                <i v-else-if="item == '国有财产'" class="iconfont icon-jinqian"></i>
+                <i v-else-if="item ==  '食品安全'" class="iconfont icon-shouyeshipin"></i>
+                <i v-else-if="item ==  '国土资源'" class="iconfont icon-diqiuyi"></i>
+                <i v-else-if="item ==  '环境保护'" class="iconfont icon-huanjingbaohu"></i>
               </div>
               <div class="type-name">
-                英雄保护
+                {{item}}
               </div>
             </div>
-            <div class="type-item">
-              <div class="type-icon">
-                <i class="iconfont icon-jinqian"></i>
-              </div>
-              <div class="type-name">
-                国有财产
-              </div>
-            </div>
-            <div class="type-item">
-              <div class="type-icon">
-                <i class="iconfont icon-shouyeshipin"></i>
-              </div>
-              <div class="type-name">
-                食品安全
-              </div>
-            </div>
-            <div class="type-item">
-              <div class="type-icon">
-                <i class="iconfont icon-diqiuyi"></i>
-              </div>
-              <div class="type-name">
-                国土资源
-              </div>
-            </div>
-            <div class="type-item">
-              <div class="type-icon">
-                <i class="iconfont icon-huanjingbaohu"></i>
-              </div>
-              <div class="type-name">
-                环境保护
-              </div>
-            </div>
-
           </div>
         </div>
-        <div class="cue-list" ref="cueList">
+        <div class="cue-list" ref="cueList"  v-loading="isLoad">
           <el-table
              ref="oTable"
             :data="reportCueList"
@@ -127,9 +91,9 @@
         </div>
         <div class="page-wrap">
           <el-pagination
-            :page-size="100"
+            :page-size="pageSize"
             layout="total, prev, pager, next, jumper"
-            :total="400">
+            :total="totalPages">
           </el-pagination>
         </div>
       </div>
@@ -144,33 +108,120 @@
         reportCueList:[       //举报列表
 
         ],
+        typeList:[], //线索类型列表
         keyword:'',//查询列表关键字
         type:'', //线索类型
         page:1, //页码
         pageSize: 20,//每页条数
+        totalPages:0,//总条数
+        isLoad:false,//数据是否在加载
       }
     },
     mounted(){
       let _this = this;
-      _this.tableResize();
-      _this.getReportCue();
+      _this.tableResize(); //表格高度自适应
+      _this.getReportCue(); //获取举报线索列表
+      _this.getClueType(); //获取举报门类
     },
     methods:{
 
       //获取举报线索列表
       getReportCue:function(){
         let _this = this;
-        let url = webApi.Clue.GetReportClues.format({keyword:_this.keyword,type:_this.type,p:_this.page,ps:_this.pageSize})
+        if(_this.isLoad == false){
+          _this.isLoad = true;
+          let url = webApi.Clue.GetReportClues.format({keyword:_this.keyword,type:_this.type,p:_this.page,ps:_this.pageSize})
+          _this.axios({
+            methods:'get',
+            url:url
+          }).then(function(res){
+            _this.isLoad = false
+            console.log(res)
+          }).catch(function(err){
+            _this.isLoad = false
+          })
+        }
+
+      },
+      //获取举报门类
+      getClueType(){
+        let _this = this;
         _this.axios({
           methods:'get',
-          url:url
+          url:webApi.Host + webApi.Clue.GetReportCluesTypes
         }).then(function(res){
-
+          if(res.data.code == 0){
+            let data = res.data.data;
+            _this.typeList = data;
+          }
         }).catch(function(err){
 
         })
       },
 
+      //按举报类型筛选
+      clueTypeOder(type){
+        let _this = this;
+        if(_this.isLoad == false){
+          if(_this.type!= type){
+            _this.page = 1;
+            _this.type = type;
+            _this.getReportCue();
+          }else{
+            _this.type = '';
+            _this.page = 1;
+            _this.getReportCue();
+          }
+        }
+      },
+
+      // 页码跳转
+      pageTo(curr) {
+        let _this = this ;
+        _this.page = curr;
+        _this.getReportCue();
+      },
+
+      // 查看详情
+      details(index,id){
+        this.$router.push({
+          path:'/home/cueDetail',
+          query:{type:2,id:id}
+        });
+      },
+
+      //关注线索
+      followClue(clueId,clueType){
+        let _this = this;
+        if(_this.isLoad ==false){
+          _this.axios({
+            method:'post',
+            url:webApi.ClueManager.FollowClue.format({id:clueId,xssjbly:clueType})
+          }).then(function(res){
+            if(res.data.code == 0){
+              _this.getReportCue()
+            }
+          }).catch(function(err){
+
+          })
+        }
+      },
+      //取消关注线索
+      cancelFollowClue(clueId){
+        let _this = this;
+        if(_this.isLoad ==false){
+          _this.axios({
+            method:'post',
+            url:webApi.ClueManager.UnFollowClue.format({id:clueId})
+          }).then(function(res){
+            if(res.data.code == 0){
+              _this.getReportCue()
+            }
+          }).catch(function(err){
+
+          })
+        }
+      },
       //表格高度自适应
       tableResize(){
         let _this = this;
@@ -294,10 +345,12 @@
         }
         .types-wrap{
           height: 80px;
+          overflow-y: auto;
           .type-item{
             position: relative;
             float: left;
             width: 90px;
+            height: 100%;
             text-align: center;
             font-size: 14px;
             cursor: pointer;
@@ -335,6 +388,16 @@
 
           .type-item:last-child:after{
             display: none;
+          }
+          .type-item-on{
+            .type-icon{
+              .iconfont{
+                color: #0B8E45;
+              }
+            }
+            .type-name{
+              color: #0B8E45!important;
+            }
           }
           .type-item:hover {
             .type-icon{
