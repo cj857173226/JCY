@@ -61,6 +61,9 @@ export default new Router({
           name:internetCue,
           component:internetCue,
           name: '互联网线索',
+          meta:{
+            keepAlive: true
+          }
         },
         {
           path:'welfareCue',

@@ -182,6 +182,7 @@
 
 <script>
   export default {
+      name:'cue-list',
       data(){
         return{
           //来源地址
@@ -254,7 +255,7 @@
       details(index,id){
         this.$router.push({
           path:'/home/cueDetail',
-          query:{id:id}
+          query:{type:2,id:id}
         });
       },
        //表格高度自适应
