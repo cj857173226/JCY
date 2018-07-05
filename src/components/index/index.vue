@@ -6,7 +6,9 @@
         <side-menu></side-menu>
       </div>
       <div id="main-area">
-        <router-view/>
+        <keep-alive include="cue-list">
+          <router-view/>
+        </keep-alive>
       </div>
     </div>
     <o-footer id="footer"></o-footer>
@@ -18,6 +20,7 @@
 	import oHead from './header.vue'
   import oFooter from './footer.vue'
   import sideMenu from './sideMenu'
+  
 	 export default {
 	 	components: {oHead,oFooter,sideMenu},
 	 	data(){

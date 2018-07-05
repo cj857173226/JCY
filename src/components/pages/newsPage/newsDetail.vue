@@ -37,7 +37,6 @@ export default {
   methods:{
     //返回
     backNav(){
-      console.log(1);
       this.$router.go(-1);
     },
     //查看源地址

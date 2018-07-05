@@ -1,41 +1,41 @@
 <template>
     <div id="main">
         <div class="detail-item">
-            <span class="item-title">数据来源</span><span class="item-content">XX网</span>
+            <span class="item-title">数据来源</span><span class="item-content">{{cueData.XSLY}}</span>
         </div>
         <div class="detail-item">
-            <span class="item-title">线索类别</span><span class="item-content">环境保护</span>
+            <span class="item-title">线索类别</span><span class="item-content">{{cueData.XSLB}}</span>
         </div>
         <div class="detail-item">
-            <span class="item-title">发布时间</span><span class="item-content">2017-02-01 00:00:00</span>
+            <span class="item-title">发布时间</span><span class="item-content">{{cueData.FBSJ}}</span>
         </div>
         <div class="detail-item">
-            <span class="item-title">采集时间</span><span class="item-content">2017-02-01 00:00:00</span>
+            <span class="item-title">采集时间</span><span class="item-content">{{cueData.CJSJ}}</span>
         </div>
         <div class="detail-item">
-            <span class="item-title">数据地址</span><span class="item-content">https://www.cnblogs.com/xumqfaith/p/7078557.html</span>
+            <span class="item-title">数据地址</span><span class="item-content">{{cueData.SJDZ}}</span>
         </div>
         <div class="detail-item">
             <span class="item-title resource-box">采集内容</span>
             <div class="item-content resource-content">
                 <div class="text-title">机器分析</div>
                 <div class="text-keyword">
-                    <span class="text-title-item">关键字:</span>
+                    <span class="text-title-item">关键字:{{cueData.GJC}}</span>
                     <span></span>
                 </div>
                 <div class="text-name">
-                    <span class="text-title-item">人名:</span><span>人名</span>
+                    <span class="text-title-item">人名:</span><span>{{cueData.RENM}}</span>
                     </br>
-                    <span class="text-title-item">地名:</span><span>地名</span>
+                    <span class="text-title-item">地名:</span><span>{{cueData.DIM}}</span>
                     <br />
-                    <span class="text-title-item">机构名:</span><span>机构名</span>
+                    <span class="text-title-item">机构名:</span><span>{{cueData.JIGOUM}}</span>
                 </div>
                 <div class="text-remark">
-                    <span class="text-title-item">摘要:</span><span>人名</span>
+                    <span class="text-title-item">摘要:</span><span>{{cueData.ZY}}</span>
                 </div>
             </div>
-            <div class="item-content resource-conten" style="margin-top: 20px">
-                <span></span> 
+            <div class="item-content resource-content" style="margin-top: 20px">
+                <span v-html="cueData.JBNR"></span> 
             </div>
         </div>
         <div class="detail-item">
@@ -66,7 +66,18 @@
 
 <script>
 export default {
-    
+    props:['cueData'],
+    data(){
+        return{
+
+        }
+    },
+    mounted(){
+        console.log(this.cueData);
+    },
+    methods:{
+
+    }
 }
 </script>
 
