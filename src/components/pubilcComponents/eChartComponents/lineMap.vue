@@ -3,17 +3,14 @@
         <div id="chart-header">
             本月线索统计
         </div>
-        <div id="line-chart-box">
+        <div id="line-chart-box" v-loading.lock="isLoad">
             <div id="lineChart"></div>
-            <!-- <load-gif v-show="isLoad"></load-gif> -->
         </div>
     </div>
 </template>
 
 <script>
-// import loadGif from "@/components/pagesComponents/loadGif"
 export default {
-    // components: {loadGif},
     data(){
         return{
             timeData:[], //时间线数据

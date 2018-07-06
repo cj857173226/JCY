@@ -13,7 +13,7 @@
             <span class="item-title">采集时间</span><span class="item-content">{{cueData.CJSJ}}</span>
         </div>
         <div class="detail-item">
-            <span class="item-title">数据地址</span><span class="item-content">{{cueData.SJDZ}}</span>
+            <span class="item-title">数据地址</span><span class="item-content"><a class="link" :href="cueData.SJDZ" target="_blank">{{cueData.SJDZ}}</a></span>
         </div>
         <div class="detail-item">
             <span class="item-title resource-box">采集内容</span>
@@ -31,7 +31,7 @@
                     <span class="text-title-item">机构名:</span><span>{{cueData.JIGOUM}}</span>
                 </div>
                 <div class="text-remark">
-                    <span class="text-title-item">摘要:</span><span>{{cueData.ZY}}</span>
+                    <span class="text-title-item">摘要:</span><span v-html="cueData.ZY"></span>
                 </div>
             </div>
             <div class="item-content resource-content" style="margin-top: 20px">
@@ -66,17 +66,31 @@
 
 <script>
 export default {
-    props:['cueData'],
     data(){
         return{
-
+            cueData:{},
         }
     },
     mounted(){
-        console.log(this.cueData);
+        this.dataGet();
     },
     methods:{
+        dataGet(){
+            var _this = this;
+            this.axios({
+                method: 'get',
+                url:webApi.Clue.GetWebClueData.format({id:this.$route.query.id}),
+                timeout: 10000
+            }).then(function(response){
+                if(response.data.code == 0){
+                    _this.cueData = response.data.data[0];
+                }else{
 
+                }
+            }).catch(function(error){
+                console.log(error);
+            })
+        }
     }
 }
 </script>
@@ -105,6 +119,12 @@ export default {
             line-height: 30px;
             padding: 0px 10px;
             width: calc(100% - 300px);
+            .link{
+                color: #3897c6;
+            }
+            .link:hover{
+                text-decoration: underline;
+            }
         }
         .resource-box{
             width: 100%;
@@ -125,6 +145,7 @@ export default {
                 font-size: 14px;
                 font-weight: bold;
                 margin-right: 10px;
+                vertical-align: top;
             }
             img{
                 width: 200px;

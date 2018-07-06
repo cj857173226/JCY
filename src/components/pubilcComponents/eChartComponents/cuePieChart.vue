@@ -13,19 +13,16 @@
                     <li :class="['cue-type',isNav == 5?'active':'']" @click="changeNav(5)">热点线索</li>
                 </ul>
             </div>
-            <div id="pie-chart">
+            <div id="pie-chart" v-loading.lock="isLoad">
                 <div v-show="!isLoad&&noData" class="no-data">暂无数据</div>
                 <div v-show="!isLoad&&!noData" id="pieChart"></div>
-                <!-- <load-gif v-show="isLoad"></load-gif> -->
             </div>
         </div>
     </div>
 </template>
 
 <script>
-// import loadGif from "@/components/pagesComponents/loadGif"
 export default {
-    // components: {loadGif},
     data(){
         return{
             noData: false, //暂无数据
@@ -34,7 +31,6 @@ export default {
             reportType: [], //互联网线索数据
             isLoad:false,
             isNav:1, //饼状图切换
-            //饼状图图标参数设置
         }
     },
     mounted(){
@@ -92,7 +88,8 @@ export default {
         },
         //数据获取
         pieDataGet(){
-             var _this = this;
+            var _this = this;
+            this.isLoad = true;
             this.axios({
                 method: 'post',
                 url: webApi.Host + webApi.Stats.CountMonthCluesType,

@@ -1,27 +1,15 @@
 <template>
-    <div id="main">
-        <div class="advise">
+    <div id="result">
+        <div class="result-text">
             <i class="timeline-icon fa fa-circle-thin"></i>
-            <div class="advise-title">初核意见</div>
+            <div class="advise-title">处理结果</div>
             <div class="advise-content">
                 <span v-html="textData"></span>
             </div>
         </div>
-        <div class="advise advise-notice">
-            <i class="timeline-icon fa fa-circle-thin"></i>
-            <span>已提交，等待领导审批</span>
-            <span>已审批</span>
-        </div>
-        <div class="advise">
-            <i class="timeline-icon fa fa-circle-thin"></i>
-            <div class="advise-title">审批意见</div>
-            <div class="advise-content">
-                <span v-html="textData"></span>
-            </div>
-        </div>
-        <div class="advise edit-advise">
+        <div class="result-text result-edit">
             <div class="advise-title">编写意见</div>
-            <kindedite ref="kindedite"></kindedite>
+            <kindedite ref="kindedite" v-loading.lock="isLoad"></kindedite>
             <div id="submit-btn" @click="submitBtn">
                 提交
             </div>
@@ -35,26 +23,44 @@ export default {
     components:{
         kindedite:kindedite
     },
+    props:['cueData'],
     data(){
-        return {
-            textData:''
+        return{
+            textData:'',
+            isLoad:false,
         }
     },
-    mounted(){
-    },
     methods:{
+        //提交按钮
         submitBtn(){
+            var _this = this;
             this.textData = this.$refs.kindedite.getEditText();
+            this.isLoad = true;
+            this.axios({
+                method:'post',
+                url:webApi.ClueManager.ReportResult.format(this.cueData.XSBH),
+                timeout: 10000
+            }).then(function(response){
+                console.log(response);
+                _this.isLoad = false;
+                if(response.data.code == 0){
+                    this.textData = '';
+                }else{
+
+                }
+            }).catch(function(error){
+                _this.isLoad = false;
+            })
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    #main{
+    #result{
         width: 100%;    
         padding: 20px;
-        .advise{
+        .result-text{
             position: relative;
             padding-left: 40px;
             .timeline-icon{
@@ -68,9 +74,6 @@ export default {
                 background-color: #fff;
                 color: #c0ecaa;
                 font-size: 18px;
-            }
-            .advise-tip{
-                height: 30px;
             }
             .advise-title{
                 width: 240px;
@@ -98,14 +101,7 @@ export default {
                 }
             }
         }
-        .advise-notice{
-            height: 50px;
-            line-height: 50px;
-            .timeline-icon{
-                top: 15px;
-            }
-        }
-        .edit-advise{
+        .result-edit{
             margin-top: 10px;
             #submit-btn{
                 display: inline-block;
@@ -126,20 +122,6 @@ export default {
                 background: #059553;
             }
         }
-        .advise:before{
-            content:'';
-            position: absolute;
-            width: 1px;
-            height: 100%;
-            background: #dfdfdf;
-            top: 15px;
-            left: 9px;
-        }
-        .advise:nth-child(3):before{
-            display: none;
-        }
-        .advise:last-child:before{
-            display: none;
-        }
+        
     }
 </style>

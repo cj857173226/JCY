@@ -4,11 +4,10 @@
       <span class="news-icon">
         <i class="fa fa-camera" ></i>
       </span>
-      <span class="news-title">新闻动态/详情</span>
+      <span class="news-title"><span class="back-btn" @click="backNav">新闻动态</span>/详情</span>
     </div>
     <div id="news-content">
       <div id="news-name">
-        <i class="back-btn fa fa-arrow-left"  @click="backNav"></i>
         {{newsData.BT}}
       </div>
       <div id="news-info">
@@ -80,6 +79,12 @@ export default {
     }
     .news-title{
       padding-left: 10px;
+    }
+    .back-btn{
+      cursor: pointer;
+    }
+    .back-btn:hover{
+      text-decoration: underline;
     }
   }
   #news-content{
