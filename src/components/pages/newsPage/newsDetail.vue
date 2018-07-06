@@ -51,12 +51,9 @@ export default {
         timeout: 1000
       }).then(function(response){
         _this.newsData = response.data.data[0];
-        // var text = _this.newsData.NR;
-        // console.log(text.toString());
-        // text = text.toString();
-        // console.log(text);
-        // text.replace('</br>','&#9;</br>');
-        // _this.newsData.NR = text;
+        var text = _this.newsData.NR;
+        _this.newsData.NR = text.replace(/<\/br>/g,'</br></br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+        _this.newsData.NR = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + _this.newsData.NR;
 
       }).catch(function(error){
 
@@ -131,7 +128,7 @@ export default {
     #news-text{
       padding: 10px;
       span{
-        line-height: 35px;
+        line-height: 25px;
         display: block;
       }
     }

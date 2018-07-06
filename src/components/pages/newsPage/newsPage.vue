@@ -53,12 +53,15 @@ export default {
   methods: {
     //鼠标滚动加载
     handleScroll(){
+      var _this = this;
       var content = document.getElementById("news-content");
-      if(content.scrollTop+content.offsetHeight == content.scrollHeight){
+      if(Math.ceil(content.scrollTop)+content.offsetHeight == content.scrollHeight){
         if(!this.noMoreData){
           this.loadMore = true;
           this.pageNum += 1;
-          this.newsDataGet();
+          setTimeout(function(){
+            _this.newsDataGet();
+          },1000)
         }else{
           return;
         }

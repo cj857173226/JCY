@@ -98,7 +98,6 @@ export default {
                 //举报线索
             }else if(this.cueType == 2){
                 //互联网线索
-                
             }
         }
     }

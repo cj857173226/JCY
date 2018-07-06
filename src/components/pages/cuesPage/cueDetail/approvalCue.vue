@@ -21,7 +21,7 @@
         </div>
         <div class="advise edit-advise">
             <div class="advise-title">编写意见</div>
-            <kindedite ref="kindedite"></kindedite>
+            <kindedite ref="kindedite" :type = type></kindedite>
             <div id="submit-btn" @click="submitBtn">
                 提交
             </div>
@@ -37,7 +37,8 @@ export default {
     },
     data(){
         return {
-            textData:''
+            textData:'',
+            type:1
         }
     },
     mounted(){
