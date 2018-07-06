@@ -138,6 +138,10 @@ input:focus{
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    .el-input__inner {
+      height: 32px;
+      line-height: 32px;
+    }
 
   }
 

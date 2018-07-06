@@ -11,13 +11,13 @@
       <div class="follow_filter">
         <el-form class="follow_form" :inline="true" >
           <el-form-item label="线索类型 :">
-            <el-select class="follow_select" v-model="formInline.region">
+            <el-select class="follow_select" v-model="followForm.type">
               <el-option label="全部" value="shanghai" selected></el-option>
               <el-option label="区域二" value="beijing"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="线索来源 :">
-            <el-select class="follow_select" v-model="formInline.region">
+            <el-select class="follow_select" v-model="followForm.source">
               <el-option label="全部来源" value="1"></el-option>
               <el-option label="互联网线索" value="2"></el-option>
               <el-option label="举报线索" value="3"></el-option>
@@ -26,24 +26,24 @@
             </el-select>
           </el-form-item>
           <el-form-item label="线索发布开始时间 :">
-            <el-date-picker class="follow_date" type="date" placeholder="选择日期" v-model="ruleForm.date1"></el-date-picker>
+            <el-date-picker class="follow_date" :default-time="beginDate" type="date" placeholder="选择日期" v-model="beginDate"></el-date-picker>
           </el-form-item>
           <el-form-item label="线索发布结束时间 :">
-            <el-date-picker class="follow_date" type="date" placeholder="选择日期" v-model="ruleForm.date1"></el-date-picker>
+            <el-date-picker class="follow_date" type="date" placeholder="选择日期" v-model="endDate"></el-date-picker>
           </el-form-item>
           <el-form-item label="关键词 :" prop="name">
-            <el-input  class="follow_input" v-model="ruleForm.name" placeholder="请输入关键词">
+            <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
               <!--<i @click="clickIcon" slot="suffix" class="keyword_icon iconfont icon-sousuo"></i>-->
             </el-input>
           </el-form-item>
 
           <el-form-item>
-            <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="clickIcon">搜索 <i class="iconfont icon-sousuo"></i></el-button>
+            <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="searchFollow">搜索 <i class="iconfont icon-sousuo"></i></el-button>
           </el-form-item>
         </el-form>
       </div>
       <!--数据列表-->
-      <div class="follow_list" ref="cueList">
+      <div class="follow_list" ref="cueList" v-loading="isLoading">
         <el-table
           ref="oTable"
           :data=" followList"
@@ -63,7 +63,7 @@
             label="内容"
             min-width="300">
             <template slot-scope="scope">
-              <el-popover trigger="hover" placement="top" max-width="400">
+              <el-popover trigger="click" placement="top" max-width="200">
                 <p style="text-indent: 2em;">{{ scope.row.JBNR }}</p>
                 <div slot="reference" class="td-content">
                   {{ scope.row.JBNR}}
@@ -76,7 +76,7 @@
             label="关键词"
             min-width="300">
             <template slot-scope="scope">
-              <el-popover trigger="hover" placement="top" max-width="400">
+              <el-popover trigger="click" placement="top" max-width="400">
                 <p style="text-indent: 2em;">{{ scope.row.GJC }}</p>
                 <div slot="reference" class="td-content">
                   {{ scope.row.GJC}}
@@ -110,8 +110,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button type="text" size="small">移除</el-button>
               <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
+              <el-button type="text" size="small">移除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -131,36 +131,76 @@
   export default {
     data() {
       return {
+        isLoading: false,
         followList: [],//关键线索列表
         tableH:0, //表格高度
         keyword:'',//查询列表关键字
         xslb:'', //线索类型
         pageNum:1, //页码
         pageSize: 20,//每页条数
-        beginDate: "",//线索发布开始时间
+        beginDate: "2018-02-01",//线索发布开始时间
         endDate: "",//线索发布结束时间
-        formInline: {
-          user: '',
-          region: ''
-        },
-        ruleForm: {
-          date1: '',
-          name: ""
+        followForm: {
+          type: '',
+          source: ''
         },
       }
     },
     mounted() {
       this.getFollowList();//获取关注线索列表
       this.tableResize();
+      this.getDefaultDate();
     },
     methods: {
-      clickIcon() {
-        console.log('1')
+      getDefaultDate() {//设置默认日期
+        let _this = this;
+        let endDate = new Date();
+        let beginDate = new Date(endDate.getTime() - 3600 * 1000 * 24 * 30);
+        _this.beginDate = beginDate;
+        _this.endDate = endDate;
+      },
+      timeFormat(date) {
+        let time = date;
+        let year = time.getFullYear();
+        let month = time.getMonth() + 1;
+        let day = time.getDate();
+        if(month < 10) {
+          month =  '0' + month;
+        }
+        if(day < 10 ) {
+          day =  '0' + day;
+        }
+        time = year + '-' + month + '-' + day;
+        return time;
+      },
+      remove(index,id) {//移除关注
+        let url = (webApi.ClueManager.UnFollowClue).format({id: id});
+        this.axios({
+          method: 'post',
+          url: url,
+          timeout: 2000,
+        }).then(function(res){
+          console.log(res)
+        }).catch(function(err){
+          console.log(err)
+        })
+      },
+      searchFollow() {//搜索关注线索
+        let _this = this;
+        let data = {
+          keyword: _this.keyword||"",
+          pageNum: 1,
+          pageSize: 20,
+          beginDate: _this.timeFormat(_this.beginDate),
+          endDate: _this.timeFormat(_this.endDate),
+          xslb: ''
+        };
+        _this.getFollowList(data);
       },
       details(text,id) {
         var type2 = 0;
         if(text == '举报线索'){
-         type2 = 1 
+         type2 = 1
         }else if(text == '互联网线索'){
          type2 = 2
         }else if(text == '公益诉讼线索'){
@@ -173,17 +213,20 @@
           query:{type:5,type2:type2,id:id,}
         });
       },
-      getFollowList() {//获取关注线索列表
+      getFollowList(data) {//获取关注线索列表
         let _this = this;
+        let defaultData = {
+          'keyword': " ",
+          'pageNum': 1,
+          'pageSize': 20,
+          'beginDate': "2018-06-05",
+          'endDate': "2018-07-05",
+          "xslb": " "
+        };
+        data = data || defaultData;
+        _this.isLoading = true;
         _this.axios({
-          url: (webApi.ClueManager.GetFollowClues).format({
-            'keyword': " ",
-            'pageNum': 1,
-            'pageSize': 20,
-            'beginDate': "2018-06-05",
-            'endDate': "2018-07-05",
-            "xslb": " "
-          }),
+          url: (webApi.ClueManager.GetFollowClues).format(data),
           timeout: 4000
         }).then(function(res){
           if(res.data.code==0){
@@ -205,9 +248,11 @@
               }
             }
             _this.followList = data;
+            _this.isLoading = false;
           }
           console.log(res)
         }).catch(function(err){
+          _this.isLoading = false;
           console.log(err)
         })
       },
@@ -284,6 +329,70 @@
       .page-wrap{
         margin-top: 24px;
         height: 40px;
+      }
+    }
+  }
+  @media (max-width: 1440px) {
+    #followCue {
+      height: 100%;
+      font-size: 14px;
+      /*头部*/
+      .follow_header {
+        height: 40px;
+        background-color: #eeeeee;
+        color: #666666;
+        border-bottom: 1px solid #dcdcdc;
+        i {
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          border-right: 1px solid #dcdcdc;
+          margin-right: 15px;
+        }
+      }
+      /*内容*/
+      .follow_body {
+        height: calc(100% - 50px);
+        padding: 15px 20px 0 20px;
+        overflow: hidden;
+        /*筛选*/
+        .follow_filter {
+          background-color: #eeeeee;
+          color: #333333;
+          padding:{
+            left: 15px;
+            top: 10px;
+          }
+          .follow_form {
+            .el-form-item {
+              margin-bottom: 10px;
+            }
+            .follow_select {
+              width: 160px;
+            }
+            .follow_date {
+              width: 150px;
+            }
+            .follow_input {
+              width: 180px;
+            }
+            .follow_btn {
+              height: 32px;
+              line-height: 6px;
+              margin-top: 4px;
+            }
+          }
+        }
+        .follow_list {
+          height: calc( 100% - 190px);
+          font-size: 14px;
+          margin-top: 24px;
+        }
+        .page-wrap{
+          margin-top: 24px;
+          height: 40px;
+        }
       }
     }
   }
