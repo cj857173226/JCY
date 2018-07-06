@@ -110,8 +110,13 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
+<<<<<<< HEAD
               <el-button type="text" size="small"@click="remove(scope.$index, scope.row.GZBH)">移除</el-button>
               <el-button @click="details(scope.$index, scope.row.XSBH)" type="text" size="small">查看</el-button>
+=======
+              <el-button type="text" size="small">移除</el-button>
+              <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
+>>>>>>> 17b5e1a48b368692f644158bc81c9b6147184819
             </template>
           </el-table-column>
         </el-table>
@@ -197,8 +202,21 @@
         };
         _this.getFollowList(data);
       },
-      details() {
-
+      details(text,id) {
+        var type2 = 0;
+        if(text == '举报线索'){
+         type2 = 1 
+        }else if(text == '互联网线索'){
+         type2 = 2
+        }else if(text == '公益诉讼线索'){
+         type2 = 3
+        }else if(text == '热点线索'){
+         type2 = 4
+        }
+        this.$router.push({
+          path:'/home/cueDetail',
+          query:{type:5,type2:type2,id:id,}
+        });
       },
       getFollowList(data) {//获取关注线索列表
         let _this = this;
@@ -291,10 +309,8 @@
       .follow_filter {
         background-color: #eeeeee;
         color: #333333;
-        padding:{
-          left: 15px;
-          top: 10px;
-        }
+        padding-left: 15px;
+        padding-top: 10px;
         .follow_form {
           .el-form-item {
             margin-bottom: 10px;

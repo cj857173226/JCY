@@ -8,8 +8,8 @@
         <div class="title">互联网线索</div>
       </div>
       <div class="search-wrap clearfix">
-        <input class="search-ipt" type="text" placeholder="请输入内容">
-        <span class="search-btn">
+        <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getInternetCueList">
+        <span class="search-btn" @click="getInternetCueList()">
             <i class="iconfont icon-sousuo"></i>
           </span>
       </div>
@@ -21,55 +21,19 @@
           <span>举报门类</span>
         </div>
         <div class="types-wrap clearfix">
-          <div class="type-item">
+          <div v-for="(item ,index) in typeList" class="type-item" :class="{'type-item-on':type == item}" @click = "clueTypeOder(item)">
             <div class="type-icon">
-              <i class="iconfont icon-shipinshengchanqiye"></i>
+              <i v-if="item == '食药安全'" class="iconfont icon-shipinshengchanqiye"></i>
+              <i v-else-if="item == '英烈保护'" class="iconfont icon-44"></i>
+              <i v-else-if="item == '国有财产'" class="iconfont icon-jinqian"></i>
+              <i v-else-if="item ==  '食品安全'" class="iconfont icon-shouyeshipin"></i>
+              <i v-else-if="item ==  '国土资源'" class="iconfont icon-diqiuyi"></i>
+              <i v-else-if="item ==  '环境保护'" class="iconfont icon-huanjingbaohu"></i>
             </div>
             <div class="type-name">
-              食药安全
+              {{item}}
             </div>
           </div>
-          <div class="type-item">
-            <div class="type-icon">
-              <i class="iconfont icon-44"></i>
-            </div>
-            <div class="type-name">
-              英雄保护
-            </div>
-          </div>
-          <div class="type-item">
-            <div class="type-icon">
-              <i class="iconfont icon-jinqian"></i>
-            </div>
-            <div class="type-name">
-              国有财产
-            </div>
-          </div>
-          <div class="type-item">
-            <div class="type-icon">
-              <i class="iconfont icon-shouyeshipin"></i>
-            </div>
-            <div class="type-name">
-              食品安全
-            </div>
-          </div>
-          <div class="type-item">
-            <div class="type-icon">
-              <i class="iconfont icon-diqiuyi"></i>
-            </div>
-            <div class="type-name">
-              国土资源
-            </div>
-          </div>
-          <div class="type-item">
-            <div class="type-icon">
-              <i class="iconfont icon-huanjingbaohu"></i>
-            </div>
-            <div class="type-name">
-              环境保护
-            </div>
-          </div>
-
         </div>
       </div>
       <div class="cue-filter-wrap">
@@ -79,7 +43,7 @@
                 采集网站:
             </div>
             <div class="right">
-                <div class="site-item" v-for="(item,index) in siteList">{{item}}</div>
+                <div class="site-item" :class="{'site-item-on':site == item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
             </div>
           </div>
           <div class="cue-sort clearfix">
@@ -94,8 +58,9 @@
             </div>
           </div>
       </div>
-      <div class="cue-list" ref="cueList">
+      <div class="cue-list" ref="cueList" v-loading="isLoad">
         <el-table
+
           ref="oTable"
           :data=" internetCueList"
           :max-height="tableH"
@@ -114,7 +79,7 @@
             label="内容"
             min-width="300">
             <template slot-scope="scope">
-              <el-popover trigger="hover" placement="top" max-width="400">
+              <el-popover trigger="click" placement="top" max-width="400">
                 <p style="text-indent: 2em;">{{ scope.row.ZY }}</p>
                 <div slot="reference" class="td-content">
                   {{ scope.row.ZY}}
@@ -150,7 +115,7 @@
             label="关键词"
             width="200">
             <template slot-scope="scope">
-              <el-popover trigger="hover" placement="top" max-width="400">
+              <el-popover trigger="click" placement="top" max-width="400">
                 <p>{{ scope.row.GJC }}</p>
                 <div slot="reference" class="td-content">
                   {{ scope.row.GJC}}
@@ -164,7 +129,7 @@
             width="100">
             <template slot-scope="scope">
               <el-button @click="details(scope.$index, scope.row.XSBH)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small">关注</el-button>
+              <el-button @click="followClue(scope.row.XSBH ,'2')" type="text" size="small">关注</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -175,7 +140,7 @@
           :page-size="pageSize"
           :current-page="page"
           layout="total, prev, pager, next, jumper"
-          :total="400">
+          :total="totalPages">
         </el-pagination>
       </div>
     </div>
@@ -194,12 +159,15 @@
           internetCueList: [  //互联网线索列表
 
           ],
+          typeList:[], //线索类型列表
           keyword:'',//查询列表关键字
           type:'', //线索类型
           page:1, //页码
           pageSize: 20,//每页条数
+          totalPages:0,//总条数
           order:'cjsj',//排序方式
           site:'',//来源站点
+          isLoad:false,//数据是否在加载
         }
       },
     mounted(){
@@ -207,28 +175,47 @@
      _this.tableResize();//表格高度自适应
      _this.getInternetCueList(); //获取互联网线索列表
      _this.getClueSites(); //获取来源网站
+      _this.getClueType(); //获取线索类型
     },
     methods:{
         //获取互联网线索列表
       getInternetCueList(){
         let _this = this;
-        let url = webApi.Clue.GetWebClues.format({keyword:_this.keyword,type:_this.type,site:_this.site,order:_this.order,p:_this.page,ps:_this.pageSize})
+       if(_this.isLoad ==false){
+         _this.isLoad = true;
+         let url = webApi.Clue.GetWebClues.format({keyword:_this.keyword,type:_this.type,site:_this.site,order:_this.order,p:_this.page,ps:_this.pageSize})
+         _this.axios({
+           methods:'get',
+           url:url
+         }).then(function(res){
+           _this.isLoad = false;
+           if(res.data.code == 0){
+             let data = res.data.data.data;
+             let ZYstr = '';
+             for(let i = 0;i < data.length; i++){
+               let str = data[i].ZY.split("<br/>");
+               for(let j= 0;j<str.length;j++){
+                 ZYstr += str[j];
+               }
+               data[i].ZY = ZYstr;
+             }
+             _this.internetCueList = data;
+           }
+         }).catch(function(err){
+           _this.isLoad = false;
+         })
+       }
+      },
+      //获取举报门类
+      getClueType(){
+        let _this = this;
         _this.axios({
           methods:'get',
-          url:url
+          url:webApi.Host + webApi.Clue.GetReportCluesTypes
         }).then(function(res){
-          console.log(res)
           if(res.data.code == 0){
-            let data = res.data.data.data;
-            let ZYstr = '';
-            for(let i = 0;i < data.length; i++){
-             let str = data[i].ZY.split("<br/>");
-             for(let j= 0;j<str.length;j++){
-               ZYstr += str[j];
-             }
-              data[i].ZY = ZYstr;
-            }
-            _this.internetCueList = data;
+            let data = res.data.data;
+            _this.typeList = data;
           }
         }).catch(function(err){
 
@@ -255,13 +242,45 @@
       //线索排序
       clueOrder(order){
         let _this = this;
-        if(_this.order != order){
-          _this.page = 1;
-          _this.order = order;
-          _this.getInternetCueList();
-        }
+       if(_this.isLoad == false){
+         if(_this.order != order){
+           _this.page = 1;
+           _this.order = order;
+           _this.getInternetCueList();
+         }
+       }
       },
       //按线索来源筛选
+      clueSiteOder(site){
+        let _this = this;
+      if(_this.isLoad == false){
+        if(_this.site!= site){
+          _this.page = 1;
+          _this.site = site;
+          _this.getInternetCueList();
+        }else{
+          _this.site = '';
+          _this.page = 1;
+          _this.getInternetCueList();
+        }
+      }
+      },
+
+      //按举报类型筛选
+      clueTypeOder(type){
+        let _this = this;
+      if(_this.isLoad == false){
+        if(_this.type!= type){
+          _this.page = 1;
+          _this.type = type;
+          _this.getInternetCueList();
+        }else{
+          _this.type = '';
+          _this.page = 1;
+          _this.getInternetCueList();
+        }
+      }
+      },
 
       // 页码跳转
       pageTo(curr) {
@@ -275,6 +294,38 @@
           path:'/home/cueDetail',
           query:{type:2,id:id}
         });
+      },
+      //关注线索
+      followClue(clueId,clueType){
+          let _this = this;
+          if(_this.isLoad ==false){
+            _this.axios({
+              method:'post',
+              url:webApi.ClueManager.FollowClue.format({id:clueId,xssjbly:clueType})
+            }).then(function(res){
+              if(res.data.code == 0){
+                _this.getInternetCueList()
+              }
+            }).catch(function(err){
+
+            })
+          }
+      },
+      //取消关注线索
+      cancelFollowClue(clueId){
+        let _this = this;
+        if(_this.isLoad ==false){
+          _this.axios({
+            method:'post',
+            url:webApi.ClueManager.UnFollowClue.format({id:clueId})
+          }).then(function(res){
+            if(res.data.code == 0){
+              _this.getInternetCueList()
+            }
+          }).catch(function(err){
+
+          })
+        }
       },
        //表格高度自适应
       tableResize(){
@@ -321,7 +372,7 @@
           width: 50px;
           border-right: 1px solid #dcdcdc;
           .iconfont{
-            font-size: 28px;
+            font-size: 30px;
             color: #666666;
           }
         }
@@ -399,10 +450,12 @@
         }
         .types-wrap{
           height: 80px;
+          overflow-y: auto;
           .type-item{
             position: relative;
             float: left;
             width: 90px;
+            height: 100%;
             text-align: center;
             font-size: 14px;
             cursor: pointer;
@@ -440,6 +493,16 @@
 
           .type-item:last-child:after{
             display: none;
+          }
+          .type-item-on{
+            .type-icon{
+              .iconfont{
+                color: #0B8E45;
+              }
+            }
+            .type-name{
+              color: #0B8E45!important;
+            }
           }
           .type-item:hover {
             .type-icon{
@@ -497,8 +560,11 @@
               -o-transition: all 0.3s;
               transition: all 0.3s;
             }
-            .site-item{
-              
+            .site-item-on{
+              color: #FF6600;
+            }
+            .site-item:hover{
+              color: #FF6600;
             }
             .sort-item-tip{
               height: 100%;
@@ -557,7 +623,7 @@
           .title-icon{
             width: 40px;
             .iconfont{
-              font-size: 18px;
+              font-size: 26px;
             }
           }
           .title{

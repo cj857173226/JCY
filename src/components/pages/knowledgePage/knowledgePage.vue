@@ -79,7 +79,7 @@ export default {
     },
     //查看详情
     checkDetail(item){
-      this.$router.push({name: '知识库详情',query:{id:item.BH}});
+      this.$router.push({path: '/home/knowledgeDetail',query:{id:item.BH}});
     },
     //获取知识库数据
     knowledgeDataGet(){

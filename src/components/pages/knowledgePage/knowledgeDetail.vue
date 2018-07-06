@@ -4,7 +4,7 @@
       <span class="knowledge-icon">
         <i class="fa fa-graduation-cap" ></i>
       </span>
-      <span class="knowledge-title"><span @click="backNav">知识库</span>/详情</span>
+      <span class="knowledge-title"><span class="back-btn" @click="backNav">知识库</span>/详情</span>
     </div>
     <div id="knowledge-content">
       <div id="knowledge-name">
@@ -45,7 +45,6 @@ export default {
         timeout: 1000
       }).then(function(response){
         _this.knowledgeData = response.data.data[0];
-        console.log(_this.knowledgeData);
       }).catch(function(error){
 
       })
@@ -74,6 +73,12 @@ export default {
     }
     .knowledge-title{
       padding-left: 10px;
+    }
+    .back-btn{
+      cursor: pointer;
+    }
+    .back-btn:hover{
+      text-decoration: underline;
     }
   }
   #knowledge-content{
