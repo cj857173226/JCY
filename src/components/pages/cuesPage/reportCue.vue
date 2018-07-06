@@ -3,7 +3,7 @@
       <div class="report-cue-head clearfix">
           <div class="title-wrap clearfix">
             <div class="title-icon">
-              <i class="iconfont icon-biaoqian"></i>
+              <i class="iconfont icon-biaoqian1"></i>
             </div>
             <div class="title">举报线索</div>
           </div>
@@ -47,15 +47,23 @@
               prop=""
               label="举报内容"
               min-width="300">
+              <template slot-scope="scope">
+                <el-popover trigger="click" placement="top" max-width="400">
+                  <p style="text-indent: 2em;">{{ scope.row.JBNR }}</p>
+                  <div slot="reference" class="td-content" >
+                    {{ scope.row.JBNR}}
+                  </div>
+                </el-popover>
+              </template>
             </el-table-column>
             <el-table-column
-              prop="name"
+              prop="CJSJ"
               label="举报时间"
-              min-width="150"
+              min-width="180"
               >
             </el-table-column>
             <el-table-column
-              prop="province"
+              prop="XSLB"
               label="举报门类"
               min-width="100"
               >
@@ -63,11 +71,19 @@
             <el-table-column
               prop="city"
               label="事发地点"
-              min-width="120"
+              min-width="200"
               >
+              <template slot-scope="scope">
+                <el-popover trigger="click" placement="top" >
+                  <p>{{ scope.row.SFDD }}</p>
+                  <div slot="reference" class="td-content" >
+                    {{ scope.row.SFDD}}
+                  </div>
+                </el-popover>
+              </template>
             </el-table-column>
             <el-table-column
-              prop="address"
+              prop="JBRXM"
               label="举报人姓名"
               min-width="100"
               >
@@ -91,6 +107,7 @@
         </div>
         <div class="page-wrap">
           <el-pagination
+            @current-change="pageTo"
             :page-size="pageSize"
             layout="total, prev, pager, next, jumper"
             :total="totalPages">
@@ -106,8 +123,7 @@
       return {
         tableH: 0,  //表格高度
         reportCueList:[       //举报列表
-
-        ],
+         ],
         typeList:[], //线索类型列表
         keyword:'',//查询列表关键字
         type:'', //线索类型
@@ -137,7 +153,13 @@
           }).then(function(res){
             _this.isLoad = false
             console.log(res)
+            if(res.data.code == 0){
+              let data = res.data.data.data;
+              _this.reportCueList = data;
+              _this.totalPages = res.data.data.total;
+            }
           }).catch(function(err){
+            console.log(err)
             _this.isLoad = false
           })
         }
@@ -164,6 +186,7 @@
         let _this = this;
         if(_this.isLoad == false){
           if(_this.type!= type){
+            console.log(type)
             _this.page = 1;
             _this.type = type;
             _this.getReportCue();

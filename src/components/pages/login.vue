@@ -43,7 +43,7 @@
   </div>
 </template>
 
-<script>
+<script >
   export default {
     name: "login",
     data() {
@@ -133,12 +133,15 @@
 </script>
 
 <style scoped>
+
   #public_login {
     position: relative;
     background: url("../../assets/login/bg1.jpg") center center no-repeat;
     background-size: cover;
     height: 100%;
     text-align: center;
+    min-height: 600px;
+    overflow: hidden;
   }
 
   .login_box {

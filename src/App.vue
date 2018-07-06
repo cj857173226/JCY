@@ -45,7 +45,11 @@ a:hover{
 input:focus{
   outline: none;
 }
-.el-menu-item-group{
+
+#resetModal .el-dialog{
+  width: 400px;
+}
+#resetModal .el-menu-item-group{
   overflow: hidden;
 }
 .el-menu-item-group__title{
@@ -61,8 +65,18 @@ input:focus{
   clear: both;
 }
 
+button:focus,
+button:active{
+  outline: none;
+}
 
 
+  .el-dialog__header{
+    padding: 15px 20px 0;
+  }
+  .el-dialog__body{
+    padding: 20px;
+  }
   /*表格组件样式覆盖*/
   .el-table td,
   .el-table th{

@@ -1,6 +1,6 @@
 <template>
 	<div id="root-box">
-		<o-head id="header"></o-head>
+		<o-head id="header" style="z-index:10" ></o-head>
     <div id="main-body">
       <div id="side-menu">
         <side-menu></side-menu>
@@ -20,12 +20,11 @@
 	import oHead from './header.vue'
   import oFooter from './footer.vue'
   import sideMenu from './sideMenu'
-  
+
 	 export default {
 	 	components: {oHead,oFooter,sideMenu},
 	 	data(){
 	 		return {
-
 	 		}
      },
      update() {

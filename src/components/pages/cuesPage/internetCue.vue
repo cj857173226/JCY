@@ -79,7 +79,7 @@
             label="内容"
             min-width="300">
             <template slot-scope="scope">
-              <el-popover trigger="click" placement="top" max-width="400">
+              <el-popover trigger="click" placement="top" >
                 <p style="text-indent: 2em;">{{ scope.row.ZY }}</p>
                 <div slot="reference" class="td-content">
                   {{ scope.row.ZY}}
@@ -115,7 +115,7 @@
             label="关键词"
             width="200">
             <template slot-scope="scope">
-              <el-popover trigger="click" placement="top" max-width="400">
+              <el-popover trigger="click" placement="top" >
                 <p>{{ scope.row.GJC }}</p>
                 <div slot="reference" class="td-content">
                   {{ scope.row.GJC}}
@@ -145,6 +145,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -153,6 +154,7 @@
       data(){
         return{
           //来源地址
+          outerVisible:false,
           siteList:[
           ],
           tableH:0, //表格高度
@@ -372,7 +374,7 @@
           width: 50px;
           border-right: 1px solid #dcdcdc;
           .iconfont{
-            font-size: 30px;
+            font-size: 26px;
             color: #666666;
           }
         }
@@ -623,7 +625,7 @@
           .title-icon{
             width: 40px;
             .iconfont{
-              font-size: 26px;
+              font-size: 22px;
             }
           }
           .title{
