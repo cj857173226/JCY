@@ -43,7 +43,7 @@
         </el-form>
       </div>
       <!--数据列表-->
-      <div class="follow_list" ref="cueList" v-loading="isLoading">
+      <div id="follow_list" class="follow_list" ref="cueList" v-loading="isLoading">
         <el-table
           ref="oTable"
           :data=" followList"
@@ -118,9 +118,11 @@
       </div>
       <div class="page-wrap">
         <el-pagination
-          :page-size="100"
+          :page-size="pageSize"
           layout="total, prev, pager, next, jumper"
-          :total="400">
+          :total="total"
+          @current-change="currentChange"
+          @size-change="sizeChange">
         </el-pagination>
       </div>
     </div>
@@ -138,6 +140,7 @@
         xslb:'', //线索类型
         pageNum:1, //页码
         pageSize: 20,//每页条数
+        total: 0,//总条数
         beginDate: "2018-02-01",//线索发布开始时间
         endDate: "",//线索发布结束时间
         followForm: {
@@ -184,6 +187,22 @@
         }).catch(function(err){
           console.log(err)
         })
+      },
+      sizeChange(val) {
+        console.log(val)
+      },
+      currentChange(val) {//页码改变
+        let _this = this;
+        let pageNum = val;
+        let data = {
+          keyword: _this.keyword||"",
+          pageNum: pageNum,
+          pageSize: _this.pageSize,
+          beginDate: _this.timeFormat(_this.beginDate),
+          endDate: _this.timeFormat(_this.endDate),
+          xslb: ''
+        };
+        _this.getFollowList(data);
       },
       searchFollow() {//搜索关注线索
         let _this = this;
@@ -248,6 +267,8 @@
               }
             }
             _this.followList = data;
+            _this.total = res.data.data.total;
+            _this.pageSize = res.data.data.pageSize;
             _this.isLoading = false;
           }
           console.log(res)
@@ -332,7 +353,7 @@
       }
     }
   }
-  @media (max-width: 1440px) {
+  @media (max-width: 1675px) {
     #followCue {
       height: 100%;
       font-size: 14px;
