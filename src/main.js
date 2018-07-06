@@ -10,13 +10,31 @@ import 'font-awesome/css/font-awesome.css'; //引入font awsome字体图标
 import '../src/static/webApi.js'; //引入接口
 import '../src/static/common.js';
 
-//统一添加token
+ //axios请求拦截器
 axios.interceptors.request.use(config=>{
-  if(localStorage.getItem('token')){
+  console.log(router);
+  if(router.history.current.path != '/login'){
+    if(localStorage.getItem('token')){
       config.headers.token = localStorage.getItem('token');
+    }else{
+      console.log("请先登录");
+      router.push({path:'/login'});
+    }
   }
   return config;
 },err => {
+  return Promise.reject(err);
+})
+//axios响应拦截器
+axios.interceptors.response.use(response=>{
+  return response;
+},err => {
+  console.log(1);
+  if(err.response){
+    if(err.response.status == 403){
+      router.push({path:'/login'});
+    }
+  }
   return Promise.reject(err);
 })
 
@@ -31,6 +49,9 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  mounted(){
+    
+  }
 })
 

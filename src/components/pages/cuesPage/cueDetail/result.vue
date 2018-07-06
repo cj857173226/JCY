@@ -9,7 +9,7 @@
         </div>
         <div class="result-text result-edit">
             <div class="advise-title">编写意见</div>
-            <kindedite ref="kindedite" v-loading.lock="isLoad"></kindedite>
+            <kindedite ref="kindedite" :type = type></kindedite>
             <div id="submit-btn" @click="submitBtn">
                 提交
             </div>
@@ -20,37 +20,36 @@
 <script>
 import kindedite from '../../../pubilcComponents/kindeditor.vue';
 export default {
-    components:{
-        kindedite:kindedite
-    },
-    props:['cueData'],
+    components:{kindedite},
     data(){
         return{
             textData:'',
             isLoad:false,
+            type: 2,
         }
     },
     methods:{
         //提交按钮
         submitBtn(){
             var _this = this;
-            this.textData = this.$refs.kindedite.getEditText();
-            this.isLoad = true;
-            this.axios({
-                method:'post',
-                url:webApi.ClueManager.ReportResult.format(this.cueData.XSBH),
-                timeout: 10000
-            }).then(function(response){
-                console.log(response);
-                _this.isLoad = false;
-                if(response.data.code == 0){
-                    this.textData = '';
-                }else{
+            this.textData = this.$refs.kindedite.getResultText();
+            console.log(this.textData);
+            // this.isLoad = true;
+            // this.axios({
+            //     method:'post',
+            //     url:webApi.ClueManager.ReportResult.format({id:this.$route.query.id,bljgjs:this.textData}),
+            //     timeout: 10000
+            // }).then(function(response){
+            //     console.log(response);
+            //     _this.isLoad = false;
+            //     if(response.data.code == 0){
+            //         this.textData = '';
+            //     }else{
 
-                }
-            }).catch(function(error){
-                _this.isLoad = false;
-            })
+            //     }
+            // }).catch(function(error){
+            //     _this.isLoad = false;
+            // })
         }
     }
 }

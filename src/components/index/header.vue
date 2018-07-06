@@ -1,7 +1,7 @@
 <template>
   <div id="header"  class="clearfix">
       <a class="logo">
-        <b>公益诉讼线索采集系统</b>
+        <b>公益诉讼线索综合处理系统</b>
       </a>
       <nav class="navbar clearfix" >
         <!--<a href="#" class="menu-toggle">-->
@@ -189,7 +189,7 @@
       font-size: 20px;
       line-height: 50px;
       text-align: center;
-      width: 230px;
+      width: 275px;
       font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
       padding: 0 15px;
       -webkit-user-select: none;

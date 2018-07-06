@@ -1,7 +1,7 @@
 <template>
   <div id="homePage">
     <!--数据分析-->
-    <el-row :gutter="26" class="dataAnalysis">
+    <el-row :gutter="10" class="dataAnalysis">
       <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="(item,index) in dataCount" :key="index">
         <div class="analysisBox">
           <div class="analysisBox_top">
@@ -30,16 +30,19 @@
           <!--标题-->
           <div class="text_head">
             <span>新闻动态</span>
-            <router-link tag="span" to="#">更多>></router-link>
+            <router-link tag="span" to="home/news">更多>></router-link>
           </div>
           <!--内容-->
           <ul class="text_body" v-loading="newsLoading">
             <li v-for="(item, index) in newsData.slice(0,6)" :key="index">
-              <p class="text_title">
-                <span v-text="item.BT"></span>
-                <span>来源: {{item.LY}}  发布时间: {{item.FBSJ}}</span>
-              </p>
-              <p class="text_content" v-text="item.NR"></p>
+              <div class="text_title">
+                <p v-text="item.BT" @click="details('news',item.BH)"></p>
+                <p>
+                  <span>来源: {{item.LY}}</span>
+                  <span>发布时间: {{item.FBSJ}}</span>
+                </p>
+              </div>
+              <div class="text_content" v-text="item.NR"></div>
             </li>
           </ul>
         </div>
@@ -50,16 +53,19 @@
           <!--标题-->
           <div class="text_head">
             <span>理论研究 | 法律规章</span>
-            <router-link tag="span" to="#">更多>></router-link>
+            <router-link tag="span" to="/home/knowledge">更多>></router-link>
           </div>
           <!--内容-->
           <ul class="text_body" v-loading="knowLoading">
             <li v-for="(item, index) in knowledgeData.slice(0,6)" :key="index">
-              <p class="text_title">
-                <span v-text="item.BT"></span>
-                <span>来源: {{item.LY}}  发布时间: {{item.FBSJ}}</span>
-              </p>
-              <p class="text_content" v-text="item.NR"></p>
+              <div class="text_title">
+                <p v-text="item.BT" @click="details('know',item.BH)"></p>
+                <p>
+                  <span>来源: {{item.LY}}</span>
+                  <span>发布时间: {{item.FBSJ}}</span>
+                </p>
+              </div>
+              <div class="text_content" v-text="item.NR"></div>
             </li>
           </ul>
         </div>
@@ -81,19 +87,27 @@
         newsData: [],//新闻动态信息
         knowledgeData: [],//知识库信息
         dataCount: [//数据统计
-          {title: "本月线索", val: 0,icon:'fa-list'},
-          {title: "关注总线索", val: 0,icon:'fa-heart-o'},
-          {title: "未接收线索", val: 0,icon:'fa-envelope-o'},
-          {title: "接收线索", val: 0,icon:'fa-check-circle'}
+          {title: "线索总量", val: 0,icon:'fa-list'},
+          {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
         ]
       }
     },
-    watch:{
-      dataCount:function(){
-        console.log(1);
-      }
-    },
     methods: {
+      //跳转详情
+      details(type,id) {
+        let path = "";
+        if(type=="news") {
+          path = '/home/newsDetail';
+        }else {
+          path = '/home/knowledgeDetail';
+        }
+        this.$router.push({
+          path: path,
+          query: {id: id}
+        })
+      },
       getNewsData() {//获取新闻动态信息、知识库信息
         let _this = this;
         let setDataContent = function(data) {
@@ -119,7 +133,6 @@
           _this.newsLoading = false;
           console.log(err)
         })
-
         _this.axios({//知识库
           method: 'get',
           url: (webApi.Knowledge.GetTop).format({'top': 6}),
@@ -145,10 +158,10 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountMonthClues,
-          timeout: 1000,
+          timeout: 2000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[0],{title: '本月线索', val: res.data.data.Total,icon:'fa-list'});
+            setDataCount(_this.dataCount[0],{title: '线索总量', val: res.data.data.Total,icon:'fa-list'});
           }
         }).catch(function(err){
           console.log(err)
@@ -157,10 +170,10 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountFollowClues,
-          timeout: 1000,
+          timeout: 2000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[1],{title: '关注总线索', val: res.data.data,icon:'fa-heart-o'});
+            setDataCount(_this.dataCount[1],{title: '关注线索总量', val: res.data.data,icon:'fa-heart-o'});
           }
         }).catch(function(err){
           console.log(err)
@@ -169,10 +182,10 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountUnReciveClues,
-          timeout: 1000,
+          timeout: 2000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[2],{title: '未接收线索', val: res.data.data,icon:'fa-envelope-o'});
+            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
           }
         }).catch(function(err){
           console.log(err)
@@ -181,10 +194,10 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountReciveClues,
-          timeout: 1000
+          timeout: 2000
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[3],{title: '接收线索', val: res.data.data,icon:'fa-check-circle'});
+            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data,icon:'fa-check-circle'});
           }
         }).catch(function(err){
           console.log(err)
@@ -311,10 +324,9 @@
         }
         /*标题信息*/
         .text_title {
-          span {
+          p {
             /*标题*/
             &:first-child {
-              float: left;
               color: rgb(14, 158, 51);
               &:hover {
                 text-decoration: underline;
@@ -323,9 +335,18 @@
             }
             /*来源和发布时间*/
             &:last-child {
-              float: right;
               color: rgb(115, 115, 115);
               font-size: 12px;
+              span {
+                /*来源*/
+                &:first-child {
+                  float: left;
+                }
+                /*发布时间*/
+                &:last-child {
+                  float: right;
+                }
+              }
             }
           }
         }

@@ -65,7 +65,6 @@ export default {
                 url:webApi.Clue.GetReportClueData.format({id:this.$route.query.id}),
                 timeout: 10000
             }).then(function(response){
-                console.log(response);
                 if(response.data.code == 0){
                     _this.cueData = response.data.data[0];
                     var tp = JSON.parse(_this.cueData.TP);
