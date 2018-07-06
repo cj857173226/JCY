@@ -367,10 +367,8 @@
         .follow_filter {
           background-color: #eeeeee;
           color: #333333;
-          padding:{
-            left: 15px;
-            top: 10px;
-          }
+          padding-left: 15px;
+          padding-top: 10px;
           .follow_form {
             .el-form-item {
               margin-bottom: 10px;
