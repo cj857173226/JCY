@@ -33,7 +33,7 @@
               _this.isLoading = true;
               _this.axios({
                 url: webApi.Host + webApi.Clue.GetWebClueKeywordFreq,
-                timeout: 2000,
+                timeout: 5000,
               })
                 .then(function(res){
                   if(res.data.code==0) {

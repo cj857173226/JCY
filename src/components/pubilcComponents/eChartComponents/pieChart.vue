@@ -23,7 +23,7 @@
           _this.axios({
             method: 'post',
             url: webApi.Host + webApi.Stats.CountMonthCluesType,
-            timeout: 2000,
+            timeout: 5000,
           })
             .then(function(res){
               if(res.data.code==0) {
