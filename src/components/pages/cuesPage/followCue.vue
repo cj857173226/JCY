@@ -110,13 +110,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-<<<<<<< HEAD
-              <el-button type="text" size="small"@click="remove(scope.$index, scope.row.GZBH)">移除</el-button>
-              <el-button @click="details(scope.$index, scope.row.XSBH)" type="text" size="small">查看</el-button>
-=======
-              <el-button type="text" size="small">移除</el-button>
               <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
->>>>>>> 17b5e1a48b368692f644158bc81c9b6147184819
+              <el-button type="text" size="small">移除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -205,7 +200,7 @@
       details(text,id) {
         var type2 = 0;
         if(text == '举报线索'){
-         type2 = 1 
+         type2 = 1
         }else if(text == '互联网线索'){
          type2 = 2
         }else if(text == '公益诉讼线索'){
@@ -374,7 +369,7 @@
               margin-bottom: 10px;
             }
             .follow_select {
-              width: 140px;
+              width: 160px;
             }
             .follow_date {
               width: 150px;
