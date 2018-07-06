@@ -10,7 +10,7 @@
     <el-submenu index="2">
       <template slot="title">
         <i class="iconfont icon-fenlei1"></i>
-        <span slot="title">线索</span>
+        <span slot="title">线索资源库</span>
       </template>
       <el-menu-item-group >
         <template slot="title" id="menu-group-title" style="display:none"></template>
@@ -53,26 +53,43 @@
 
 
     <router-link to="/home/news">
-      <el-menu-item index="4" :class="isThisNav == '新闻页'?'is-active':''" @click="switchNav('新闻页')">
+      <el-menu-item index="4" :class="isThisNav == '新闻页' || isThisNav == '新闻页详情'?'is-active':''" @click="switchNav('新闻页')">
         <i class="iconfont icon-xiangji"></i>
         <span slot="title">新闻动态</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/knowledge">
-      <el-menu-item index="5" :class="isThisNav == '知识库'?'is-active':''" @click="switchNav('知识库')">
+      <el-menu-item index="5" :class="isThisNav == '知识库' || isThisNav == '知识库详情'?'is-active':''" @click="switchNav('知识库')">
         <i class="iconfont icon-boshimao"></i>
         <span slot="title">知识库</span>
       </el-menu-item>
     </router-link>
 
-
-    <router-link to="/home/dataAnalysis">
-      <el-menu-item index="6" :class="isThisNav == '数据分析'?'is-active':''" @click="switchNav('数据分析')">
-        <i class="iconfont icon-shuju"></i>
+    <el-submenu index="6">
+      <template slot="title">
+        <i class="fa fa-cubes"></i>
         <span slot="title">数据分析</span>
-      </el-menu-item>
-    </router-link>
+      </template>
+      <el-menu-item-group >
+        <template slot="title" id="menu-group-title" style="display:none"></template>
+        <router-link to="/home/newsAnalysis">
+          <el-menu-item index="6-1" :class="isThisNav == '新闻热力分析'?'is-active':''" @click="switchNav('新闻热力分析')" >
+            <i class="iconfont icon-biaoqian1"></i>
+            <span slot="title">新闻热力分析</span>
+          </el-menu-item>
+        </router-link>
+
+        <router-link to="/home/cueFieldAnalysis">
+          <el-menu-item index="6-2" :class="isThisNav == '线索领域分析'?'is-active':''" @click="switchNav('线索领域分析')">
+            <i class="iconfont icon-changyonglogo46"></i>
+            <span slot="title">线索领域分析</span>
+          </el-menu-item>
+        </router-link>
+
+      </el-menu-item-group>
+    </el-submenu>
+    
 
     <!--<el-menu-item index="7">-->
       <!--<i class="el-icon-setting"></i>-->

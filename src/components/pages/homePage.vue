@@ -87,10 +87,10 @@
         newsData: [],//新闻动态信息
         knowledgeData: [],//知识库信息
         dataCount: [//数据统计
-          {title: "本月线索", val: 0,icon:'fa-list'},
-          {title: "关注总线索", val: 0,icon:'fa-heart-o'},
-          {title: "未接收线索", val: 0,icon:'fa-envelope-o'},
-          {title: "接收线索", val: 0,icon:'fa-check-circle'}
+          {title: "线索总量", val: 0,icon:'fa-list'},
+          {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
         ]
       }
     },
@@ -161,7 +161,7 @@
           timeout: 2000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[0],{title: '本月线索', val: res.data.data.Total,icon:'fa-list'});
+            setDataCount(_this.dataCount[0],{title: '线索总量', val: res.data.data.Total,icon:'fa-list'});
           }
         }).catch(function(err){
           console.log(err)
@@ -173,7 +173,7 @@
           timeout: 2000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[1],{title: '关注总线索', val: res.data.data,icon:'fa-heart-o'});
+            setDataCount(_this.dataCount[1],{title: '关注线索总量', val: res.data.data,icon:'fa-heart-o'});
           }
         }).catch(function(err){
           console.log(err)
@@ -185,7 +185,7 @@
           timeout: 2000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[2],{title: '未接收线索', val: res.data.data,icon:'fa-envelope-o'});
+            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
           }
         }).catch(function(err){
           console.log(err)
@@ -197,7 +197,7 @@
           timeout: 2000
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[3],{title: '接收线索', val: res.data.data,icon:'fa-check-circle'});
+            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data,icon:'fa-check-circle'});
           }
         }).catch(function(err){
           console.log(err)

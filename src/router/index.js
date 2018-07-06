@@ -34,7 +34,8 @@ import news from  '../components/pages/newsPage/newsPage'
 import newsDetail from '../components/pages/newsPage/newsDetail'
 
 //数据分析
-import dataAnalysis from  '../components/pages/dataAnalysis'
+import newsAnalysis from  '../components/pages/dataAnalysis/newsAnalysis' //新闻热力分析
+import cueFieldAnalysis from  '../components/pages/dataAnalysis/cueFieldAnalysis' //线索领域分析
 
 Vue.use(Router)
 
@@ -49,6 +50,9 @@ export default new Router({
           path:'/',
           component:homePage,
           name: '主页',
+          meta:{
+            name:'主页'
+          }
         },
         {
           path:'reportCue',
@@ -137,11 +141,19 @@ export default new Router({
           }
         },
         {
-          path:'dataAnalysis',
-          name:dataAnalysis,
-          component:dataAnalysis,
+          path:'newsAnalysis',
+          name:newsAnalysis,
+          component:newsAnalysis,
           meta:{
-            name: '数据分析',
+            name: '新闻热力分析',
+          }
+        },
+        {
+          path:'cueFieldAnalysis',
+          name:cueFieldAnalysis,
+          component:cueFieldAnalysis,
+          meta:{
+            name: '线索领域分析',
           }
         },
       ]
