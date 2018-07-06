@@ -113,14 +113,14 @@ export default {
     height: 100%;
     #news-header{
       width: 100%;
-      height: 40px;
+      height: 50px;
       background: #EEEEEE;
       border-bottom: 1px solid #dcdcdc;
       .news-icon{
         display: inline-block;
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
         text-align: center;
         font-size: 16px;
         border-right: 1px solid #dcdcdc;
@@ -177,6 +177,7 @@ export default {
       padding: 10px 40px;
       height: calc(100% - 40px);
       overflow: auto;
+      width: 100%;
       ul{
         padding: 0;
         li{
@@ -232,6 +233,12 @@ export default {
   @media (max-width: 1440px) {
     #news{
       #news-header{
+        height: 40px;
+        .news-icon{
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+        }
         /*搜索框*/
         .search-wrap{
           height: 32px;

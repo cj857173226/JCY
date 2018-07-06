@@ -19,7 +19,7 @@ export default {
     mounted(){
         var _this = this;
         KindEditor.ready(function(k){
-            _this.editor = k.create('textarea[name="content"]',{
+            _this.editor = k.create('#mul_input',{
                 resizeType : 1,
                 allowPreviewEmoticons : false,
                 allowImageUpload : false,
@@ -29,7 +29,7 @@ export default {
 'superscript', '|', 'selectall', '-',
 'title', 'fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold',
 'italic', 'underline', 'strikethrough', 'removeformat', '|', 'image',
-'flash', 'media', 'advtable', 'hr', 'emoticons', 'link', 'unlink', '|', 'about']
+'insertfile', 'media', 'advtable', 'hr', 'emoticons', 'link', 'unlink', '|', 'about']
             })
         })
     },

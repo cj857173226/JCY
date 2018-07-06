@@ -20,9 +20,7 @@
 <script>
 import kindedite from '../../../pubilcComponents/kindeditor.vue';
 export default {
-    components:{
-        kindedite:kindedite
-    },
+    components:{kindedite},
     props:['cueData'],
     data(){
         return{

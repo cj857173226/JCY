@@ -51,6 +51,13 @@ export default {
         timeout: 1000
       }).then(function(response){
         _this.newsData = response.data.data[0];
+        // var text = _this.newsData.NR;
+        // console.log(text.toString());
+        // text = text.toString();
+        // console.log(text);
+        // text.replace('</br>','&#9;</br>');
+        // _this.newsData.NR = text;
+
       }).catch(function(error){
 
       })

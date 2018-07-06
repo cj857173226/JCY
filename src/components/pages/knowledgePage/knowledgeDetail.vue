@@ -15,7 +15,9 @@
         <span>来源:{{knowledgeData.LY}}</span>
       </div>
       <div id="knowledge-text">
-        <span v-html="knowledgeData.NR"></span>
+        <span>
+          <pre>{{knowledgeData.NR}}</pre>
+        </span>
       </div>
     </div>
   </div>
@@ -111,6 +113,10 @@ export default {
       span{
         line-height: 35px;
         display: block;
+        pre{
+          white-space: pre-line;
+          text-indent: 27px;
+        }
       }
     }
   }
