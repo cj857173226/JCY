@@ -21,7 +21,11 @@
         </div>
         <div class="advise edit-advise">
             <div class="advise-title">编写意见</div>
-            <kindedite ref="kindedite" :type = type></kindedite>
+            <editor id="approval-edit" height="300px" width="100%" :content="editorText"
+            pluginsPath="@/../static/kindeditor/plugins/"
+            :loadStyleMode="false"
+            @on-content-change="onContentChange"
+            :items="items"></editor>
             <div id="submit-btn" @click="submitBtn">
                 提交
             </div>
@@ -30,22 +34,38 @@
 </template>
 
 <script>
-import kindedite from '../../../pubilcComponents/kindeditor.vue';
 export default {
-    components:{
-        kindedite:kindedite
-    },
     data(){
         return {
+            editorText:'',
             textData:'',
-            type:1
+            //编辑器菜单栏设置
+            items:[
+            'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
+            'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+            'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+            'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+            'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+            'italic', 'underline', 'lineheight', 'removeformat', '|', 'image',
+            'insertfile', 'table', 'hr', 'emoticons', 'pagebreak',
+            'anchor', 'link', 'unlink', '|', 'about'
+            ]
         }
     },
     mounted(){
     },
     methods:{
+        //提交审批
         submitBtn(){
-            this.textData = this.$refs.kindedite.getEditText();
+            if(this.editorText.trim() == ''){
+                console.log('为空');
+            }else{
+                this.textData = this.editorText
+            }
+        },
+        //修改内容
+        onContentChange(val){
+            this.editorText = val;
         }
     }
 }

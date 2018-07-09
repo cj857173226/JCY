@@ -106,9 +106,8 @@ export default new Router({
           path:'cueDetail',
           name:cueDetail,
           component:cueDetail,
-          name: '知识库详情',
           meta:{
-            name:''
+            name:'线索详情'
           }
         },
         {

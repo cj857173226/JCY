@@ -6,12 +6,12 @@
             </span>
             <span class="header-title">审核互联网线索</span>
             
-            <div class="search-wrap clearfix">
+            <!-- <div class="search-wrap clearfix">
                 <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getInternetCueList">
                 <span class="search-btn" @click="getInternetCueList()">
                     <i class="iconfont icon-sousuo"></i>
                 </span>
-            </div>
+            </div> -->
         </div>
         <div id="nav">
             <ul>

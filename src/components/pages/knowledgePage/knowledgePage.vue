@@ -57,12 +57,16 @@ export default {
   methods: {
     //鼠标滚动加载
     handleScroll(){
+      var _this = this;
       var content = document.getElementById("knowledge-content");
-      if(content.scrollTop+content.offsetHeight == content.scrollHeight){
+      if(Math.ceil(content.scrollTop)+content.offsetHeight >= content.scrollHeight){
+        console.log(1);
         if(!this.noMoreData){
           this.loadMore = true;
           this.pageNum += 1;
-          this.knowledgeDataGet();
+          setTimeout(function(){
+            _this.knowledgeDataGet();
+          },1000);
         }else{
           return;
         }
@@ -176,7 +180,6 @@ export default {
           background: #dcdcdc;
         }
       }
-
     }
     #knowledge-content{
       padding: 10px 40px;

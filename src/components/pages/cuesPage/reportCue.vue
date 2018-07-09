@@ -99,7 +99,7 @@
               label="操作"
               width="100">
               <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                <el-button @click="handleClick(scope.row.XSBH)" type="text" size="small">查看</el-button>
                 <el-button type="text" size="small">关注</el-button>
               </template>
             </el-table-column>
@@ -206,10 +206,11 @@
       },
 
       // 查看详情
-      details(index,id){
+      handleClick(id){
+        console.log(id);
         this.$router.push({
           path:'/home/cueDetail',
-          query:{type:2,id:id}
+          query:{type:1,id:id}
         });
       },
 
