@@ -73,9 +73,9 @@
          }).then(function(res){
             if(res.data.code == 0){
               let data = res.data.data;
+              localStorage.setItem('IdentityType', data.IdentityType);
               data.ExpireTime = data.ExpireTime.split(' ')[0];
-              _this.userInfo = data
-              console.log(_this.userInfo)
+              _this.userInfo = data;
             }
          }).catch(function(err){
 

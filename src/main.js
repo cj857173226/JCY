@@ -15,7 +15,7 @@ import '../static/kindeditor/themes/default/default.css'
 
  //axios请求拦截器
 axios.interceptors.request.use(config=>{
-  console.log(router);
+  // console.log(router);
   if(router.history.current.path != '/login'){
     if(localStorage.getItem('token')){
       config.headers.token = localStorage.getItem('token');
@@ -40,6 +40,7 @@ axios.interceptors.response.use(response=>{
   return Promise.reject(err);
 })
 
+
 Vue.use(ElementUI);   //使用elementUi
 Vue.prototype.axios = axios; //vue原型上挂载axios
 Vue.config.productionTip = false
@@ -54,7 +55,7 @@ new Vue({
   components: { App },
   template: '<App/>',
   mounted(){
-    
+
   }
 })
 

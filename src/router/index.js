@@ -37,12 +37,23 @@ import newsDetail from '../components/pages/newsPage/newsDetail'
 import newsAnalysis from  '../components/pages/dataAnalysis/newsAnalysis' //新闻热力分析
 import cueFieldAnalysis from  '../components/pages/dataAnalysis/cueFieldAnalysis' //线索领域分析
 
+//领导页面
+import waitApproval from '../components/pages/leaderPage/waitApproval'//待审批线索
+import allreadyApproval from '../components/pages/leaderPage/allreadyApproval'//已审批线索
+import approvalResult from '../components/pages/leaderPage/approvalResult'//审批结果
+
+//下级院页面
+import waitReceive from '../components/pages/subordinatePage/waitReceive'//待接收线索
+import waitFeedback from '../components/pages/subordinatePage/waitFeedback'//待反馈线索
+import complete from '../components/pages/subordinatePage/complete'//完成
+
+
 //管理模块
 import reviewInternetCue from '../components/manage/reviewInternetCue' //审核互联网线索
 import knowledgeInput from '../components/manage/knowledgeInput' //知识库录入
 Vue.use(Router)
 
-export default new Router({
+let router =  new Router({
  	routes:[
     {
       path:'/home',
@@ -159,6 +170,54 @@ export default new Router({
           }
         },
         {
+          path:'waitApproval',
+          name:waitApproval,
+          component:waitApproval,
+          meta:{
+            name: '待审批',
+          }
+        },
+        {
+          path:'allreadyApproval',
+          name:allreadyApproval,
+          component:allreadyApproval,
+          meta:{
+            name: '已审批',
+          }
+        },
+        {
+          path:'approvalResult',
+          name:approvalResult,
+          component:approvalResult,
+          meta:{
+            name: '审批结果',
+          }
+        },
+        {
+          path:'waitReceive',
+          name:waitReceive,
+          component:waitReceive,
+          meta:{
+            name: '待接收',
+          }
+        },
+        {
+          path:'waitFeedback',
+          name:waitFeedback,
+          component:waitFeedback,
+          meta:{
+            name: '待反馈',
+          }
+        },
+        {
+          path: 'complete',
+          name: complete,
+          component: complete,
+          meta: {
+            name: '完成',
+          }
+        },
+        {
           path:'reviewInternetCue',
           name:reviewInternetCue,
           component:reviewInternetCue,
@@ -188,4 +247,24 @@ export default new Router({
       name: '登录',
     },
  	]
-})
+});
+router.beforeEach((to, from , next) => {
+  let nextLeaderRoute = ['待审批', '已审批','审批结果'];
+  let nextSubordinateRoute = ['待反馈', '待接收', '完成'];
+  let nextAdminRoute = ['关注线索','举报线索','互联网线索','公益组织线索','热点线索'];
+  let IdentityType = localStorage.getItem('IdentityType');
+  let allRoute = {nextAdminRoute:nextAdminRoute,nextLeaderRoute:nextLeaderRoute ,nextSubordinateRoute: nextSubordinateRoute,};
+  let IdentityNum = -1;
+  let routeName = to.meta.name;
+  for(let i in allRoute) {
+    let item = allRoute[i];
+    IdentityNum += 2;
+    for(let j = 0; j < item.length; j++) {
+      if(item[j].indexOf(routeName) > -1 && IdentityNum != IdentityType) {
+        router.push({ name: '登录' });
+      }
+    }
+  }
+  next();
+});
+export default router

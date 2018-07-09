@@ -14,7 +14,7 @@
                 </li><li :class="isThisNav == 2?'active':''" @click="chooseNav(2)">
                     <i class="fa fa-pencil-square-o"></i>
                     审批信息
-                </li><li :class="isThisNav == 3?'active':''" @click="chooseNav(3)">
+                </li><li :class="isThisNav == 3?'active':''" @click="chooseNav(3)" v-if="IdentityType==1?true:false">
                     <i class="fa fa-sitemap"></i>
                     分流下级院
                 </li><li :class="isThisNav == 4?'active':''" @click="chooseNav(4)">
@@ -52,6 +52,7 @@ export default {
     components: {internetDetail,reportDetail,approval,send,result},
     data(){
         return {
+            IdentityType: localStorage.getItem('IdentityType'),//身份信息
             isThisNav: 1, //导航
             cueType:0, //线索类型
             cueId: '' ,//线索编号
@@ -87,7 +88,7 @@ export default {
         backBtn(){
             this.$router.go(-1);
         },
-        //切换顶部导航 
+        //切换顶部导航
         chooseNav(index){
             this.isThisNav = index;
         },
