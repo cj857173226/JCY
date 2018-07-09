@@ -132,10 +132,7 @@
       </el-menu-item-group>
     </el-submenu>
 
-<<<<<<< HEAD
 
-
-=======
     <el-submenu index="7">
       <template slot="title">
         <i class="fa fa-database"></i>
@@ -159,8 +156,7 @@
 
       </el-menu-item-group>
     </el-submenu>
-    
->>>>>>> f34456cee32f1a4c36e3db2179c0c0e4cdec7f51
+
 
     <!--<el-menu-item index="7">-->
       <!--<i class="el-icon-setting"></i>-->
