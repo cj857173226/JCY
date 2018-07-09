@@ -43,7 +43,8 @@
                 采集网站:
             </div>
             <div class="right">
-                <div class="site-item" :class="{'site-item-on':site == item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
+                <div v-show="siteList.length>0" class="site-item" :class="{'site-item-on':site == item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
+                <div v-show="siteList.length==0"> 无 </div>
             </div>
           </div>
           <div class="cue-sort clearfix">
@@ -248,7 +249,11 @@
          if(_this.order != order){
            _this.page = 1;
            _this.order = order;
-           _this.getInternetCueList();
+           if(_this.internetCueList.length<=0){
+             return
+           }else {
+             _this.getInternetCueList();
+           }
          }
        }
       },
@@ -259,11 +264,19 @@
         if(_this.site!= site){
           _this.page = 1;
           _this.site = site;
-          _this.getInternetCueList();
+          if(_this.internetCueList.length<=0){
+            return
+          }else {
+            _this.getInternetCueList();
+          }
         }else{
           _this.site = '';
           _this.page = 1;
-          _this.getInternetCueList();
+          if(_this.internetCueList.length<=0){
+            return
+          }else {
+            _this.getInternetCueList();
+          }
         }
       }
       },
@@ -275,11 +288,19 @@
         if(_this.type!= type){
           _this.page = 1;
           _this.type = type;
-          _this.getInternetCueList();
+          if(_this.internetCueList.length<=0){
+            return
+          }else {
+            _this.getInternetCueList();
+          }
         }else{
           _this.type = '';
           _this.page = 1;
-          _this.getInternetCueList();
+          if(_this.internetCueList.length<=0){
+            return
+          }else {
+            _this.getInternetCueList();
+          }
         }
       }
       },
