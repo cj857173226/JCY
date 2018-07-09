@@ -60,7 +60,7 @@ export default {
     },
     mounted(){
         var _this = this;
-        window.addEventListener('resize',_this.chartInit)
+        window.addEventListener('resize',_this.chartInit);
         this.chartInit();
         this.timeDataGet();
     },
@@ -75,7 +75,7 @@ export default {
             myChart.setOption(this.option);
         },
         timeDataGet(){
-            this.isLoad = true;
+            // this.isLoad = true;
             var _this = this;
             
         },

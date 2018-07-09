@@ -152,7 +152,6 @@
             url:url
           }).then(function(res){
             _this.isLoad = false
-            console.log(res)
             if(res.data.code == 0){
               let data = res.data.data.data;
               _this.reportCueList = data;

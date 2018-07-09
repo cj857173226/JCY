@@ -4,6 +4,7 @@
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">初核意见</div>
             <div class="advise-content">
+                <span class="no-result" v-show="textData == ''">暂无初核意见</span>
                 <span v-html="textData"></span>
             </div>
         </div>
@@ -19,7 +20,7 @@
                 <span v-html="textData"></span>
             </div>
         </div>
-        <div class="advise edit-advise">
+        <div class="advise edit-advise" v-if="identity == 3 || identity == 5">
             <div class="advise-title">编写意见</div>
             <editor id="approval-edit" height="300px" width="100%" :content="editorText"
             pluginsPath="@/../static/kindeditor/plugins/"
@@ -49,10 +50,12 @@ export default {
             'italic', 'underline', 'lineheight', 'removeformat', '|', 'image',
             'insertfile', 'table', 'hr', 'emoticons', 'pagebreak',
             'anchor', 'link', 'unlink', '|', 'about'
-            ]
+            ],
+            identity:null, //权限
         }
     },
     mounted(){
+        this.identity = localStorage.IdentityType;
     },
     methods:{
         //提交审批
@@ -61,6 +64,15 @@ export default {
                 console.log('为空');
             }else{
                 this.textData = this.editorText
+                if(!localStorage.IdentityType){
+                    window.location.reload()
+                }else{
+                    if(identity == 1){
+                        //管理员
+                    }else if(identity == 5){
+                        //下级院
+                    }
+                }
             }
         },
         //修改内容
@@ -116,6 +128,11 @@ export default {
                     word-wrap: break-word;
                     line-height: 20px;
                     font-size: 12px;
+                }
+                .no-result{
+                    text-align: center;
+                    display: block;
+                    width: 100%;
                 }
             }
         }

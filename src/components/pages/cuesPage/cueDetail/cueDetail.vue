@@ -14,7 +14,7 @@
                 </li><li :class="isThisNav == 2?'active':''" @click="chooseNav(2)">
                     <i class="fa fa-pencil-square-o"></i>
                     审批信息
-                </li><li :class="isThisNav == 3?'active':''" @click="chooseNav(3)" v-if="IdentityType==1?true:false">
+                </li><li v-show="identity == 1" :class="isThisNav == 3?'active':''" @click="chooseNav(3)" v-if="IdentityType==1?true:false">
                     <i class="fa fa-sitemap"></i>
                     分流下级院
                 </li><li :class="isThisNav == 4?'active':''" @click="chooseNav(4)">
@@ -58,12 +58,15 @@ export default {
             cueId: '' ,//线索编号
             cueData: {}, //线索数据
             cueFrom:'', //线索类别
+            identity: null, //权限
         }
     },
     mounted(){
-        if(!this.$route.query.type || !this.$route.query.id){
-            this.$router.go(-1);
-        }
+        this.identity = localStorage.IdentityType;
+
+        // if(!this.$route.query.type || !this.$route.query.id){
+        //     this.$router.go(-1);
+        // }
         this.cueType = this.$route.query.type;
         if(this.cueType == 1){
             this.cueFrom = '举报线索';
