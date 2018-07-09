@@ -9,6 +9,9 @@ import ElementUI from 'element-ui'; //引入element-ui
 import 'font-awesome/css/font-awesome.css'; //引入font awsome字体图标
 import '../src/static/webApi.js'; //引入接口
 import '../src/static/common.js';
+import vueKindEditor from 'vue-kindeditor'
+import '../static/kindeditor/kindeditor-all-min.js'
+import '../static/kindeditor/themes/default/default.css'
 
  //axios请求拦截器
 axios.interceptors.request.use(config=>{
@@ -29,7 +32,6 @@ axios.interceptors.request.use(config=>{
 axios.interceptors.response.use(response=>{
   return response;
 },err => {
-  console.log(1);
   if(err.response){
     if(err.response.status == 403){
       router.push({path:'/login'});
@@ -41,6 +43,7 @@ axios.interceptors.response.use(response=>{
 Vue.use(ElementUI);   //使用elementUi
 Vue.prototype.axios = axios; //vue原型上挂载axios
 Vue.config.productionTip = false
+Vue.use(vueKindEditor)
 
 
 

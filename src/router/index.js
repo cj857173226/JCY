@@ -37,6 +37,9 @@ import newsDetail from '../components/pages/newsPage/newsDetail'
 import newsAnalysis from  '../components/pages/dataAnalysis/newsAnalysis' //新闻热力分析
 import cueFieldAnalysis from  '../components/pages/dataAnalysis/cueFieldAnalysis' //线索领域分析
 
+//管理模块
+import reviewInternetCue from '../components/manage/reviewInternetCue' //审核互联网线索
+import knowledgeInput from '../components/manage/knowledgeInput' //知识库录入
 Vue.use(Router)
 
 export default new Router({
@@ -154,6 +157,22 @@ export default new Router({
           component:cueFieldAnalysis,
           meta:{
             name: '线索领域分析',
+          }
+        },
+        {
+          path:'reviewInternetCue',
+          name:reviewInternetCue,
+          component:reviewInternetCue,
+          meta:{
+            name: '审核线索',
+          }
+        },
+        {
+          path:'knowledgeInput',
+          name:knowledgeInput,
+          component:knowledgeInput,
+          meta:{
+            name: '知识库录入',
           }
         },
       ]

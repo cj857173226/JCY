@@ -25,7 +25,14 @@
 <script>
 
 	 export default {
-	   name: "o_header",
+     name: "o_header",
+     data(){
+       return{
+         isShow:false
+       }
+     },
+     methods:{
+     }
 	 }
 
 </script>
