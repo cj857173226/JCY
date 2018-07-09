@@ -38,7 +38,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="searchFollow">搜索 <i class="iconfont icon-sousuo"></i></el-button>
+            <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="getFollowList">搜索 <i class="iconfont icon-sousuo"></i></el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -150,9 +150,9 @@
       }
     },
     mounted() {
-      this.getFollowList();//获取关注线索列表
       this.tableResize();
       this.getDefaultDate();
+      this.getFollowList();//获取关注线索列表
     },
     methods: {
       getDefaultDate() {//设置默认日期
@@ -192,29 +192,8 @@
         console.log(val)
       },
       currentChange(val) {//页码改变
-        let _this = this;
-        let pageNum = val;
-        let data = {
-          keyword: _this.keyword||"",
-          pageNum: pageNum,
-          pageSize: _this.pageSize,
-          beginDate: _this.timeFormat(_this.beginDate),
-          endDate: _this.timeFormat(_this.endDate),
-          xslb: ''
-        };
-        _this.getFollowList(data);
-      },
-      searchFollow() {//搜索关注线索
-        let _this = this;
-        let data = {
-          keyword: _this.keyword||"",
-          pageNum: 1,
-          pageSize: 20,
-          beginDate: _this.timeFormat(_this.beginDate),
-          endDate: _this.timeFormat(_this.endDate),
-          xslb: ''
-        };
-        _this.getFollowList(data);
+        this.pageNum = val;
+        this.getFollowList();
       },
       details(text,id) {
         var type2 = 0;
@@ -232,17 +211,16 @@
           query:{type:5,type2:type2,id:id,}
         });
       },
-      getFollowList(data) {//获取关注线索列表
+      getFollowList() {//获取关注线索列表
         let _this = this;
-        let defaultData = {
-          'keyword': " ",
-          'pageNum': 1,
-          'pageSize': 20,
-          'beginDate': "2018-06-05",
-          'endDate': "2018-07-05",
-          "xslb": " "
+        let data = {
+          'keyword': _this.keyword,
+          'pageNum': _this.pageNum,
+          'pageSize': _this.pageSize,
+          'beginDate': _this.timeFormat(_this.beginDate),
+          'endDate': _this.timeFormat(_this.endDate),
+          "xslb": _this.xslb
         };
-        data = data || defaultData;
         _this.isLoading = true;
         _this.axios({
           url: (webApi.ClueManager.GetFollowClues).format(data),
@@ -281,12 +259,20 @@
       tableResize(){
         let _this = this;
         this.$nextTick(function () {
-          _this.tableH = _this.$refs.cueList.clientHeight;
+          _this.resize();
           window.addEventListener('resize',_this.resize);
         })
       },
       resize(){
         let _this = this;
+        let width = document.body.offsetWidth;
+        if(width < 1675 && width > 1440) {
+          _this.$refs.cueList.style.height = 'calc(100% - 204px)';
+        }else if(width >= 1675) {
+          _this.$refs.cueList.style.height = 'calc(100% - 148px)';
+        }else if(width <= 1440) {
+          _this.$refs.cueList.style.height = 'calc(100% - 190px)';
+        }
         _this.tableH = _this.$refs.cueList.clientHeight;
       }
     },
@@ -353,7 +339,7 @@
       }
     }
   }
-  @media (max-width: 1675px) {
+  @media (max-width: 1440px) {
     #followCue {
       height: 100%;
       font-size: 14px;
@@ -381,10 +367,8 @@
         .follow_filter {
           background-color: #eeeeee;
           color: #333333;
-          padding:{
-            left: 15px;
-            top: 10px;
-          }
+          padding-left: 15px;
+          padding-top: 10px;
           .follow_form {
             .el-form-item {
               margin-bottom: 10px;
