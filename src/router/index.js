@@ -48,6 +48,9 @@ import waitFeedback from '../components/pages/subordinatePage/waitFeedback'//待
 import complete from '../components/pages/subordinatePage/complete'//完成
 
 
+//管理模块
+import reviewInternetCue from '../components/manage/reviewInternetCue' //审核互联网线索
+import knowledgeInput from '../components/manage/knowledgeInput' //知识库录入
 Vue.use(Router)
 
 let router =  new Router({
@@ -207,11 +210,27 @@ let router =  new Router({
           }
         },
         {
-          path:'complete',
-          name:complete,
-          component:complete,
-          meta:{
+          path: 'complete',
+          name: complete,
+          component: complete,
+          meta: {
             name: '完成',
+          }
+        },
+        {
+          path:'reviewInternetCue',
+          name:reviewInternetCue,
+          component:reviewInternetCue,
+          meta:{
+            name: '审核线索',
+          }
+        },
+        {
+          path:'knowledgeInput',
+          name:knowledgeInput,
+          component:knowledgeInput,
+          meta:{
+            name: '知识库录入',
           }
         },
       ]

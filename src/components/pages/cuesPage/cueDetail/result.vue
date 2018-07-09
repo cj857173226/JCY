@@ -9,7 +9,9 @@
         </div>
         <div class="result-text result-edit">
             <div class="advise-title">编写意见</div>
-            <kindedite ref="kindedite" :type = type></kindedite>
+            <editor id="editor_id" height="500px" width="700px" :content="editorText"
+            pluginsPath="@/../static/kindeditor/plugins/"
+            :loadStyleMode="false"></editor>
             <div id="submit-btn" @click="submitBtn">
                 提交
             </div>
@@ -23,6 +25,7 @@ export default {
     components:{kindedite},
     data(){
         return{
+            editorText:'',
             textData:'',
             isLoad:false,
             type: 2,

@@ -117,14 +117,14 @@
         <template slot="title" id="menu-group-title" style="display:none"></template>
         <router-link to="/home/newsAnalysis">
           <el-menu-item index="6-1" :class="isThisNav == '新闻热力分析'?'is-active':''" @click="switchNav('新闻热力分析')" >
-            <i class="iconfont icon-biaoqian1"></i>
+            <i class="fa fa-newspaper-o"></i>
             <span slot="title">新闻热力分析</span>
           </el-menu-item>
         </router-link>
 
         <router-link to="/home/cueFieldAnalysis">
           <el-menu-item index="6-2" :class="isThisNav == '线索领域分析'?'is-active':''" @click="switchNav('线索领域分析')">
-            <i class="iconfont icon-changyonglogo46"></i>
+            <i class="fa fa-window-restore"></i>
             <span slot="title">线索领域分析</span>
           </el-menu-item>
         </router-link>
@@ -132,8 +132,35 @@
       </el-menu-item-group>
     </el-submenu>
 
+<<<<<<< HEAD
 
 
+=======
+    <el-submenu index="7">
+      <template slot="title">
+        <i class="fa fa-database"></i>
+        <span slot="title">管理模块</span>
+      </template>
+      <el-menu-item-group >
+        <template slot="title" id="menu-group-title" style="display:none"></template>
+        <router-link to="/home/reviewInternetCue">
+          <el-menu-item index="7-1" :class="isThisNav == '审核线索'?'is-active':''" @click="switchNav('审核线索')" >
+            <i class="fa fa-list-alt"></i>
+            <span slot="title">审核线索</span>
+          </el-menu-item>
+        </router-link>
+
+        <router-link to="/home/knowledgeInput">
+          <el-menu-item index="7-2" :class="isThisNav == '知识库录入'?'is-active':''" @click="switchNav('知识库录入')">
+            <i class="fa fa-keyboard-o"></i>
+            <span slot="title">知识库录入</span>
+          </el-menu-item>
+        </router-link>
+
+      </el-menu-item-group>
+    </el-submenu>
+    
+>>>>>>> f34456cee32f1a4c36e3db2179c0c0e4cdec7f51
 
     <!--<el-menu-item index="7">-->
       <!--<i class="el-icon-setting"></i>-->

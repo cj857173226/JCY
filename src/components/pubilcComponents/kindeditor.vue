@@ -64,6 +64,7 @@ export default {
         },
         //获取反馈内容
         getResultText(){
+            console.log(this.editor2.html());
             return this.editor2.html();
         },
         //获取审批内容
