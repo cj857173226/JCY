@@ -36,7 +36,7 @@ export default {
     mounted(){
         var _this = this;
         this.pieDataGet();
-        window.addEventListener('resize',_this.changeNav(_this.isNav))
+        window.addEventListener('resize',_this.changeNav);
     },
     methods: {
         chartInit(data){
@@ -58,7 +58,8 @@ export default {
                         center:['50%',120],
                         data:data
                     }
-                ]
+                ],
+                color: ['#ed9203','#87cefa','#566770','#078840','#6395ec','#db4734']
             }
             var chart = document.getElementById('pieChart');
             var width = document.getElementById('pie-chart').clientWidth;
@@ -70,18 +71,20 @@ export default {
         },
         //切换导航
         changeNav(index){
-            this.isNav = index;
-            if(index == 1 && this.allType.length > 0){
+            if(arguments[0].type != 'resize'){
+                this.isNav = index;
+            }
+            if(this.isNav == 1 && this.allType.length > 0){
                 this.noData = false;
                 this.chartInit(this.allType);
                 return;
-            }else if(index == 2 && this.internetType.length > 0){
-                this.noData = false;
-                this.chartInit(this.internetType);
-                return;
-            }else if(index = 3 && this.reportType.length > 0){
+            }else if(this.isNav == 2 && this.reportType.length > 0){
                 this.noData = false;
                 this.chartInit(this.reportType);
+                return;
+            }else if(this.isNav == 3 && this.internetType.length > 0){
+                this.noData = false;
+                this.chartInit(this.internetType);
                 return;
             }
             this.noData = true;
@@ -95,7 +98,6 @@ export default {
                 url: webApi.Host + webApi.Stats.CountMonthCluesType,
                 timeout:10000,
             }).then(function(response){
-                console.log(response);
                 var msg = response.data;
                 _this.isLoad = false;
                 if(msg.code == 0){
@@ -111,13 +113,13 @@ export default {
                             _this.internetType.push(obj);
                         }
                     }else if(msg.data.reportCluesType.length > 0){
-                        for(var i = 0;i<msg.data.internetCluesType.length;i++){
+                        for(var i = 0;i<msg.data.reportCluesType.length;i++){
                             var obj = {
                                 value:'',
                                 name:'',
                             };
-                            obj.value = msg.data.internetCluesType[i].AMOUNT;
-                            obj.name = msg.data.internetCluesType[i].XSLB;
+                            obj.value = msg.data.reportCluesType[i].AMOUNT;
+                            obj.name = msg.data.reportCluesType[i].XSLB;
                             _this.reportType.push(obj);
                         }
                     }
@@ -144,6 +146,8 @@ export default {
                         a.value = obj[i];
                         _this.allType.push(a);
                     }
+                    console.log(_this.reportType);
+                    console.log(_this.internetType);
                     _this.changeNav(_this.isNav);
                 }else{
 
@@ -154,7 +158,8 @@ export default {
         }
     },
     destroyed(){
-        window.removeEventListener('resize',this.changeNav);
+        var _this = this;
+        window.removeEventListener('resize',_this.changeNav);
     }
 }
 </script>

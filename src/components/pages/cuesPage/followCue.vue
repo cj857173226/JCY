@@ -252,7 +252,6 @@
           console.log(res)
         }).catch(function(err){
           _this.isLoading = false;
-          console.log(err)
         })
       },
       //表格高度自适应
