@@ -82,6 +82,7 @@
     components: {heatmap,wordCloud,pieChart},
     data() {
       return {
+        IdentityType: localStorage.getItem('IdentityType'),//身份信息
         knowLoading: false,
         newsLoading: false,
         newsData: [],//新闻动态信息
@@ -353,7 +354,7 @@
         /*正文内容*/
         .text_content {
           font-size: 14px;
-          text-indent: 15px;
+          text-indent: 27px;
         }
       }
     }
