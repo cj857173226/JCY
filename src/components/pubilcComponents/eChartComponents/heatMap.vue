@@ -67,11 +67,13 @@
           .then(function(res){
             if(res.data.code==0) {
               res.data.data.forEach(function(item,index){
-                let x = item.JWD.split(",")[0];
-                let y = item.JWD.split(",")[1];
-                let val = item.PC;
-                if(index%5==0) {
-                  data.push([x, y, val]);
+                if(item.JWD) {
+                  let x = item.JWD.split(",")[0];
+                  let y = item.JWD.split(",")[1];
+                  let val = item.PC;
+                  if(index%5==0) {
+                    data.push([x, y, val]);
+                  }
                 }
               });
               _this.optionData = data;
