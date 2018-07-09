@@ -189,11 +189,19 @@
             console.log(type)
             _this.page = 1;
             _this.type = type;
-            _this.getReportCue();
+            if(_this.reportCueList.length<=0){
+              return
+            }else {
+              _this.getReportCue();
+            }
           }else{
             _this.type = '';
             _this.page = 1;
-            _this.getReportCue();
+            if(_this.reportCueList.length<=0){
+              return
+            }else {
+              _this.getReportCue();
+            }
           }
         }
       },
