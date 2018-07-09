@@ -249,10 +249,10 @@ let router =  new Router({
  	]
 });
 router.beforeEach((to, from , next) => {
-  let nextLeaderRoute = ['待审批', '已审批','审批结果'];
-  let nextSubordinateRoute = ['待反馈', '待接收', '完成'];
-  let nextAdminRoute = ['关注线索','举报线索','互联网线索','公益组织线索','热点线索'];
-  let IdentityType = localStorage.getItem('IdentityType');
+  let nextLeaderRoute = ['待审批', '已审批','审批结果']; //领导页面
+  let nextSubordinateRoute = ['待反馈', '待接收', '完成']; //下级院页面
+  let nextAdminRoute = ['关注线索','举报线索','互联网线索','公益组织线索','热点线索']; //管理员页面
+  let IdentityType = localStorage.getItem('IdentityType'); //获取权限
   let allRoute = {nextAdminRoute:nextAdminRoute,nextLeaderRoute:nextLeaderRoute ,nextSubordinateRoute: nextSubordinateRoute,};
   let IdentityNum = -1;
   let routeName = to.meta.name;

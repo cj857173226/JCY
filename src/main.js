@@ -33,6 +33,9 @@ axios.interceptors.request.use(config=>{
 axios.interceptors.response.use(response=>{
   return response;
 },err => {
+  if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1){
+    //超时处理
+  }
   if(err.response){
     if(err.response.status == 403){
       router.push({path:'/login'});

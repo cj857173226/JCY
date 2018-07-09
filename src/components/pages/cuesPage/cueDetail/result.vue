@@ -4,12 +4,12 @@
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">处理结果</div>
             <div class="advise-content">
-                <span v-show="textData == ''" style="text-align:center">暂无反馈结果</span>
+                <span class="no-result" v-show="textData == ''">暂无处理结果</span>
                 <span v-show="textData!=''" v-html="textData"></span>
             </div>
         </div>
-        <div class="result-text result-edit">
-            <div class="advise-title">编写意见</div>
+        <div class="result-text result-edit" v-if="identity == 5">
+            <div class="advise-title">编写处理结果</div>
             <editor id="result-edit" height="300px" width="100%" v-bind:content="editorText"
             pluginsPath="@/../static/kindeditor/plugins/"
             :loadStyleMode="true"
@@ -39,8 +39,12 @@ export default {
             'italic', 'underline', 'lineheight', 'removeformat', '|', 'image',
             'insertfile', 'table', 'hr', 'emoticons', 'pagebreak',
             'anchor', 'link', 'unlink', '|', 'about'
-            ]
+            ],
+            identity: null,
         }
+    },
+    mounted(){
+        this.identity = localStorage.IdentityType;
     },
     methods:{
         //提交按钮
@@ -50,23 +54,23 @@ export default {
                 console.log("为空");
             }else{
                 this.textData = this.editorText
-            }
-            // this.isLoad = true;
-            // this.axios({
-            //     method:'post',
-            //     url:webApi.ClueManager.ReportResult.format({id:this.$route.query.id,bljgjs:this.textData}),
-            //     timeout: 10000
-            // }).then(function(response){
-            //     console.log(response);
-            //     _this.isLoad = false;
-            //     if(response.data.code == 0){
-            //         this.textData = '';
-            //     }else{
+                this.isLoad = true;
+                this.axios({
+                    method:'post',
+                    url:webApi.ClueManager.ReportResult.format({id:this.$route.query.id,bljgjs:this.textData}),
+                    timeout: 10000
+                }).then(function(response){
+                    console.log(response);
+                    _this.isLoad = false;
+                    if(response.data.code == 0){
+                        this.textData = '';
+                    }else{
 
-            //     }
-            // }).catch(function(error){
-            //     _this.isLoad = false;
-            // })
+                    }
+                }).catch(function(error){
+                    _this.isLoad = false;
+                })
+            }
         },
         onContentChange(val){
             this.editorText = val;
@@ -117,6 +121,11 @@ export default {
                     word-wrap: break-word;
                     line-height: 20px;
                     font-size: 12px;
+                }
+                .no-result{
+                    text-align: center;
+                    display: block;
+                    width: 100%;
                 }
             }
         }
