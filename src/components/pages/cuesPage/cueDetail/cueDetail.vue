@@ -4,7 +4,7 @@
             <span class="heart-icon">
                 <i class="fa fa-heart"></i>
             </span>
-            <span class="header-title"><span class="back-btn" @click="backBtn">{{cueFrom}}</span>/线索</span>
+            <span class="header-title"><span class="back-btn" @click="backBtn">{{cueFrom}}</span>/线索详情</span>
         </div>
         <div id="nav">
             <ul>

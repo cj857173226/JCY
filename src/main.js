@@ -13,6 +13,7 @@ import vueKindEditor from 'vue-kindeditor'
 import '../static/kindeditor/kindeditor-all-min.js'
 import '../static/kindeditor/themes/default/default.css'
 
+
  //axios请求拦截器
 axios.interceptors.request.use(config=>{
   // console.log(router);
@@ -46,7 +47,7 @@ Vue.prototype.axios = axios; //vue原型上挂载axios
 Vue.config.productionTip = false
 Vue.use(vueKindEditor)
 
-
+const Bus = new Vue()
 
 /* eslint-disable no-new */
 new Vue({
@@ -54,6 +55,11 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
+  data(){
+    return {
+      Bus
+    }
+  },
   mounted(){
 
   }

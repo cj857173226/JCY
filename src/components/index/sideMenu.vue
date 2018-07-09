@@ -132,8 +132,8 @@
       </el-menu-item-group>
     </el-submenu>
 
+    <el-submenu index="7" v-if="IdentityType==1?true:false">
 
-    <el-submenu index="7">
       <template slot="title">
         <i class="fa fa-database"></i>
         <span slot="title">管理模块</span>
@@ -156,7 +156,6 @@
 
       </el-menu-item-group>
     </el-submenu>
-
 
     <!--<el-menu-item index="7">-->
       <!--<i class="el-icon-setting"></i>-->
@@ -191,7 +190,11 @@
         }
       }else{
         this.isThisNav = this.$route.meta.name;
-      }
+      };
+      var _this = this;
+      this.$root.Bus.$on('changeIdentity',function(data){
+        _this.IdentityType = data;
+      })
     },
     methods:{
       switchNav(title){

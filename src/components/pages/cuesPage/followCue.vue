@@ -31,7 +31,7 @@
           <el-form-item label="线索发布结束时间 :">
             <el-date-picker class="follow_date" type="date" placeholder="选择日期" v-model="endDate"></el-date-picker>
           </el-form-item>
-          <el-form-item label="关键词 :" prop="name">
+          <el-form-item label="关键词 :" >
             <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
               <!--<i @click="clickIcon" slot="suffix" class="keyword_icon iconfont icon-sousuo"></i>-->
             </el-input>

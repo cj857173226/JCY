@@ -76,6 +76,7 @@
               localStorage.setItem('IdentityType', data.IdentityType);
               data.ExpireTime = data.ExpireTime.split(' ')[0];
               _this.userInfo = data;
+              _this.$root.Bus.$emit('changeIdentity',data.IdentityType);
             }
          }).catch(function(err){
 

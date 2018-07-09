@@ -4,14 +4,17 @@
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">处理结果</div>
             <div class="advise-content">
-                <span v-html="textData"></span>
+                <span v-show="textData == ''" style="text-align:center">暂无反馈结果</span>
+                <span v-show="textData!=''" v-html="textData"></span>
             </div>
         </div>
         <div class="result-text result-edit">
             <div class="advise-title">编写意见</div>
-            <editor id="editor_id" height="500px" width="700px" :content="editorText"
+            <editor id="result-edit" height="300px" width="100%" v-bind:content="editorText"
             pluginsPath="@/../static/kindeditor/plugins/"
-            :loadStyleMode="false"></editor>
+            :loadStyleMode="true"
+            @on-content-change="onContentChange"
+            :items="items"></editor>
             <div id="submit-btn" @click="submitBtn">
                 提交
             </div>
@@ -20,23 +23,34 @@
 </template>
 
 <script>
-import kindedite from '../../../pubilcComponents/kindeditor.vue';
 export default {
-    components:{kindedite},
     data(){
         return{
-            editorText:'',
-            textData:'',
-            isLoad:false,
-            type: 2,
+            editorText:'', //富文本输入内容
+            textData:'', //显示文本内容
+            isLoad:false, //数据加载
+            //编辑器菜单栏设置
+            items:[
+            'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
+            'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+            'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+            'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+            'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+            'italic', 'underline', 'lineheight', 'removeformat', '|', 'image',
+            'insertfile', 'table', 'hr', 'emoticons', 'pagebreak',
+            'anchor', 'link', 'unlink', '|', 'about'
+            ]
         }
     },
     methods:{
         //提交按钮
         submitBtn(){
             var _this = this;
-            this.textData = this.$refs.kindedite.getResultText();
-            console.log(this.textData);
+            if(this.editorText.trim() == ''){
+                console.log("为空");
+            }else{
+                this.textData = this.editorText
+            }
             // this.isLoad = true;
             // this.axios({
             //     method:'post',
@@ -53,7 +67,10 @@ export default {
             // }).catch(function(error){
             //     _this.isLoad = false;
             // })
-        }
+        },
+        onContentChange(val){
+            this.editorText = val;
+        },
     }
 }
 </script>

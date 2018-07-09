@@ -31,11 +31,7 @@
         <div class="detail-item" v-show="cueData.SP.length">
             <span class="item-title resource-box">视频内容:</span>
             <span class="item-content resource-content">
-                <video src="das" controls="controls"></video>
-                <video src="das" controls="controls"></video>
-                <video src="das" controls="controls"></video>
-                <video src="das" controls="controls"></video>
-                <video src="das" controls="controls"></video>
+                <video :src="item" controls="controls" v-for="item in SP"></video>
             </span>
         </div>
     </div>
@@ -154,6 +150,7 @@ export default {
             }
             video{
                 width: 49%;
+                height: 300px;
             }
         }
     }
