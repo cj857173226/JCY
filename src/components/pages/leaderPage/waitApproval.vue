@@ -144,7 +144,7 @@ export default {
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:type,id:id}
+                query:{type:6,type2:type,id:id}
             });
         },
         //表格高度自适应

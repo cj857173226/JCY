@@ -132,19 +132,19 @@ export default {
         },
         //审批
         detail(text,id){
-            var type2 = 0;
+            var type = 0;
             if(text == '举报线索'){
-                type2 = 1
+                type = 1
             }else if(text == '互联网线索'){
-                type2 = 2
+                type = 2
             }else if(text == '公益诉讼线索'){
-                type2 = 3
+                type = 3
             }else if(text == '热点线索'){
-                type2 = 4
+                type = 4
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:5,type2:type2,id:id,}
+                query:{type:8,type2:type,id:id}
             });
         },
         //表格高度自适应

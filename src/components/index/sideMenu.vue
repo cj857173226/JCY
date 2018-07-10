@@ -8,44 +8,44 @@
     </router-link>
 
     <router-link to="/home/waitApproval" v-if="IdentityType==3?true:false">
-      <el-menu-item index="7" :class="isThisNav == '待审批' || isThisNav == '待审批详情'?'is-active':''" @click="switchNav('待审批')">
+      <el-menu-item index="7" :class="isThisNav == '待审批' ?'is-active':''" @click="switchNav('待审批')">
         <i class="fa fa-pencil-square-o"></i>
         <span slot="title">待审批</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/allreadyApproval" v-if="IdentityType==3?true:false">
-      <el-menu-item index="8" :class="isThisNav == '已审批' || isThisNav == '已审批详情'?'is-active':''" @click="switchNav('已审批')">
+      <el-menu-item index="8" :class="isThisNav == '已审批'?'is-active':''" @click="switchNav('已审批')">
         <i class="fa fa-th-list"></i>
         <span slot="title">已审批</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/approvalResult" v-if="IdentityType==3?true:false">
-      <el-menu-item index="9" :class="isThisNav == '审批结果' || isThisNav == '审批结果详情'?'is-active':''" @click="switchNav('审批结果')">
+      <el-menu-item index="9" :class="isThisNav == '审批结果'?'is-active':''" @click="switchNav('审批结果')">
         <i class="fa fa-check-square"></i>
         <span slot="title">结果反馈</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/waitReceive" v-if="IdentityType==5?true:false">
-      <el-menu-item index="10" :class="isThisNav == '待接收' || isThisNav == '待接收详情'?'is-active':''" @click="switchNav('待接收')">
-        <i class="fa fa-th-list"></i>
+      <el-menu-item index="10" :class="isThisNav == '待接收'?'is-active':''" @click="switchNav('待接收')">
+        <i class="fa fa-pencil-square-o"></i>
         <span slot="title">待接收</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/waitFeedback" v-if="IdentityType==5?true:false">
-      <el-menu-item index="11" :class="isThisNav == '待反馈' || isThisNav == '待反馈详情'?'is-active':''" @click="switchNav('待反馈')">
-        <i class="fa fa-pencil-square-o"></i>
+      <el-menu-item index="11" :class="isThisNav == '待反馈'?'is-active':''" @click="switchNav('待反馈')">
+        <i class="iconfont icon-boshimao"></i>
         <span slot="title">待反馈</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/complete" v-if="IdentityType==5?true:false">
-      <el-menu-item index="12" :class="isThisNav == '完成' || isThisNav == '完成详情'?'is-active':''" @click="switchNav('完成')">
-        <i class="fa fa-check-square"></i>
-        <span slot="title">已反馈</span>
+      <el-menu-item index="12" :class="isThisNav == '完成'?'is-active':''" @click="switchNav('完成')">
+        <i class="iconfont icon-boshimao"></i>
+        <span slot="title">完成</span>
       </el-menu-item>
     </router-link>
 
