@@ -12,7 +12,7 @@
                 </span>
             </div>
             <div class="detail-item">
-                <span class="item-title">类别</span><span class="item-content"><input type="text" v-model="DataType"/>
+                <span class="item-title">所属类别</span><span class="item-content"><input type="text" v-model="DataType"/>
                 </span>
             </div>
             <div class="detail-item">
@@ -100,10 +100,22 @@ export default {
               SiteName: _this.SiteName,//采集站点中文名称,
               DataType: _this.DataType,//所属类别,法律法规、理论研究,
             },
-            timeout: 3000
+            timeout: 5000
           }).then(function(res) {
+            if(res.data.code==0) {
+              _this.$message({
+                showClose: true,
+                message: '添加成功',
+                type: 'success'
+              });
+            }
             console.log(res)
           }).catch(function(err){
+            _this.$message({
+              showClose: true,
+              message: '添加失败,请重试',
+              type: 'error'
+            });
             console.log(err)
           })
         }

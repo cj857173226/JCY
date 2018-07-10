@@ -42,6 +42,7 @@
               _this.optionData = data;
               _this.initChart();//初始化图表
               _this.isLoading = false;
+              _this.resizeWindow();
             }
           }).catch(function(err) {
           _this.isLoading = false;
@@ -107,7 +108,6 @@
     },
     mounted() {
       this.getChinaData();
-      this.resizeWindow();
     },
     destroyed() {
       window.removeEventListener('resize',this.initChart);

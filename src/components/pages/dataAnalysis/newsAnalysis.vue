@@ -19,7 +19,7 @@
 
           <el-form-item >
             <el-input  class="provinces_search" v-model="provincesSearch" placeholder="搜索省份">
-              <i  slot="suffix" class="keyword_icon iconfont icon-sousuo"></i>
+              <i  slot="suffix" class="provinces_icon iconfont icon-sousuo" @click="search"></i>
             </el-input>
           </el-form-item>
         </el-form>
@@ -164,6 +164,7 @@
               _this.optionData = data;
               _this.initChart();//初始化图表
               _this.isLoading = false;
+              _this.resizeWindow();
             }
           }).catch(function(err) {
           _this.isLoading = false;
@@ -252,16 +253,17 @@
         let height = listBody.getElementsByTagName('li').length*40;
         let bodyHeight = parseInt(window.getComputedStyle(listBody,null).height);
         if(height > bodyHeight) {
-          console.log(1)
           listHeader.style.paddingRight = '17px';
         }else {
           listHeader.style.paddingRight = '0px';
         }
+      },
+      search() {//搜索省份
+        console.log(1)
       }
     },
     mounted() {
       this.getChinaData();
-      this.resizeWindow();
       this.hasScroll();
     },
     destroyed() {
@@ -406,6 +408,11 @@
           }
           .provinces_search {
             width: 130px;
+            .provinces_icon {
+              &:hover {
+                cursor: pointer;
+              }
+            }
           }
         }
       }

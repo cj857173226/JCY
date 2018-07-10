@@ -82,20 +82,35 @@ export default {
                 this.cueType = this.$route.query.type2;
             }
         }else if(this.cueType == 6){
-            this.cueFrom = '待审批'
+            this.cueFrom = '待审批';
             if(this.$route.query.type2){
                 this.cueType = this.$route.query.type2;
             }
         }else if(this.cueType == 7){
-            this.cueFrom = '已审批'
+            this.cueFrom = '已审批';
             if(this.$route.query.type2){
                 this.cueType = this.$route.query.type2;
             }
         }else if(this.cueType == 8){
-            this.cueFrom = '审批结果'
+            this.cueFrom = '结果反馈';
             if(this.$route.query.type2){
                 this.cueType = this.$route.query.type2;
             }
+        }else if(this.cueType == 9){
+          this.cueFrom = '待接收';
+          if(this.$route.query.type2){
+            this.cueType = this.$route.query.type2;
+          }
+        }else if(this.cueType == 10){
+          this.cueFrom = '待反馈';
+          if(this.$route.query.type2){
+            this.cueType = this.$route.query.type2;
+          }
+        }else if(this.cueType == 11){
+          this.cueFrom = '已反馈';
+          if(this.$route.query.type2){
+            this.cueType = this.$route.query.type2;
+          }
         }
         this.$route.meta.name = this.cueFrom;
         console.log(this.$route.meta.name);

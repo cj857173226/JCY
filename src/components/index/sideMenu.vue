@@ -22,7 +22,7 @@
     </router-link>
 
     <router-link to="/home/approvalResult" v-if="IdentityType==3?true:false">
-      <el-menu-item index="9" :class="isThisNav == '审批结果'?'is-active':''" @click="switchNav('审批结果')">
+      <el-menu-item index="9" :class="isThisNav == '结果反馈'?'is-active':''" @click="switchNav('结果反馈')">
         <i class="fa fa-check-square"></i>
         <span slot="title">结果反馈</span>
       </el-menu-item>
@@ -30,22 +30,22 @@
 
     <router-link to="/home/waitReceive" v-if="IdentityType==5?true:false">
       <el-menu-item index="10" :class="isThisNav == '待接收'?'is-active':''" @click="switchNav('待接收')">
-        <i class="fa fa-pencil-square-o"></i>
+        <i class="fa fa-th-list"></i>
         <span slot="title">待接收</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/waitFeedback" v-if="IdentityType==5?true:false">
       <el-menu-item index="11" :class="isThisNav == '待反馈'?'is-active':''" @click="switchNav('待反馈')">
-        <i class="iconfont icon-boshimao"></i>
+        <i class="fa fa-pencil-square-o"></i>
         <span slot="title">待反馈</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/complete" v-if="IdentityType==5?true:false">
-      <el-menu-item index="12" :class="isThisNav == '完成'?'is-active':''" @click="switchNav('完成')">
-        <i class="iconfont icon-boshimao"></i>
-        <span slot="title">完成</span>
+      <el-menu-item index="12" :class="isThisNav == '已反馈'?'is-active':''" @click="switchNav('已反馈')">
+        <i class="fa fa-check-square"></i>
+        <span slot="title">已反馈</span>
       </el-menu-item>
     </router-link>
 
@@ -187,6 +187,18 @@
           this.isThisNav = '热点线索';
         }else if(this.$route.query.type == 5){
           this.isThisNav = '关注线索';
+        }else if(this.$route.query.type == 6){
+          this.isThisNav = '待审批';
+        }else if(this.$route.query.type == 7){
+          this.isThisNav = '已审批';
+        }else if(this.$route.query.type == 8){
+          this.isThisNav = '结果反馈';
+        }else if(this.$route.query.type == 9){
+          this.isThisNav = '待接收';
+        }else if(this.$route.query.type == 10){
+          this.isThisNav = '待反馈';
+        }else if(this.$route.query.type == 11){
+          this.isThisNav = '已反馈';
         }
       }else{
         this.isThisNav = this.$route.meta.name;
