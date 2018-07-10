@@ -255,7 +255,7 @@ router.beforeEach((to, from , next) => {
   let IdentityType = localStorage.getItem('IdentityType'); //获取权限
   let allRoute = {nextAdminRoute:nextAdminRoute,nextLeaderRoute:nextLeaderRoute ,nextSubordinateRoute: nextSubordinateRoute,};
   let IdentityNum = -1;
-  let routeName = to.meta.name;
+  let routeName = to.meta.name;//线索详情
   for(let i in allRoute) {
     let item = allRoute[i];
     IdentityNum += 2;

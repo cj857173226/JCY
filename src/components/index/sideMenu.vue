@@ -30,22 +30,22 @@
 
     <router-link to="/home/waitReceive" v-if="IdentityType==5?true:false">
       <el-menu-item index="10" :class="isThisNav == '待接收' || isThisNav == '待接收详情'?'is-active':''" @click="switchNav('待接收')">
-        <i class="fa fa-pencil-square-o"></i>
+        <i class="fa fa-th-list"></i>
         <span slot="title">待接收</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/waitFeedback" v-if="IdentityType==5?true:false">
       <el-menu-item index="11" :class="isThisNav == '待反馈' || isThisNav == '待反馈详情'?'is-active':''" @click="switchNav('待反馈')">
-        <i class="iconfont icon-boshimao"></i>
+        <i class="fa fa-pencil-square-o"></i>
         <span slot="title">待反馈</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/complete" v-if="IdentityType==5?true:false">
       <el-menu-item index="12" :class="isThisNav == '完成' || isThisNav == '完成详情'?'is-active':''" @click="switchNav('完成')">
-        <i class="iconfont icon-boshimao"></i>
-        <span slot="title">完成</span>
+        <i class="fa fa-check-square"></i>
+        <span slot="title">已反馈</span>
       </el-menu-item>
     </router-link>
 

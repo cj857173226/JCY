@@ -219,7 +219,8 @@
           'pageSize': _this.pageSize,
           'beginDate': _this.timeFormat(_this.beginDate),
           'endDate': _this.timeFormat(_this.endDate),
-          "xslb": _this.xslb
+          "xslb": _this.xslb,
+          "order": "fbsj"
         };
         _this.isLoading = true;
         _this.axios({
@@ -373,10 +374,10 @@
               margin-bottom: 10px;
             }
             .follow_select {
-              width: 160px;
+              width: 90px;
             }
             .follow_date {
-              width: 150px;
+              width: 135px;
             }
             .follow_input {
               width: 180px;
