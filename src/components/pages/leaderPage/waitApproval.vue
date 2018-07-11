@@ -98,7 +98,6 @@ export default {
     name:'review-cue',
     data(){
         return{
-            isThisNav:1,//导航
             pageSize:10, //每页条数
             pageNum:1, //当前页
             totalPages: 0, //总条数
@@ -144,7 +143,7 @@ export default {
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:6,type2:type,id:id}
+                query:{type:6,type2:type,nav:2,id:id}
             });
         },
         //表格高度自适应
