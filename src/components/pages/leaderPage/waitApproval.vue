@@ -75,7 +75,7 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)" style="color:#21ac33" type="text" size="small">审批</el-button>
+                            <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)"  type="text" size="small">审批</el-button>
                         </template>
                     </el-table-column>
                     </el-table>

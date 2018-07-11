@@ -95,8 +95,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button  style="color:#21ac33" type="text" size="small">接收</el-button>
-              <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)" style="color:#21ac33" type="text" size="small">查看</el-button>
+              <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
+              <el-button  type="text" size="small">接收</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -136,7 +136,7 @@
             XSCJSJ:'2018-06-21 07:17:14',
             XSBH:'QW121FF1HF2F1H0BF1381231'
           },
-        ], //待反馈线索
+        ], //待接收线索
 
         tableH:0, //表格高度
         keyword:'', //关键字

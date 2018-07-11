@@ -50,7 +50,8 @@ import complete from '../components/pages/subordinatePage/complete'//完成
 
 //管理模块
 import reviewInternetCue from '../components/manage/reviewInternetCue' //审核互联网线索
-import knowledgeInput from '../components/manage/knowledgeInput' //知识库录入
+// import knowledgeInput from '../components/manage/knowledgeInput' //知识库录入
+import knowledgeInput from '../components/manage/inputKnowToday' //知识库录入
 Vue.use(Router)
 
 let router =  new Router({

@@ -84,7 +84,7 @@ export default {
     }
   }
   #knowledge-content{
-    
+
     #knowledge-name{
       text-align: center;
       font-size: 18px;
