@@ -17,10 +17,11 @@
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">审批意见</div>
             <div class="advise-content">
-                <span v-html="textData"></span>
+                <!-- <span v-html="textData"></span> -->
+                <pre>{{textData}}</pre>
             </div>
         </div>
-        <div class="advise edit-advise" v-if="identity == 3 || identity == 5">
+        <div class="advise edit-advise" v-if="identity == 1 || identity == 3">
             <div class="advise-title">编写意见</div>
             <editor id="approval-edit" height="300px" width="100%" :content="editorText"
             pluginsPath="@/../static/kindeditor/plugins/"
@@ -85,7 +86,7 @@ export default {
 
 <style lang="scss" scoped>
     #main{
-        width: 100%;    
+        width: 100%;
         padding: 20px;
         .advise{
             position: relative;
@@ -110,7 +111,7 @@ export default {
                 height: 40px;
                 line-height: 40px;
                 text-align: center;
-                background: #c0ecaa;    
+                background: #c0ecaa;
                 color: #333;
             }
             .advise-content{
@@ -119,7 +120,7 @@ export default {
                 display: inline-block;
                 border: solid 1px #ddd;
                 max-width: 90%;
-                padding: 5px;    
+                padding: 5px;
                 word-break: break-all;
                 color: #666;
                 pre{

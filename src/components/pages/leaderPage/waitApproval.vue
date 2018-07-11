@@ -5,7 +5,7 @@
                 <i class="fa fa-pencil-square-o"></i>
             </span>
             <span class="header-title">待审批线索</span>
-            
+
             <!-- <div class="search-wrap clearfix">
                 <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getInternetCueList">
                 <span class="search-btn" @click="getInternetCueList()">
@@ -75,7 +75,7 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)" style="color:#21ac33" type="text" size="small">审批</el-button>
+                            <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)"  type="text" size="small">审批</el-button>
                         </template>
                     </el-table-column>
                     </el-table>
@@ -98,7 +98,6 @@ export default {
     name:'review-cue',
     data(){
         return{
-            isThisNav:1,//导航
             pageSize:10, //每页条数
             pageNum:1, //当前页
             totalPages: 0, //总条数
@@ -113,9 +112,9 @@ export default {
                     XSBH:'QW121FF1HF2F1H0BF1381231'
                 },
             ], //待审批线索
-            
+
             tableH:0, //表格高度
-            keyword:'', //关键字 
+            keyword:'', //关键字
         }
     },
     mounted(){
@@ -144,7 +143,7 @@ export default {
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:type,id:id}
+                query:{type:6,type2:type,nav:2,id:id}
             });
         },
         //表格高度自适应
@@ -231,7 +230,7 @@ export default {
             }
         }
     }
-    #content{    
+    #content{
         height: calc(100% - 40px);
         .table-list{
             padding-top: 10px;

@@ -26,7 +26,6 @@
             timeout: 5000,
           })
             .then(function(res){
-              console.log(res)
               if(res.data.code==0) {
                 let dataObj = {};
                 let data = res.data.data;

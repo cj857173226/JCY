@@ -1,6 +1,6 @@
 var webApi = {
-//文本分析接口。根据方法设置token
   Host:  'http://daniu.51vip.biz:10698/gyssApp_test',
+//文本分析接口。根据方法设置token
   TextAnalysis : {
     GetSummary: '/api/TextAnalysis/GetSummary', //获取摘要; 方式:POST; 是否需要token:不需要；参数说明:[p=》未注释；]
     GetKeyword: '/api/TextAnalysis/GetKeyword', //获取关键词; 方式:POST; 是否需要token:不需要；参数说明:[p=》未注释；]
@@ -49,9 +49,7 @@ var webApi = {
   },
 //业务处理控制器。根据方法设置token
   ClueManager : {
-    // GetFollowClues: '/api/ClueManager/GetFollowClues?xslb={xslb}&keyword={keyword}&beginDate={beginDate}&endDate={endDate}&pageNum={pageNum}&pageSize={pageSize}&order={order}', //获取关注线索列表; 方式:GET; 是否需要token:需要；参数说明:[xslb=》线索类别；keyword=》关键字；beginDate=》开始时间；endDate=》结束时间；pageNum=》页码；pageSize=》页大小；order=》排序字段；]
-    GetFollowClues: '/api/ClueManager/GetFollowClues?xslb={xslb}&keyword={keyword}&beginDate={beginDate}&endDate={endDate}&pageNum={pageNum}&pageSize={pageSize}', //获取关注线索列表; 方式:GET; 是否需要token:需要；参数说明:[xslb=》线索类别；keyword=》关键字；beginDate=》开始时间；endDate=》结束时间；pageNum=》页码；pageSize=》页大小；order=》排序字段；]
-
+    GetFollowClues: '/api/ClueManager/GetFollowClues?xslb={xslb}&keyword={keyword}&beginDate={beginDate}&endDate={endDate}&pageNum={pageNum}&pageSize={pageSize}&order={order}', //获取关注线索列表; 方式:GET; 是否需要token:需要；参数说明:[xslb=》线索类别；keyword=》关键字；beginDate=》开始时间；endDate=》结束时间；pageNum=》页码；pageSize=》页大小；order=》排序字段；]
     FollowClue: '/api/ClueManager/FollowClue/{id}?xssjbly={xssjbly}', //关注线索; 方式:POST; 是否需要token:需要；参数说明:[id=》线索编号；xssjbly=》线索数据表来源。1:举报线索；2：互联网线索；]
     UnFollowClue: '/api/ClueManager/UnFollowClue/{id}', //取消关注线索; 方式:POST; 是否需要token:需要；参数说明:[id=》关注编号；]
     UpdateClueType: '/api/ClueManager/UpdateClueType', //修改线索的所属类别; 方式:POST; 是否需要token:需要；参数说明:[data=》包含线索编号(xsbh)、修改后的线索类别(xslb)、以及可以包含对线索的备注信息(bz)；]
@@ -77,6 +75,7 @@ var webApi = {
     GetKnowledges: '/api/Knowledge/GetKnowledges?keyword={keyword}&type={type}&p={p}&ps={ps}', //获取知识库信息; 方式:GET; 是否需要token:不需要；参数说明:[keyword=》未注释；type=》类型：理论研究、法律法规；p=》未注释；ps=》未注释；]
     Get: '/api/Knowledge/Get/{id}', //获取指定信息; 方式:GET; 是否需要token:不需要；参数说明:[id=》未注释；]
     GetTop: '/api/Knowledge/GetTop?top={top}', //获取首页显示的信息; 方式:GET; 是否需要token:不需要；参数说明:[top=》前几条，默认10条，最大10条。【参数暂时不用】；]
+    Add: '/api/Knowledge/Add', //新增知识库数据; 方式:POST; 是否需要token:不需要；参数说明:[item=》post with body,json:{Title:标题,Content:内容,Source:来源,Link:数据地址,Author:作者,PublishTime:发布时间,PublishTimeStr:发布时间字符串，当PublishTime不能转化为日期时使用,Site:采集站点,SiteName:采集站点中文名称,DataType:所属类别,法律法规、理论研究}；]
   },
 //权限控制器。根据方法设置token
   Auth : {

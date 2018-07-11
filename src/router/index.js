@@ -50,7 +50,8 @@ import complete from '../components/pages/subordinatePage/complete'//完成
 
 //管理模块
 import reviewInternetCue from '../components/manage/reviewInternetCue' //审核互联网线索
-import knowledgeInput from '../components/manage/knowledgeInput' //知识库录入
+// import knowledgeInput from '../components/manage/knowledgeInput' //知识库录入
+import knowledgeInput from '../components/manage/inputKnowToday' //知识库录入
 Vue.use(Router)
 
 let router =  new Router({
@@ -126,6 +127,7 @@ let router =  new Router({
           name:knowledge,
           component:knowledge,
           meta:{
+            keepAlive: true,
             name: '知识库',
           }
         },
@@ -142,6 +144,7 @@ let router =  new Router({
           name:news,
           component:news,
           meta:{
+            keepAlive: true,
             name: '新闻页',
           }
         },
@@ -190,7 +193,7 @@ let router =  new Router({
           name:approvalResult,
           component:approvalResult,
           meta:{
-            name: '审批结果',
+            name: '结果反馈',
           }
         },
         {
@@ -214,7 +217,7 @@ let router =  new Router({
           name: complete,
           component: complete,
           meta: {
-            name: '完成',
+            name: '已反馈',
           }
         },
         {
@@ -250,12 +253,15 @@ let router =  new Router({
 });
 router.beforeEach((to, from , next) => {
   let nextLeaderRoute = ['待审批', '已审批','审批结果']; //领导页面
-  let nextSubordinateRoute = ['待反馈', '待接收', '完成']; //下级院页面
+  let nextSubordinateRoute = ['待反馈', '待接收', '已反馈']; //下级院页面
   let nextAdminRoute = ['关注线索','举报线索','互联网线索','公益组织线索','热点线索']; //管理员页面
   let IdentityType = localStorage.getItem('IdentityType'); //获取权限
   let allRoute = {nextAdminRoute:nextAdminRoute,nextLeaderRoute:nextLeaderRoute ,nextSubordinateRoute: nextSubordinateRoute,};
   let IdentityNum = -1;
-  let routeName = to.meta.name;
+  let routeName = to.meta.name;//线索详情
+  if(to.path == "/home/cueDetail") {
+    routeName = "线索详情";
+  }
   for(let i in allRoute) {
     let item = allRoute[i];
     IdentityNum += 2;

@@ -142,7 +142,7 @@
             if(res.data.code == 0){
               if(res.data.data){
                 _this.$message({
-                  message: '修改成功,即将推出登录',
+                  message: '修改成功,即将退出登录',
                   type: 'success',
                   duration:1000,
                   onClose:function () {

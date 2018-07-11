@@ -21,6 +21,14 @@
                     <i class="fa fa-random"></i>
                     结果反馈
                 </li>
+                <li class="cue-item-btn">
+                    <span class="cue-btn" @click="">
+                        <i :class="['fa',isFollow?'fa-heart':'fa-heart-o']"></i>
+                        <span v-if="cueBtn == 1">关注</span>
+                        <span v-if="cueBtn == 2">取消关注</span>
+                        <span v-if="cueBtn == 3">确认接收</span>
+                    </span>
+                </li>
             </ul>
         </div>
         <div id="content">
@@ -59,14 +67,23 @@ export default {
             cueData: {}, //线索数据
             cueFrom:'', //线索类别
             identity: null, //权限
+            cueBtn:1, //线索详情页按钮，1：关注 2：取消关注 3：确认接收
+            isFollow:false, //该线索是否关注
         }
     },
     mounted(){
+        //获取身份权限信息
         this.identity = localStorage.IdentityType;
 
-        // if(!this.$route.query.type || !this.$route.query.id){
-        //     this.$router.go(-1);
-        // }
+        //如果没有type值或id值则返回上一页
+        if(!this.$route.query.type || !this.$route.query.id){
+            this.$router.go(-1);
+        }
+
+        //判断跳某个导航
+        if(this.$route.query.nav){
+            this.isThisNav = this.$route.query.nav;
+        }
         this.cueType = this.$route.query.type;
         if(this.cueType == 1){
             this.cueFrom = '举报线索';
@@ -81,8 +98,39 @@ export default {
             if(this.$route.query.type2){
                 this.cueType = this.$route.query.type2;
             }
-        };
+        }else if(this.cueType == 6){
+            this.cueFrom = '待审批';
+            if(this.$route.query.type2){
+                this.cueType = this.$route.query.type2;
+            }
+        }else if(this.cueType == 7){
+            this.cueFrom = '已审批';
+            if(this.$route.query.type2){
+                this.cueType = this.$route.query.type2;
+            }
+        }else if(this.cueType == 8){
+            this.cueFrom = '结果反馈';
+            if(this.$route.query.type2){
+                this.cueType = this.$route.query.type2;
+            }
+        }else if(this.cueType == 9){
+          this.cueFrom = '待接收';
+          if(this.$route.query.type2){
+            this.cueType = this.$route.query.type2;
+          }
+        }else if(this.cueType == 10){
+          this.cueFrom = '待反馈';
+          if(this.$route.query.type2){
+            this.cueType = this.$route.query.type2;
+          }
+        }else if(this.cueType == 11){
+          this.cueFrom = '已反馈';
+          if(this.$route.query.type2){
+            this.cueType = this.$route.query.type2;
+          }
+        }
         this.$route.meta.name = this.cueFrom;
+        console.log(this.$route.meta.name);
         this.cueId = this.$route.query.id;
         this.cueDataGet();
     },
@@ -159,6 +207,23 @@ export default {
                     top: 23%;
                     left: 50%;
                     margin-left: -8px;
+                }
+            }
+            .cue-item-btn{
+                border:none;
+                float: right;
+                margin-right: 40px;
+                line-height: 80px;
+                .cue-btn{
+                    i{
+                        position: initial;
+                    }
+                    display: inline-block;
+                    width: 90px;
+                    height: 35px;
+                    line-height: 35px;
+                    border-radius: 5px;
+                    border: solid 1px #ddd;
                 }
             }
             .active{

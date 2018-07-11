@@ -8,44 +8,44 @@
     </router-link>
 
     <router-link to="/home/waitApproval" v-if="IdentityType==3?true:false">
-      <el-menu-item index="7" :class="isThisNav == '待审批' || isThisNav == '待审批详情'?'is-active':''" @click="switchNav('待审批')">
+      <el-menu-item index="7" :class="isThisNav == '待审批' ?'is-active':''" @click="switchNav('待审批')">
         <i class="fa fa-pencil-square-o"></i>
-        <span slot="title">待审批</span>
+        <span slot="title">待审批<span class="note-tag">(0)</span></span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/allreadyApproval" v-if="IdentityType==3?true:false">
-      <el-menu-item index="8" :class="isThisNav == '已审批' || isThisNav == '已审批详情'?'is-active':''" @click="switchNav('已审批')">
+      <el-menu-item index="8" :class="isThisNav == '已审批'?'is-active':''" @click="switchNav('已审批')">
         <i class="fa fa-th-list"></i>
         <span slot="title">已审批</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/approvalResult" v-if="IdentityType==3?true:false">
-      <el-menu-item index="9" :class="isThisNav == '审批结果' || isThisNav == '审批结果详情'?'is-active':''" @click="switchNav('审批结果')">
+      <el-menu-item index="9" :class="isThisNav == '结果反馈'?'is-active':''" @click="switchNav('结果反馈')">
         <i class="fa fa-check-square"></i>
         <span slot="title">结果反馈</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/waitReceive" v-if="IdentityType==5?true:false">
-      <el-menu-item index="10" :class="isThisNav == '待接收' || isThisNav == '待接收详情'?'is-active':''" @click="switchNav('待接收')">
-        <i class="fa fa-pencil-square-o"></i>
-        <span slot="title">待接收</span>
+      <el-menu-item index="10" :class="isThisNav == '待接收'?'is-active':''" @click="switchNav('待接收')">
+        <i class="fa fa-th-list"></i>
+        <span slot="title">待确认接收<span class="note-tag">(0)</span></span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/waitFeedback" v-if="IdentityType==5?true:false">
-      <el-menu-item index="11" :class="isThisNav == '待反馈' || isThisNav == '待反馈详情'?'is-active':''" @click="switchNav('待反馈')">
-        <i class="iconfont icon-boshimao"></i>
+      <el-menu-item index="11" :class="isThisNav == '待反馈'?'is-active':''" @click="switchNav('待反馈')">
+        <i class="fa fa-pencil-square-o"></i>
         <span slot="title">待反馈</span>
       </el-menu-item>
     </router-link>
 
     <router-link to="/home/complete" v-if="IdentityType==5?true:false">
-      <el-menu-item index="12" :class="isThisNav == '完成' || isThisNav == '完成详情'?'is-active':''" @click="switchNav('完成')">
-        <i class="iconfont icon-boshimao"></i>
-        <span slot="title">完成</span>
+      <el-menu-item index="12" :class="isThisNav == '已反馈'?'is-active':''" @click="switchNav('已反馈')">
+        <i class="fa fa-check-square"></i>
+        <span slot="title">已反馈</span>
       </el-menu-item>
     </router-link>
 
@@ -97,7 +97,7 @@
     <router-link to="/home/news">
       <el-menu-item index="4" :class="isThisNav == '新闻页' || isThisNav == '新闻页详情'?'is-active':''" @click="switchNav('新闻页')">
         <i class="iconfont icon-xiangji"></i>
-        <span slot="title">新闻动态</span>
+        <span slot="title">新闻聚合</span>
       </el-menu-item>
     </router-link>
 
@@ -171,7 +171,7 @@
     data(){
       return{
         IdentityType: localStorage.getItem('IdentityType'),//身份信息
-        openeds: ['2'],
+        openeds: ['2','6','7'],
         isThisNav: '',
       }
     },
@@ -187,6 +187,18 @@
           this.isThisNav = '热点线索';
         }else if(this.$route.query.type == 5){
           this.isThisNav = '关注线索';
+        }else if(this.$route.query.type == 6){
+          this.isThisNav = '待审批';
+        }else if(this.$route.query.type == 7){
+          this.isThisNav = '已审批';
+        }else if(this.$route.query.type == 8){
+          this.isThisNav = '结果反馈';
+        }else if(this.$route.query.type == 9){
+          this.isThisNav = '待接收';
+        }else if(this.$route.query.type == 10){
+          this.isThisNav = '待反馈';
+        }else if(this.$route.query.type == 11){
+          this.isThisNav = '已反馈';
         }
       }else{
         this.isThisNav = this.$route.meta.name;
@@ -212,6 +224,11 @@
     height: 100%;
     el-menu-item-group{
       overflow: hidden;
+    }
+    .note-tag{
+      color: #ff6000;
+      display: inline-block;
+      vertical-align: bottom;
     }
   }
   /*.el-menu-item.is-active{*/

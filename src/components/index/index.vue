@@ -6,7 +6,7 @@
         <side-menu></side-menu>
       </div>
       <div id="main-area">
-        <keep-alive include="cue-list">
+        <keep-alive include="cue-list,news-page">
           <router-view/>
         </keep-alive>
       </div>

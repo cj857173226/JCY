@@ -5,7 +5,7 @@
                 <i class="fa fa-check-square"></i>
             </span>
             <span class="header-title">结果反馈</span>
-            
+
             <!-- <div class="search-wrap clearfix">
                 <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getInternetCueList">
                 <span class="search-btn" @click="getInternetCueList()">
@@ -75,7 +75,7 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)" style="color:#21ac33" type="text" size="small">查看</el-button>
+                            <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)"  type="text" size="small">查看</el-button>
                         </template>
                     </el-table-column>
                     </el-table>
@@ -113,9 +113,9 @@ export default {
                     XSBH:'QW121FF1HF2F1H0BF1381231'
                 },
             ], //待审批线索
-            
+
             tableH:0, //表格高度
-            keyword:'', //关键字 
+            keyword:'', //关键字
         }
     },
     mounted(){
@@ -132,19 +132,19 @@ export default {
         },
         //审批
         detail(text,id){
-            var type2 = 0;
+            var type = 0;
             if(text == '举报线索'){
-                type2 = 1
+                type = 1
             }else if(text == '互联网线索'){
-                type2 = 2
+                type = 2
             }else if(text == '公益诉讼线索'){
-                type2 = 3
+                type = 3
             }else if(text == '热点线索'){
-                type2 = 4
+                type = 4
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:5,type2:type2,id:id,}
+                query:{type:8,type2:type,nav:4,id:id}
             });
         },
         //表格高度自适应
@@ -231,7 +231,7 @@ export default {
             }
         }
     }
-    #content{    
+    #content{
         height: calc(100% - 40px);
         .table-list{
             padding-top: 10px;
