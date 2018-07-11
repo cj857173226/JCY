@@ -191,7 +191,7 @@
         }
         this.$router.push({
           path:'/home/cueDetail',
-          query:{type:10,type2:type,id:id}
+          query:{type:10,type2:type,id:id,nav:4}
         });
       },
       //表格高度自适应
