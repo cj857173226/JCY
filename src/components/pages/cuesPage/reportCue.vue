@@ -154,6 +154,7 @@
             _this.isLoad = false
             if(res.data.code == 0){
               let data = res.data.data.data;
+              console.log(data)
               _this.reportCueList = data;
               _this.totalPages = res.data.data.total;
             }
