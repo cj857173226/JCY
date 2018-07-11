@@ -12,6 +12,7 @@ import '../src/static/common.js';
 import vueKindEditor from 'vue-kindeditor'
 import '../static/kindeditor/kindeditor-all-min.js'
 import '../static/kindeditor/themes/default/default.css'
+import '../static/kindeditor/lang/zh-CN'
 
 
  //axios请求拦截器

@@ -16,11 +16,12 @@
       <ul>
         <li v-for="item in knowledgeData">
           <div class="item-header">
-            <span class="item-type">{{item.SSLB}}</span>
+            <span :class="['item-type',item.SSLB == '理论研究'?'':'type-blue']">{{item.SSLB}}</span>
             <span class="item-title" @click="checkDetail(item)">{{item.BT}}</span>
           </div>
           <div class="item-content">
-            <span>{{item.NR}}</span>
+            <!-- <span>{{item.NR}}</span> -->
+            <span v-html="item.NR"></span>
           </div>
           <div class="item-time">
             <span>{{item.LY}}:{{item.FBSJ}}</span>
@@ -204,6 +205,9 @@ export default {
               text-align: center;
               margin-right: 5px;
             }
+            .type-blue{
+              background: #498ec0;
+            }
             .item-title{
               font-size: 16px;
               color: #00a65a;
@@ -231,7 +235,6 @@ export default {
               display: -webkit-box;
               -webkit-box-orient: vertical;
               -webkit-line-clamp: 1;
-
               white-space: nowrap;
               width: 100%;
               display: block;

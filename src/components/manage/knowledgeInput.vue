@@ -48,11 +48,14 @@
             <div id="submit-btn" @click="submitBtn">
                 提交
             </div>
+            <textarea id="test"></textarea>
+            <pre>{{editorText}}</pre>
         </div>
     </div>
 </template>
 
 <script>
+import '@/../static/kindeditor/kindeditor-all-min.js'
 export default {
     data(){
         return{
@@ -67,57 +70,66 @@ export default {
             'insertfile', 'table', 'hr', 'emoticons', 'pagebreak',
             'anchor', 'link', 'unlink', '|', 'about'
             ],
-          Title:'',  //标题
-          Author: "",//作者
-          Site: "",//采集站点,
-          SiteName: "",//采集站点中文名称,
-          DataType:  "",//所属类别,法律法规、理论研究,
-          PublishTime:'', //发布时间
-          Source:'', //来源
-          Link:'', //数据地址
+            Title:'',  //标题
+            Author: "",//作者
+            Site: "",//采集站点,
+            SiteName: "",//采集站点中文名称,
+            DataType:  "",//所属类别,法律法规、理论研究,
+            PublishTime:'', //发布时间
+            Source:'', //来源
+            Link:'', //数据地址
             editorText:'', //内容
+            kindedit:null
         }
+    },
+    mounted(){
+        var _this = this;
+        KindEditor.ready(function(K) {
+            _this.kindedit = K.create('#test', {
+            });
+        });
     },
     methods:{
         //修改编写内容
         onContentChange(val){
-            this.editorText = val;
+            // this.editorText = val;
         },
         //提交
         submitBtn(){
-          let _this = this;
-          this.axios({
-            method: 'post',
-            url: webApi.Host + webApi.Knowledge.Add,
-            data: {Title: _this.Title,//标题
-              Content: _this.editorText,//内容,
-              Source: _this.Source,//来源,
-              Link: _this.Link,//数据地址,
-              Author: _this.Author,//作者
-              PublishTime: _this.PublishTime,//发布时间
-              PublishTimeStr: "" ,//发布时间字符串，当PublishTime不能转化为日期时使用,
-              Site: _this.Site,//采集站点,
-              SiteName: _this.SiteName,//采集站点中文名称,
-              DataType: _this.DataType,//所属类别,法律法规、理论研究,
-            },
-            timeout: 5000
-          }).then(function(res) {
-            if(res.data.code==0) {
-              _this.$message({
-                showClose: true,
-                message: '添加成功',
-                type: 'success'
-              });
-            }
-            console.log(res)
-          }).catch(function(err){
-            _this.$message({
-              showClose: true,
-              message: '添加失败,请重试',
-              type: 'error'
-            });
-            console.log(err)
-          })
+            let _this = this;
+            this.editorText = this.kindedit.text();
+            // this.axios({
+            //     method: 'post',
+            //     url: webApi.Host + webApi.Knowledge.Add,
+            //     data: {Title: _this.Title,//标题
+            //     Content: _this.editorText,//内容,
+            //     Source: _this.Source,//来源,
+            //     Link: _this.Link,//数据地址,
+            //     Author: _this.Author,//作者
+            //     PublishTime: _this.PublishTime,//发布时间
+            //     PublishTimeStr: "" ,//发布时间字符串，当PublishTime不能转化为日期时使用,
+            //     Site: _this.Site,//采集站点,
+            //     SiteName: _this.SiteName,//采集站点中文名称,
+            //     DataType: _this.DataType,//所属类别,法律法规、理论研究,
+            //     },
+            //     timeout: 5000
+            // }).then(function(res) {
+            //     if(res.data.code==0) {
+            //     _this.$message({
+            //         showClose: true,
+            //         message: '添加成功',
+            //         type: 'success'
+            //     });
+            //     }
+            //     console.log(res)
+            // }).catch(function(err){
+            //     _this.$message({
+            //     showClose: true,
+            //     message: '添加失败,请重试',
+            //     type: 'error'
+            //     });
+            //     console.log(err)
+            // })
         }
     }
 }

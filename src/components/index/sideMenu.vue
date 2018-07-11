@@ -10,7 +10,7 @@
     <router-link to="/home/waitApproval" v-if="IdentityType==3?true:false">
       <el-menu-item index="7" :class="isThisNav == '待审批' ?'is-active':''" @click="switchNav('待审批')">
         <i class="fa fa-pencil-square-o"></i>
-        <span slot="title">待审批</span>
+        <span slot="title">待审批<span class="note-tag">(0)</span></span>
       </el-menu-item>
     </router-link>
 
@@ -31,7 +31,7 @@
     <router-link to="/home/waitReceive" v-if="IdentityType==5?true:false">
       <el-menu-item index="10" :class="isThisNav == '待接收'?'is-active':''" @click="switchNav('待接收')">
         <i class="fa fa-th-list"></i>
-        <span slot="title">待接收</span>
+        <span slot="title">待确认接收<span class="note-tag">(0)</span></span>
       </el-menu-item>
     </router-link>
 
@@ -97,7 +97,7 @@
     <router-link to="/home/news">
       <el-menu-item index="4" :class="isThisNav == '新闻页' || isThisNav == '新闻页详情'?'is-active':''" @click="switchNav('新闻页')">
         <i class="iconfont icon-xiangji"></i>
-        <span slot="title">新闻动态</span>
+        <span slot="title">新闻聚合</span>
       </el-menu-item>
     </router-link>
 
@@ -171,7 +171,7 @@
     data(){
       return{
         IdentityType: localStorage.getItem('IdentityType'),//身份信息
-        openeds: ['2'],
+        openeds: ['2','6','7'],
         isThisNav: '',
       }
     },
@@ -224,6 +224,11 @@
     height: 100%;
     el-menu-item-group{
       overflow: hidden;
+    }
+    .note-tag{
+      color: #ff6000;
+      display: inline-block;
+      vertical-align: bottom;
     }
   }
   /*.el-menu-item.is-active{*/

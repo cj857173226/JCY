@@ -17,7 +17,8 @@
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">审批意见</div>
             <div class="advise-content">
-                <span v-html="textData"></span>
+                <!-- <span v-html="textData"></span> -->
+                <pre>{{textData}}</pre>
             </div>
         </div>
         <div class="advise edit-advise" v-if="identity == 1 || identity == 3">
