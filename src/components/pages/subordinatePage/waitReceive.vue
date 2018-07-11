@@ -95,7 +95,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)" style="color:#21ac33" type="text" size="small">接收</el-button>
+              <el-button  style="color:#21ac33" type="text" size="small">接收</el-button>
+              <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)" style="color:#21ac33" type="text" size="small">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -191,7 +192,7 @@
         }
         this.$router.push({
           path:'/home/cueDetail',
-          query:{type:9,type2:type,id:id}
+          query:{type:9,type2:type,id:id,nav:1}
         });
       },
       //表格高度自适应

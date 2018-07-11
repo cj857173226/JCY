@@ -5,7 +5,7 @@
                 <i class="fa fa-pencil-square-o"></i>
             </span>
             <span class="header-title">待审批线索</span>
-            
+
             <!-- <div class="search-wrap clearfix">
                 <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getInternetCueList">
                 <span class="search-btn" @click="getInternetCueList()">
@@ -112,9 +112,9 @@ export default {
                     XSBH:'QW121FF1HF2F1H0BF1381231'
                 },
             ], //待审批线索
-            
+
             tableH:0, //表格高度
-            keyword:'', //关键字 
+            keyword:'', //关键字
         }
     },
     mounted(){
@@ -230,7 +230,7 @@ export default {
             }
         }
     }
-    #content{    
+    #content{
         height: calc(100% - 40px);
         .table-list{
             padding-top: 10px;
