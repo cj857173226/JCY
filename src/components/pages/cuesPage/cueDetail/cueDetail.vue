@@ -62,11 +62,18 @@ export default {
         }
     },
     mounted(){
+        //获取身份权限信息
         this.identity = localStorage.IdentityType;
 
-        // if(!this.$route.query.type || !this.$route.query.id){
-        //     this.$router.go(-1);
-        // }
+        //如果没有type值或id值则返回上一页
+        if(!this.$route.query.type || !this.$route.query.id){
+            this.$router.go(-1);
+        }
+
+        //判断跳某个导航
+        if(this.$route.query.nav){
+            this.isThisNav = this.$route.query.nav;
+        }
         this.cueType = this.$route.query.type;
         if(this.cueType == 1){
             this.cueFrom = '举报线索';
