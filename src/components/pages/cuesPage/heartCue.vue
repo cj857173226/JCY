@@ -61,7 +61,6 @@
       </div>
       <div class="cue-list" ref="cueList" v-loading="isLoad">
         <el-table
-
           ref="oTable"
           :data=" heartClueList"
           :max-height="tableH"
@@ -158,15 +157,6 @@
         outerVisible:false,
         tableH:0, //表格高度
         heartClueList: [
-          {
-            ZY: '回去玩传奇我请问你我v区区我',
-            GJC:'扰民,经营,情况,局,烧烤,噪音,中,反映',
-            XSLB:'环境污染',
-            XSLY:'大成网',
-            FBSJ:'2014-04-28 00:00:00',
-            CJSJ:'2018-06-21 07:17:14',
-            XSBH:'QW121FF1HF2F1H0BF1381231'
-          },
         ], //热点线索
         siteList: [],//
         typeList: ["食药安全","英烈保护",
@@ -218,7 +208,7 @@
       details(index,id){
         this.$router.push({
           path:'/home/cueDetail',
-          query:{type:3,id:id}
+          query:{type:4,id:id}
         });
       },
       //关注线索

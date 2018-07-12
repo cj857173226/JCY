@@ -70,14 +70,14 @@ var webApi = {
   Get: '/api/News/Get/{id}', //获取指定的新闻信息; 方式:GET; 是否需要token:不需要；参数说明:[id=》新闻编号；]
   GetCityFreq: '/api/News/GetCityFreq', //获取各地在新闻中出现的频次; 方式:GET; 是否需要token:不需要；参数说明:[]
   },
-  //知识库。根据方法设置token
-  Knowledge : { 
-  GetKnowledges: '/api/Knowledge/GetKnowledges?keyword={keyword}&type={type}&p={p}&ps={ps}', //获取知识库信息; 方式:GET; 是否需要token:不需要；参数说明:[keyword=》未注释；type=》类型：理论研究、法律法规；p=》未注释；ps=》未注释；]
-  Get: '/api/Knowledge/Get/{id}', //获取指定信息; 方式:GET; 是否需要token:不需要；参数说明:[id=》未注释；]
-  GetTop: '/api/Knowledge/GetTop?top={top}', //获取首页显示的信息; 方式:GET; 是否需要token:不需要；参数说明:[top=》前几条，默认10条，最大10条。【参数暂时不用】；]
-  Add: '/api/Knowledge/Add', //新增知识库数据; 方式:POST; 是否需要token:不需要；参数说明:[item=》post with body,json:{Title:标题,Content:内容,Source:来源,Link:数据地址,Author:作者,PublishTime:发布时间,PublishTimeStr:发布时间字符串，当PublishTime不能转化为日期时使用,Site:采集站点,SiteName:采集站点中文名称,DataType:所属类别,法律法规、理论研究}；]
-  Delete: '/api/Knowledge/Delete?bh={bh}', //; 方式:POST; 是否需要token:不需要；参数说明:[bh=》未注释；]
-  Modify: '/api/Knowledge/Modify', //; 方式:POST; 是否需要token:不需要；参数说明:[item=》未注释；]
+//知识库。根据方法设置token
+  Knowledge : {
+    GetKnowledges: '/api/Knowledge/GetKnowledges?keyword={keyword}&type={type}&p={p}&ps={ps}', //获取知识库信息; 方式:GET; 是否需要token:不需要；参数说明:[keyword=》未注释；type=》类型：理论研究、法律法规；p=》未注释；ps=》未注释；]
+    Get: '/api/Knowledge/Get/{id}', //获取指定信息; 方式:GET; 是否需要token:不需要；参数说明:[id=》未注释；]
+    GetTop: '/api/Knowledge/GetTop?top={top}', //获取首页显示的信息; 方式:GET; 是否需要token:不需要；参数说明:[top=》前几条，默认10条，最大10条。【参数暂时不用】；]
+    Add: '/api/Knowledge/Add', //新增知识库数据; 方式:POST; 是否需要token:不需要；参数说明:[item=》post with body,json:{Title:标题,Content:内容,Source:来源,Link:数据地址,Author:作者,PublishTime:发布时间,PublishTimeStr:发布时间字符串，当PublishTime不能转化为日期时使用,Site:采集站点,SiteName:采集站点中文名称,DataType:所属类别,法律法规、理论研究}；]
+    Delete: '/api/Knowledge/Delete?bh={bh}', //; 方式:POST; 是否需要token:不需要；参数说明:[bh=》未注释；]
+    Modify: '/api/Knowledge/Modify', //; 方式:POST; 是否需要token:不需要；参数说明:[item=》未注释；]
   },
   //权限控制器。根据方法设置token
   Auth : { 
