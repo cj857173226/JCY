@@ -44,6 +44,7 @@
       <div id="submit-btn" @click="submitBtn">
         提交
       </div>
+      <pre>{{editorText}}</pre>
     </div>
   </div>
 </template>
@@ -89,6 +90,10 @@
       submitBtn(){
         let _this = this;
         _this.editorText = _this.editor.getPlainTxt();
+        _this.editorText = _this.editorText.toString();
+        if(_this.editorText == ''){
+          return;
+        }
         this.axios({
           method: 'post',
           url: webApi.Host + webApi.Knowledge.Add,

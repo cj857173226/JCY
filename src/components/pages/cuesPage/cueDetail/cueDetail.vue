@@ -21,29 +21,47 @@
                     <i class="fa fa-random"></i>
                     结果反馈
                 </li>
-                <li class="cue-item-btn">
-                    <span class="cue-btn" @click="">
+                <li class="cue-item-btn" v-if="identity == 1" >
+                    <span :class="['cue-btn',isFollow?'followed':'']" @click="changeCueStatus(1)">
                         <i :class="['fa',isFollow?'fa-heart':'fa-heart-o']"></i>
-                        <span v-if="cueBtn == 1">关注</span>
-                        <span v-if="cueBtn == 2">取消关注</span>
-                        <span v-if="cueBtn == 3">确认接收</span>
+                        <span v-if="isFollow">已关注</span>
+                        <span v-if="!isFollow">未关注</span>
+                    </span>
+                </li>
+                <li class="cue-item-btn" v-show="identity == 5&&page">
+                    <span  :class="['cue-btn',confirmReceive?'confirmReceived':'']" @click="changeCueStatus(2)">
+                        <i :class="['fa',confirmReceive?'fa-check':'fa-times']"></i>
+                        <span v-if="confirmReceive">已接收</span>
+                        <span v-if="!confirmReceive">未接收</span>
                     </span>
                 </li>
             </ul>
         </div>
         <div id="content">
-            <div id="detail" v-show="isThisNav == 1">
-                <report-detail v-if="cueType == 1"></report-detail>
-                <internet-detail v-if="cueType == 2"></internet-detail>
-            </div>
-            <div id="approval" v-show="isThisNav == 2">
-                <approval></approval>
-            </div>
-            <div id="send" v-show="isThisNav == 3">
-                <send></send>
-            </div>
-            <div id="result" v-show="isThisNav == 4">
-                <result></result>
+            <div class="switch-btn prev-btn" @click="switchCue(1)">
+                <span>
+                    <i class="fa fa-chevron-left"></i>
+                    上一条
+                </span>
+            </div><div class="content-box">
+                <div id="detail" v-show="isThisNav == 1">
+                    <report-detail v-if="cueType == 1"></report-detail>
+                    <internet-detail v-if="cueType == 2"></internet-detail>
+                </div>
+                <div id="approval" v-show="isThisNav == 2">
+                    <approval></approval>
+                </div>
+                <div id="send" v-show="isThisNav == 3">
+                    <send></send>
+                </div>
+                <div id="result" v-show="isThisNav == 4">
+                    <result></result>
+                </div>
+            </div><div class="switch-btn next-btn" @click="switchCue(2)">
+                <span>
+                    下一条
+                    <i class="fa fa-chevron-right"></i>
+                </span>
             </div>
         </div>
     </div>
@@ -64,14 +82,17 @@ export default {
             isThisNav: 1, //导航
             cueType:0, //线索类型
             cueId: '' ,//线索编号
+            gzId:'', //关注编号
             cueData: {}, //线索数据
             cueFrom:'', //线索类别
             identity: null, //权限
-            cueBtn:1, //线索详情页按钮，1：关注 2：取消关注 3：确认接收
+            confirmReceive:false, //线索是否确认接收
             isFollow:false, //该线索是否关注
+            page: false, //待接收页
         }
     },
     mounted(){
+        console.log("刷新");
         //获取身份权限信息
         this.identity = localStorage.IdentityType;
 
@@ -79,7 +100,6 @@ export default {
         if(!this.$route.query.type || !this.$route.query.id){
             this.$router.go(-1);
         }
-
         //判断跳某个导航
         if(this.$route.query.nav){
             this.isThisNav = this.$route.query.nav;
@@ -87,14 +107,19 @@ export default {
         this.cueType = this.$route.query.type;
         if(this.cueType == 1){
             this.cueFrom = '举报线索';
+            this.isFollow = false;
         }else if(this.cueType == 2){
             this.cueFrom = '互联网线索';
+            this.isFollow = false;
         }else if(this.cueType == 3){
             this.cueFrom = '公益诉讼线索';
+            this.isFollow = false;
         }else if(this.cueType == 4){
             this.cueFrom = '热点线索';
+            this.isFollow = false;
         }else if(this.cueType == 5){
             this.cueFrom = '关注线索';
+            this.isFollow = true;
             if(this.$route.query.type2){
                 this.cueType = this.$route.query.type2;
             }
@@ -115,6 +140,7 @@ export default {
             }
         }else if(this.cueType == 9){
           this.cueFrom = '待接收';
+          this.page = true;
           if(this.$route.query.type2){
             this.cueType = this.$route.query.type2;
           }
@@ -129,15 +155,91 @@ export default {
             this.cueType = this.$route.query.type2;
           }
         }
+        if(this.$route.query.gzid){
+            this.gzId = this.$route.query.gzid;
+        }
         this.$route.meta.name = this.cueFrom;
-        console.log(this.$route.meta.name);
         this.cueId = this.$route.query.id;
         this.cueDataGet();
     },
     methods: {
+        //切换线索
+        switchCue(index){
+            var params = {
+                type:this.$route.query.type, //进入页面
+                id:this.cueId, //线索编号
+            }
+            if(this.$route.query.type2){
+                params['type2'] = this.cueType;
+            }
+            if(index == 1){
+                //上一条
+                console.log(1);
+                this.$router.push({
+                    path:'/home/cueDetail',
+                    query:params
+                });
+            }else if(index == 2){
+                //下一条
+                console.log(2);
+                this.$router.push({
+                    path:'/home/cueDetail',
+                    query:params
+                });
+            }
+        },
+        //改变线索状态(是否关注是否接收)
+        changeCueStatus(index){
+            var _this = this;
+            if(index == 1){
+                //关注线索
+                if(this.isFollow == true&&this.gzId != ''){
+                    //调用取消关注接口
+                    this.axios({
+                        method:'post',
+                        url:webApi.ClueManager.UnFollowClue.format({id:this.gzId}),
+                        timeout:10000
+                    }).then(function(response){
+                        if(response.data.code == 0){
+                            _this.isFollow = false;
+                        }else{
+
+                        }
+                    }).catch(function(error){
+                        console.log(error);
+                    })
+                }else{
+                    //调用关注接口
+                    this.axios({
+                        method:'post',
+                        url:webApi.ClueManager.FollowClue.format({id:this.cueId,xssjbly:this.cueType}),
+                        timeout:10000
+                    }).then(function(response){
+                        if(response.data.code == 0){
+                            _this.isFollow = true;
+                            _this.gzId = response.data.data;
+                        }else{
+
+                        }
+                    }).catch(function(error){
+                        console.log(error);
+                    })
+                }
+            }else if(index == 2){
+                //接收线索
+                if(this.confirmReceive == true){
+                    return;
+                }else{
+                    //调用接收线索接口
+                    this.confirmReceive = true;
+                }
+            }
+        },
         //返回上页
         backBtn(){
-            this.$router.go(-1);
+            this.$router.push({
+                path:'/home/followCue'
+            });
         },
         //切换顶部导航
         chooseNav(index){
@@ -160,8 +262,8 @@ export default {
 #main{
     height: 100%;
     #header{
-        height: 40px;
-        line-height: 40px;
+        height: 50px;
+        line-height: 50px;
         color: #666;
         font-size: 16px;
         border-bottom: solid 1px #dcdcdc;
@@ -180,7 +282,7 @@ export default {
             cursor: pointer;
         }
         .back-btn:hover{
-            text-decoration: underline;
+            color:#00a65a;
         }
     }
     #nav{
@@ -212,19 +314,29 @@ export default {
             .cue-item-btn{
                 border:none;
                 float: right;
-                margin-right: 40px;
+                margin-right: 60px;
                 line-height: 80px;
+                width: inherit;
                 .cue-btn{
                     i{
                         position: initial;
                     }
                     display: inline-block;
-                    width: 90px;
                     height: 35px;
                     line-height: 35px;
                     border-radius: 5px;
                     border: solid 1px #ddd;
+                    padding: 0 20px;
                 }
+            }
+            .followed{
+                border-color:#00a65a!important;
+                color: #00a65a;
+            }
+            .confirmReceived{
+                border-color:#00a65a!important;
+                color: #00a65a;
+                cursor: default;
             }
             .active{
                 color: #0a8f46;
@@ -236,6 +348,46 @@ export default {
     #content{
         height: calc(100% - 120px - 15px);
         overflow: auto;
+        .switch-btn{
+            display: inline-block;
+            width: 10%;
+            vertical-align: top;
+            text-align: center;    
+            color: #00a65a;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        .switch-btn:hover{
+            color:#a0cfbf;
+        }
+        .switch-btn:active{
+            color:#04771d;
+        }
+        .content-box{
+            display: inline-block;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .prev-btn{
+
+        }
+        .next-btn{
+
+        }
     }
 }
+@media (max-width: 1440px) {
+    #main{
+      #header{
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        .heart-icon{
+          width: 40px;
+          height: 40px;
+          line-height: 40px;
+        }
+      }
+    }
+  }
 </style>

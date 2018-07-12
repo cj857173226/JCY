@@ -110,7 +110,7 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
+              <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small">查看</el-button>
               <el-button type="text" size="small">移除</el-button>
             </template>
           </el-table-column>
@@ -195,7 +195,7 @@
         this.pageNum = val;
         this.getFollowList();
       },
-      details(text,id) {
+      details(text,id,gzid) {
         var type2 = 0;
         if(text == '举报线索'){
          type2 = 1
@@ -208,7 +208,7 @@
         }
         this.$router.push({
           path:'/home/cueDetail',
-          query:{type:5,type2:type2,id:id,}
+          query:{type:5,type2:type2,id:id,gzid:gzid}
         });
       },
       getFollowList() {//获取关注线索列表

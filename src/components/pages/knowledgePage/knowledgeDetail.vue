@@ -114,6 +114,7 @@ export default {
         display: block;
         pre{
           white-space: pre-wrap;
+          color: #333;
         }
       }
     }

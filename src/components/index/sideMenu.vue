@@ -176,6 +176,7 @@
       }
     },
     mounted(){
+      console.log(this.$route.meta.name);
       if(this.$route.query.type){
         if(this.$route.query.type == 1){
           this.isThisNav = '举报线索';
