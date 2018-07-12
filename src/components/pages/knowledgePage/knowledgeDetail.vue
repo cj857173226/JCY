@@ -113,8 +113,8 @@ export default {
         line-height: 35px;
         display: block;
         pre{
-          white-space: pre-line;
-          text-indent: 27px;
+          white-space: pre-wrap;
+          color: #333;
         }
       }
     }

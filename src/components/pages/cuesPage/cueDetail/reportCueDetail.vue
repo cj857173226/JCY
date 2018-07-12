@@ -101,9 +101,7 @@ export default {
 <style lang="scss" scoped>
 #main{
     .detail-item{
-        padding-left: 40px;
         margin: 15px 0;
-        padding-right: 40px;
         span{
             display: inline-block;
         }

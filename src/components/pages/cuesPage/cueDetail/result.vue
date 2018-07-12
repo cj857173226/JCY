@@ -81,8 +81,10 @@ export default {
 
 <style lang="scss" scoped>
     #result{
-        width: 100%;    
+        width: 100%;
         padding: 20px;
+        padding-right: 0;
+        padding-left: 0;
         .result-text{
             position: relative;
             padding-left: 40px;

@@ -10,7 +10,7 @@ import 'font-awesome/css/font-awesome.css'; //引入font awsome字体图标
 import '../src/static/webApi.js'; //引入接口
 import '../src/static/common.js';
 import vueKindEditor from 'vue-kindeditor'
-import '../static/kindeditor/kindeditor-all-min.js'
+import '../static/kindeditor/kindeditor-all.js'
 import '../static/kindeditor/themes/default/default.css'
 import '../static/kindeditor/lang/zh-CN'
 
@@ -35,7 +35,10 @@ axios.interceptors.response.use(response=>{
   return response;
 },err => {
   if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1){
+    console.log(1);
+    console.log(Element);
     //超时处理
+    ElementUI.message.error('请求超时,请重新请求');
   }
   if(err.response){
     if(err.response.status == 403){

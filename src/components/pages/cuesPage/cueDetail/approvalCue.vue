@@ -56,6 +56,7 @@ export default {
         }
     },
     mounted(){
+        var _this = this;
         this.identity = localStorage.IdentityType;
     },
     methods:{
@@ -68,9 +69,9 @@ export default {
                 if(!localStorage.IdentityType){
                     window.location.reload()
                 }else{
-                    if(identity == 1){
+                    if(this.identity == 1){
                         //管理员
-                    }else if(identity == 5){
+                    }else if(this.identity == 5){
                         //下级院
                     }
                 }
@@ -87,7 +88,9 @@ export default {
 <style lang="scss" scoped>
     #main{
         width: 100%;
-        padding: 20px;
+        padding: 20px;    
+        padding-right: 0;
+        padding-left: 0;
         .advise{
             position: relative;
             padding-left: 40px;
