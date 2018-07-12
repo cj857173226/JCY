@@ -322,6 +322,7 @@
           }
           .follow_date {
             width: 150px;
+            min-width: 135px;
           }
           .follow_input {
             width: 180px;

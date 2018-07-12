@@ -156,11 +156,13 @@
                   let x = item.JWD.split(",")[0];
                   let y = item.JWD.split(",")[1];
                   let val = item.PC;
-                  if(index%5==0) {
-                    data.push([x, y, val]);
-                  }
+                  // if(index%5==0) {
+                  //   data.push([x, y, val]);
+                  // }
+                  data.push([x, y, val]);
                 }
               });
+              console.log(JSON.stringify(data))
               _this.optionData = data;
               _this.initChart();//初始化图表
               _this.isLoading = false;
