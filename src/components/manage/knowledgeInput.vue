@@ -48,11 +48,14 @@
             <div id="submit-btn" @click="submitBtn">
                 提交
             </div>
+            <textarea id="test"></textarea>
+            <pre>{{editorText}}</pre>
         </div>
     </div>
 </template>
 
 <script>
+import '@/../static/kindeditor/kindeditor-all-min.js'
 export default {
     data(){
         return{
@@ -77,12 +80,20 @@ export default {
           Source:'', //来源
           Link:'', //数据地址
             editorText:'', //内容
+            kindedit:null
         }
+    },
+    mounted(){
+        var _this = this;
+        KindEditor.ready(function(K) {
+            _this.kindedit = K.create('#test', {
+            });
+        });
     },
     methods:{
         //修改编写内容
         onContentChange(val){
-            this.editorText = val;
+            // this.editorText = val;
         },
         //提交
         submitBtn(){

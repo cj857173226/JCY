@@ -127,6 +127,7 @@ let router =  new Router({
           name:knowledge,
           component:knowledge,
           meta:{
+            keepAlive: true,
             name: '知识库',
           }
         },
@@ -143,6 +144,7 @@ let router =  new Router({
           name:news,
           component:news,
           meta:{
+            keepAlive: true,
             name: '新闻页',
           }
         },

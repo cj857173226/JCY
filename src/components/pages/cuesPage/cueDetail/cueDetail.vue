@@ -21,6 +21,14 @@
                     <i class="fa fa-random"></i>
                     结果反馈
                 </li>
+                <li class="cue-item-btn">
+                    <span class="cue-btn" @click="">
+                        <i :class="['fa',isFollow?'fa-heart':'fa-heart-o']"></i>
+                        <span v-if="cueBtn == 1">关注</span>
+                        <span v-if="cueBtn == 2">取消关注</span>
+                        <span v-if="cueBtn == 3">确认接收</span>
+                    </span>
+                </li>
             </ul>
         </div>
         <div id="content">
@@ -59,6 +67,8 @@ export default {
             cueData: {}, //线索数据
             cueFrom:'', //线索类别
             identity: null, //权限
+            cueBtn:1, //线索详情页按钮，1：关注 2：取消关注 3：确认接收
+            isFollow:false, //该线索是否关注
         }
     },
     mounted(){
@@ -197,6 +207,23 @@ export default {
                     top: 23%;
                     left: 50%;
                     margin-left: -8px;
+                }
+            }
+            .cue-item-btn{
+                border:none;
+                float: right;
+                margin-right: 40px;
+                line-height: 80px;
+                .cue-btn{
+                    i{
+                        position: initial;
+                    }
+                    display: inline-block;
+                    width: 90px;
+                    height: 35px;
+                    line-height: 35px;
+                    border-radius: 5px;
+                    border: solid 1px #ddd;
                 }
             }
             .active{

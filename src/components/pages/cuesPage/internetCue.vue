@@ -203,6 +203,8 @@
                data[i].ZY = ZYstr;
              }
              _this.internetCueList = data;
+           }else {
+             _this.$message.error(res.data.errorMessage);
            }
          }).catch(function(err){
            _this.isLoad = false;

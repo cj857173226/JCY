@@ -34,6 +34,7 @@
 
 <script>
 export default {
+  name:'news-page',
   data(){
     return{
       keyword:'', //关键字
@@ -55,7 +56,9 @@ export default {
     handleScroll(){
       var _this = this;
       var content = document.getElementById("news-content");
-      if(Math.ceil(content.scrollTop)+content.offsetHeight == content.scrollHeight){
+      console.log(Math.ceil(content.scrollTop)+content.offsetHeight);
+      console.log(content.scrollHeight);
+      if(Math.ceil(content.scrollTop)+content.offsetHeight >= content.scrollHeight){
         if(!this.noMoreData){
           this.loadMore = true;
           this.pageNum += 1;
