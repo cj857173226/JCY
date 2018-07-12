@@ -154,9 +154,10 @@
             _this.isLoad = false
             if(res.data.code == 0){
               let data = res.data.data.data;
-              console.log(data)
               _this.reportCueList = data;
               _this.totalPages = res.data.data.total;
+            }else {
+              _this.$message.error(res.data.errorMessage);
             }
           }).catch(function(err){
             console.log(err)
@@ -186,7 +187,6 @@
         let _this = this;
         if(_this.isLoad == false){
           if(_this.type!= type){
-            console.log(type)
             _this.page = 1;
             _this.type = type;
             if(_this.reportCueList.length<=0){
