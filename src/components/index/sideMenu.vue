@@ -154,12 +154,27 @@
           </el-menu-item>
         </router-link>
 
-        <router-link to="/home/internetCueManage">
-          <el-menu-item index="7-3" :class="isThisNav == '互联网线索管理'?'is-active':''" @click="switchNav('互联网线索管理')">
-            <i class="fa fa-window-restore"></i>
+        <el-submenu index="7-3">
+          <template slot="title">
+            <i class="fa fa-database"></i>
             <span slot="title">互联网线索管理</span>
-          </el-menu-item>
-        </router-link>
+          </template>
+          <el-menu-item-group>
+            <template slot="title" id="menu-group-title" style="display:none"></template>
+            <router-link to="/home/internetCueManageNo">
+              <el-menu-item index="7-3-1" :class="isThisNav == '互联网未处理'?'is-active':''" @click="switchNav('互联网未处理')">
+                <i class="fa fa-window-restore"></i>
+                <span slot="title">互联网未处理</span>
+              </el-menu-item>
+            </router-link>
+            <router-link to="/home/internetCueManageYes">
+              <el-menu-item index="7-3-2" :class="isThisNav == '互联网已处理'?'is-active':''" @click="switchNav('互联网已处理')">
+                <i class="fa fa-window-restore"></i>
+                <span slot="title">互联网已处理</span>
+              </el-menu-item>
+            </router-link>
+          </el-menu-item-group>
+        </el-submenu>
 
       </el-menu-item-group>
     </el-submenu>
@@ -178,7 +193,7 @@
     data(){
       return{
         IdentityType: localStorage.getItem('IdentityType'),//身份信息
-        openeds: ['2','6','7'],
+        openeds: ['2','6','7','7-3'],
         isThisNav: '',
       }
     },

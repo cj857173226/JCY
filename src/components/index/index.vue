@@ -53,7 +53,6 @@
         }
         .el-submenu .el-menu-item{
           min-width: 0;
-          padding-left: 30px!important;
           padding-right: 0;
         }
         .el-menu-item, .el-submenu__title{
