@@ -1,4 +1,5 @@
 <template>
+  <transition name="toggleShow">
   <div id="knowBox" v-show="isShow">
     <div id="knowledgeInput">
       <div id="knowledge-header">
@@ -16,7 +17,7 @@
                 </span>
         </div>
         <div class="detail-item">
-          <span class="item-title">所属类别</span><span class="item-content"><input type="text" v-model="DataType"/>
+          <span class="item-title">所属领域</span><span class="item-content"><input type="text" v-model="DataType"/>
                 </span>
         </div>
         <div class="detail-item">
@@ -52,6 +53,7 @@
       </div>
     </div>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -212,6 +214,14 @@
     width: 100%;
     background-color: rgba(0,0,0,.4);
     z-index: 1000;
+    &.toggleShow-enter-active,
+    &.toggleShow-leave-active {
+      transition: opacity .5s;
+    }
+    &.toggleShow-enter,
+    &.toggleShow-leave-to {
+      opacity: 0;
+    }
     #knowledgeInput{
       position: absolute;
       left: 50%;

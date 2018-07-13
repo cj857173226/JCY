@@ -14,6 +14,8 @@ import '../static/kindeditor/kindeditor-all.js'
 import '../static/kindeditor/themes/default/default.css'
 import '../static/kindeditor/lang/zh-CN'
 
+import VueAreaLinkage from 'vue-area-linkage';
+import 'vue-area-linkage/dist/index.css'; 
 
  //axios请求拦截器
 axios.interceptors.request.use(config=>{
@@ -53,6 +55,7 @@ Vue.use(ElementUI);   //使用elementUi
 Vue.prototype.axios = axios; //vue原型上挂载axios
 Vue.config.productionTip = false
 Vue.use(vueKindEditor)
+Vue.use(VueAreaLinkage)
 
 const Bus = new Vue()
 
