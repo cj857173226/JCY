@@ -25,9 +25,9 @@
                 </div>
                 <div class="text-name">
                     <span class="text-title-item">人名:</span><span>{{cueData.RENM}}</span>
-                    </br>
+                    <br/>
                     <span class="text-title-item">地名:</span><span>{{cueData.DIM}}</span>
-                    <br />
+                    <br/>
                     <span class="text-title-item">机构名:</span><span>{{cueData.JIGOUM}}</span>
                 </div>
                 <div class="text-remark">
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="item-content resource-content" style="margin-top: 20px">
-                <span v-html="cueData.JBNR"></span> 
+                <span v-html="cueData.JBNR"></span>
             </div>
         </div>
         <div class="detail-item">
@@ -206,7 +206,7 @@ export default {
                         top: 0;
                         z-index: 0;
                         width: 1px;
-                        height: 100%;    
+                        height: 100%;
                         background-color: #e6e6e6;
                 }
                 .timeline-item:last-child:before{

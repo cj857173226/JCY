@@ -10,7 +10,7 @@
       <!--关注线索筛选-->
       <div class="follow_filter">
         <el-form class="follow_form" :inline="true" >
-          <el-form-item label="线索类型 :">
+          <el-form-item label="所属领域 :">
             <el-select class="follow_select" v-model="followForm.type">
               <el-option label="全部" value="shanghai" selected></el-option>
               <el-option label="区域二" value="beijing"></el-option>
@@ -86,7 +86,7 @@
           </el-table-column>
           <el-table-column
             prop="XSLB"
-            label="线索类别"
+            label="所属领域"
             min-width="100"
           >
           </el-table-column>

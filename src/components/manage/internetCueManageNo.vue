@@ -14,7 +14,7 @@
         </div>
         <!-- <div id="add-icon">
         </div> -->
-        
+
         <div class="cue-filter-wrap">
             <div class="cue-source clearfix">
                 <div class="left-title">
@@ -39,6 +39,10 @@
                         range-separator="-"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
+<<<<<<< HEAD
+=======
+
+>>>>>>> b9541b5db58295d140007c3172c6c3670fa3279f
                     </el-date-picker>
                 </div>
             </div>
@@ -187,7 +191,7 @@ export default {
             ],
             page:1, //页码
             pageSize: 20,//每页条数
-            totalPages:0,//总条数
+            totalPages:1,//总条数
             keyword: '' , //关键字
             type:'', //线索类型
             site:'',//来源站点
@@ -229,35 +233,8 @@ export default {
         },
         //获取互联网线索列表
         getInternetCueList(){
-            let _this = this;
-            if(_this.isLoad ==false){
-                _this.isLoad = true;
-                let url = webApi.Clue.GetWebClues.format({keyword:_this.keyword,type:_this.type,site:_this.site,order:_this.order,p:_this.page,ps:_this.pageSize})
-                _this.axios({
-                    methods:'get',
-                    url:url,
-                    timeout: 10000
-                }).then(function(res){
-                    _this.isLoad = false;
-                    if(res.data.code == 0){
-                        let data = res.data.data.data;
-                        let ZYstr = '';
-                        for(let i = 0;i < data.length; i++){
-                            let str = data[i].ZY.split("<br/>");
-                            for(let j= 0;j<str.length;j++){
-                                ZYstr += str[j];
-                            }
-                            data[i].ZY = ZYstr;
-                        }
-                        _this.internetCueList = data;
-                    }else {
-                        _this.$message.error(res.data.errorMessage);
-                    }
-                }).catch(function(err){
-                    _this.isLoad = false;
-                })
-            }
-        }, 
+
+        },
         //表格高度自适应
         tableResize(){
             let _this = this;
@@ -284,6 +261,7 @@ export default {
 
 <style lang="scss" scoped>
     #internetManage{
+        position: relative;
         height: 100%;
         max-height:100%;
         min-width: 750px;
