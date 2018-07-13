@@ -18,7 +18,7 @@
         <div class="cue-types-wrap">
           <div class="title-wrap">
             <i class="iconfont icon-leibieguanli"></i>
-            <span>举报门类</span>
+            <span>所属领域</span>
           </div>
           <div class="types-wrap clearfix">
             <div v-for="(item ,index) in typeList" class="type-item" :class="{'type-item-on':type == item}" @click = "clueTypeOder(item)">
@@ -64,7 +64,7 @@
             </el-table-column>
             <el-table-column
               prop="XSLB"
-              label="举报门类"
+              label="所属领域"
               min-width="100"
               >
             </el-table-column>

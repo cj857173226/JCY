@@ -18,7 +18,7 @@
       <div class="cue-types-wrap">
         <div class="title-wrap">
           <i class="iconfont icon-leibieguanli"></i>
-          <span>线索门类</span>
+          <span>所属领域</span>
         </div>
         <div class="types-wrap clearfix">
           <div v-for="(item ,index) in typeList" class="type-item" :class="{'type-item-on':type == item}" @click = "clueTypeOder(item)">
@@ -102,7 +102,7 @@
           </el-table-column>
           <el-table-column
             prop="XSLB"
-            label="线索类别"
+            label="所属领域"
             min-width="100"
           >
           </el-table-column>
@@ -159,8 +159,7 @@
         tableH:0, //表格高度
         welfareClueList: [
         ], //公益组织线索
-        welfareList: ["自然之友","绿色和平组织",
-          "中华环保联合会","中华环保基金会"],//公益组织
+        welfareList: [],//公益组织
         typeList: ["食药安全","英烈保护",
           "国有财产","食品安全","国土资源","环境保护"],//线索门类
         keyword:'',//查询列表关键字

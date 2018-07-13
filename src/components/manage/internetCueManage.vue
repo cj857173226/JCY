@@ -9,7 +9,7 @@
             <!--<div class="search-wrap clearfix">-->
                 <!--<i @click="change" style="color:green;width:30px;height:30px;" class="el-icon-circle-plus-outline"></i>-->
             <!--</div>-->
-            
+
             <div class="search-wrap clearfix">
                 <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getInternetCueList">
                 <span class="search-btn" @click="getInternetCueList()">
@@ -57,14 +57,8 @@
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="CJSJ"
-                    label="采集时间"
-                    min-width="180"
-                >
-                </el-table-column>
-                <el-table-column
                     prop="XSLB"
-                    label="线索类别"
+                    label="所属领域"
                     min-width="100"
                 >
                 </el-table-column>
@@ -74,7 +68,7 @@
                     width="150">
                 </el-table-column>
                 <el-table-column
-                    prop="GJC"
+                    prop="XSLY"
                     label="关键词"
                     width="200">
                     <template slot-scope="scope">
@@ -91,8 +85,8 @@
                     label="操作"
                     width="100">
                     <template slot-scope="scope">
-                    <el-button @click="details(scope.$index, scope.row.XSBH)" type="text" size="small">查看</el-button>
-                    <el-button @click="followClue(scope.row.XSBH ,'2')" type="text" size="small">关注</el-button>
+                      <el-button @click="submitData(scope.row.XSBH)" type="text" size="small">提交</el-button>
+                      <el-button @click="editData(scope.row.XSBH)" type="text" size="small">编辑</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -106,21 +100,30 @@
             :total="totalPages">
             </el-pagination>
         </div>
+      <inter-input></inter-input>
     </div>
 </template>
 
 <script>
+  import interInput from '../pubilcComponents/manageComponents/internetInput'
 export default {
+    components: {interInput},
     data(){
         return{
             isLoad:false,
             tableH:0, //表格高度
             internetCueList: [  //互联网线索列表
-
+              {
+                ZY: '啊手动阀',
+                FBSJ: "2018-07-13",
+                XSLB: "未知",
+                XSLY: "网站",
+                GJC: '看i'
+              }
             ],
             page:1, //页码
             pageSize: 20,//每页条数
-            totalPages:0,//总条数
+            totalPages:1,//总条数
             keyword: '' , //关键字
             type:'', //线索类型
             site:'',//来源站点
@@ -133,6 +136,14 @@ export default {
         _this.getInternetCueList(); //获取互联网线索列表
     },
     methods:{
+        //提交数据
+        submitData() {
+
+        },
+        //编辑数据
+        editData() {
+
+        },
         // 页码跳转
         pageTo(curr) {
             let _this = this ;
@@ -141,35 +152,8 @@ export default {
         },
         //获取互联网线索列表
         getInternetCueList(){
-            let _this = this;
-            if(_this.isLoad ==false){
-                _this.isLoad = true;
-                let url = webApi.Clue.GetWebClues.format({keyword:_this.keyword,type:_this.type,site:_this.site,order:_this.order,p:_this.page,ps:_this.pageSize})
-                _this.axios({
-                    methods:'get',
-                    url:url,
-                    timeout: 10000
-                }).then(function(res){
-                    _this.isLoad = false;
-                    if(res.data.code == 0){
-                        let data = res.data.data.data;
-                        let ZYstr = '';
-                        for(let i = 0;i < data.length; i++){
-                            let str = data[i].ZY.split("<br/>");
-                            for(let j= 0;j<str.length;j++){
-                                ZYstr += str[j];
-                            }
-                            data[i].ZY = ZYstr;
-                        }
-                        _this.internetCueList = data;
-                    }else {
-                        _this.$message.error(res.data.errorMessage);
-                    }
-                }).catch(function(err){
-                    _this.isLoad = false;
-                })
-            }
-        }, 
+
+        },
         //表格高度自适应
         tableResize(){
             let _this = this;
@@ -196,6 +180,7 @@ export default {
 
 <style lang="scss" scoped>
     #internetManage{
+        position: relative;
         height: 100%;
         max-height:100%;
         min-width: 750px;
@@ -282,6 +267,8 @@ export default {
         #content{
             height: calc( 100% - 50px - 64px - 50px);
             overflow-y: hidden;
+            padding-left: 15px;
+            padding-right: 15px;
             .isRead{
             color: #F66;
             }

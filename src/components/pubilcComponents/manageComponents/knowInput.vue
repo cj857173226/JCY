@@ -16,7 +16,7 @@
                 </span>
         </div>
         <div class="detail-item">
-          <span class="item-title">所属类别</span><span class="item-content"><input type="text" v-model="DataType"/>
+          <span class="item-title">所属领域</span><span class="item-content"><input type="text" v-model="DataType"/>
                 </span>
         </div>
         <div class="detail-item">

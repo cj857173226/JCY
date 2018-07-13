@@ -50,7 +50,7 @@
           </el-table-column>
           <el-table-column
             prop="SSLB"
-            label="所属类别"
+            label="所属领域"
             min-width="100"
           >
           </el-table-column>
