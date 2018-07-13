@@ -342,21 +342,14 @@
   }
   @media (max-width: 1440px) {
     #followCue {
-      height: 100%;
       font-size: 14px;
       /*头部*/
       .follow_header {
         height: 40px;
-        background-color: #eeeeee;
-        color: #666666;
-        border-bottom: 1px solid #dcdcdc;
         i {
           width: 40px;
           height: 40px;
           line-height: 40px;
-          text-align: center;
-          border-right: 1px solid #dcdcdc;
-          margin-right: 15px;
         }
       }
       /*内容*/
@@ -366,14 +359,7 @@
         overflow: hidden;
         /*筛选*/
         .follow_filter {
-          background-color: #eeeeee;
-          color: #333333;
-          padding-left: 15px;
-          padding-top: 10px;
           .follow_form {
-            .el-form-item {
-              margin-bottom: 10px;
-            }
             .follow_select {
               width: 90px;
             }
@@ -392,12 +378,6 @@
         }
         .follow_list {
           height: calc( 100% - 190px);
-          font-size: 14px;
-          margin-top: 24px;
-        }
-        .page-wrap{
-          margin-top: 24px;
-          height: 40px;
         }
       }
     }

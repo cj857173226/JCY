@@ -382,32 +382,18 @@
   }
 @media (max-width: 1440px) {
   #newsAnalysis {
-    position: relative;
-    height: 100%;
-    font-size: 16px;
     /*头部*/
     .newsAnalysis_header {
       height: 50px;
-      background-color: #c0ecaa;
       .header_left {
-        float: left;
         height: 50px;
         width: 40%;
         line-height: 50px;
-        text-align: center;
       }
       .header_right {
-        float: right;
         width: calc(40% - 16px);
-        height: 100%;
         .header_form {
           margin-top: 5px;
-          .el-form-item {
-            margin-bottom: 0;
-          }
-          .provinces_select {
-            width: 108px;
-          }
           .provinces_search {
             width: 130px;
             .provinces_icon {
@@ -421,76 +407,7 @@
     }
     /*内容*/
     #newsAnalysis_body {
-      position: relative;
       height: calc(100% - 50px);
-      padding: 16px;
-      #newsAnalysis_main {
-        float: left;
-        height: 100%;
-        width: 60%;
-      }
-      .map_return {
-        position: absolute;
-        top: 25px;
-        left: 25px;
-        &:hover {
-          cursor: pointer;
-          color: #00a0e9;
-          user-select: none;
-        }
-      }
-      #region_list {/*地区列表*/
-        float: right;
-        font-size: 14px;
-        width: calc(40% - 16px);
-        height: calc(100% - 40px);
-        overflow-y: auto;
-        overflow-x: hidden;
-        margin: 0;
-        padding: 0;
-        li {
-          border-bottom: 1px solid #dcdcdc;
-          border-left: 1px solid #dcdcdc;
-          border-right: 1px solid #dcdcdc;
-          height: 40px;
-          line-height: 40px;
-          box-sizing: border-box;
-          &:nth-child(even) {
-            background-color: #eee;
-          }
-          /*&:first-child {*/
-          /*background-color: #c0ecaa;*/
-          /*border-top: 1px solid #dcdcdc;*/
-          /*}*/
-          p {
-            position: relative;
-            display: inline-block;
-            width: 50%;
-            text-align: center;
-            margin-right: -3px;
-            &:first-child {
-              &:after {
-                position: absolute;
-                right: 0;
-                top: 0;
-                content: "";
-                height: 100%;
-                width: 1px;
-                background-color: #dcdcdc;
-              }
-            }
-          }
-        }
-      }
-      #region_list_header {
-        overflow: hidden;
-        height: auto;
-        background-color: #c0ecaa;
-        li {
-          background-color: #c0ecaa;
-          border-top: 1px solid #dcdcdc;
-        }
-      }
     }
   }
 }

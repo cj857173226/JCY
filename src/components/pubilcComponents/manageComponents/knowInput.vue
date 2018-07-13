@@ -43,20 +43,12 @@
         </div>
         <div class="detail-item">
           <span class="item-title">内容</span>
-          <!--<pre style="clear: both">-->
-            <!--{{editorText}}-->
-          <!--</pre>-->
           <textarea id="textarea" v-show="type=='Modify'" cols="30" rows="10" v-model="editorText"></textarea>
           <div v-show="type=='Add'" id="result-edit" style="clear: both;"></div>
-          <!--<editor id="result-edit" height="300px" width="100%" v-bind:content="editorText"-->
-                  <!--pluginsPath="@/../static/kindeditor/plugins/"-->
-                  <!--:loadStyleMode="true"-->
-                  <!--@on-content-change="onContentChange"-->
-                  <!--:items="items"></editor>-->
           </div>
-        <div id="submit-btn" @click="submitBtn">
+        <button id="submit-btn" @click="submitBtn" ref="submitBtn">
           提交
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -110,7 +102,9 @@
       submitBtn(){
         let _this = this;
         let url;
-        // _this.editorText = _this.editor.getPlainTxt();
+        let btn = _this.$refs.submitBtn;
+        btn.setAttribute('disabled',"disabled");
+        btn.style.cursor = 'not-allowed';
         let data= {
           Title: _this.Title,//标题
             Content: _this.editorText,//内容,
@@ -142,6 +136,8 @@
               message: '操作成功',
               type: 'success'
             });
+            btn.removeAttribute('disabled');
+            btn.style.cursor = 'pointer';
           }
           console.log(res)
         }).catch(function(err){
@@ -150,6 +146,8 @@
             message: '操作失败,请重试',
             type: 'error'
           });
+          btn.removeAttribute('disabled');
+          btn.style.cursor = 'pointer';
           console.log(err)
         })
       }
@@ -179,7 +177,6 @@
               _this.BH = data.BH;
               _this.editorText = data.NR;
               _this.isLoading = false;
-              // _this.editor.setContent(data.NR,false);
             }
           }).catch(function(err){
             _this.isLoading = false;
@@ -194,6 +191,7 @@
           _this.Site = "";
           _this.SiteName = "";
           _this.DataType = "";
+          _this.editorText = "";
           _this.editor.setContent("");
         }
         console.log(this.knowledgeData)
@@ -321,6 +319,7 @@
           margin-top: 10px;
           cursor: pointer;
           margin-bottom: 20px;
+          border: none;
         }
         #submit-btn:hover{
           background: #0aba69;
