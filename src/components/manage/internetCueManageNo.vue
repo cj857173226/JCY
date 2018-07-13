@@ -39,12 +39,8 @@
                         range-separator="-"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
-                        
                     </el-date-picker>
                 </div>
-            </div>
-            <div class="manage-icon">
-                <i @click="addInternet"  class="el-icon-circle-plus-outline"></i>
             </div>
         </div>
         <div id="content" ref="cueList" v-loading = "isLoad">
@@ -84,16 +80,16 @@
                 </el-table-column>
                 <el-table-column
                     label="所属地域"
-                    min-width="100">
+                    min-width="300">
                     <template slot-scope="scope">
-                        <p>四川省成都市</p>
+                        <el-button style="padding:0" type = "text" @click="chooseCity">{{scope.row.SSDY}}</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
                     label="所属领域"
                     min-width="130">
                     <template slot-scope="scope">
-                        <el-select v-model="XSLB">
+                        <el-select v-model="scope.row.XSLB">
                             <el-option value="食药安全">食药安全</el-option>
                             <el-option value="英烈保护">英烈保护</el-option>
                             <el-option value="国有财产">国有财产</el-option>
@@ -108,7 +104,7 @@
                     label="所属门类"
                     min-width="130">
                     <template slot-scope="scope">
-                        <el-select v-model="XSML">
+                        <el-select v-model="scope.row.XSML">
                             <el-option value="公益诉讼">公益诉讼</el-option>
                             <el-option value="贪污腐败">贪污腐败</el-option>
                         </el-select>
@@ -141,10 +137,17 @@
             :total="totalPages">
             </el-pagination>
         </div>
+        <el-dialog @close="closeCity" width="250px" title="选择省市" :visible.sync="isChooseCity">
+            <div id="choose-city" style="height: 55px"> 
+                <area-cascader type="text" :data = "pca" v-model="citySelected"></area-cascader>
+                <el-button style="float:right" type="text" @click="chooseCity">确定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+import { pca, pcaa } from 'area-data';
 export default {
     data(){
         return{
@@ -156,6 +159,28 @@ export default {
                     FBSJ:'2014-04-28 00:00:00', //发布时间
                     CJSJ:'2018-06-21 07:17:14', //采集时间
                     XSLY:'互联网线索', //线索来源
+                    SSDY:'请选择',
+                    XSLB:'', //所属领域
+                    XSML:'', //所属门类
+                    GJC:'', //关键词
+                    RENM:'', //人名
+                    DIM:'', //地名
+                    JIGOUM:'', //机构名
+                    ZY:'', //摘要
+                },
+                {
+                    ZY:'来访方式：来信案件编号：06-242案件标题：梁平县重庆泰山电缆厂噪声振动扰民来信时间：2006-05-20发布时间：2006-06-02来访者：张先',//内容
+                    FBSJ:'2014-04-28 00:00:00', //发布时间
+                    CJSJ:'2018-06-21 07:17:14', //采集时间
+                    XSLY:'互联网线索', //线索来源
+                    SSDY:'请选择',
+                    XSLB:'', //所属领域
+                    XSML:'', //所属门类
+                    GJC:'', //关键词
+                    RENM:'', //人名
+                    DIM:'', //地名
+                    JIGOUM:'', //机构名
+                    ZY:'', //摘要
                 }
             ],
             siteList:[   //采集网站
@@ -169,19 +194,11 @@ export default {
             order:'cjsj',//排序方式
             timeSearch:'', //时间范围
 
-            ZY:'',//内容
-            FBSJ:'', //发布时间
-            CJSJ:'', //采集时间
-            XSLY:'', //线索来源
 
-            SSDY:'', //所属地域
-            XSLB:'', //所属领域
-            XSML:'', //所属门类
-            GJC:'', //关键词
-            RENM:'', //人名
-            DIM:'', //地名
-            JIGOUM:'', //机构名
-            ZY:'', //摘要
+            isChooseCity:false,
+            pca: pca,
+            pcaa: pcaa,
+            citySelected:[],
         }
     },
     mounted(){
@@ -190,6 +207,20 @@ export default {
         // _this.getInternetCueList(); //获取互联网线索列表
     },
     methods:{
+        //关闭选择城市
+        closeCity(){
+            this.citySelected = [];
+        },
+        //查看详情
+        chooseCity(){
+            if(this.citySelected.length != 0){
+                console.log(this.citySelected);
+                this.SSDY = this.citySelected[0] + this.citySelected[1];
+            }
+            this.citySelected = [];
+            console.log(this.citySelected);
+            this.isChooseCity = !this.isChooseCity;
+        },
         // 页码跳转
         pageTo(curr) {
             let _this = this ;
