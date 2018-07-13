@@ -50,8 +50,8 @@ import complete from '../components/pages/subordinatePage/complete'//完成
 
 //管理模块
 import reviewInternetCue from '../components/manage/reviewInternetCue' //审核互联网线索
-// import knowledgeInput from '../components/manage/knowledgeInput' //知识库录入
 import knowledgeInput from '../components/manage/knowledgeManage' //知识库录入
+import internetCueManage from '../components/manage/internetCueManage' //互联网线索管理
 Vue.use(Router)
 
 let router =  new Router({
@@ -234,6 +234,14 @@ let router =  new Router({
           component:knowledgeInput,
           meta:{
             name: '知识库录入',
+          }
+        },
+        {
+          path:'internetCueManage',
+          name:internetCueManage,
+          component:internetCueManage,
+          meta:{
+            name: '互联网线索管理',
           }
         },
       ]

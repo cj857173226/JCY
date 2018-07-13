@@ -61,7 +61,6 @@
       </div>
       <div class="cue-list" ref="cueList" v-loading="isLoad">
         <el-table
-
           ref="oTable"
           :data=" internetCueList"
           :max-height="tableH"

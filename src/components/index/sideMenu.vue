@@ -154,6 +154,13 @@
           </el-menu-item>
         </router-link>
 
+        <router-link to="/home/internetCueManage">
+          <el-menu-item index="7-3" :class="isThisNav == '互联网线索管理'?'is-active':''" @click="switchNav('互联网线索管理')">
+            <i class="fa fa-window-restore"></i>
+            <span slot="title">互联网线索管理</span>
+          </el-menu-item>
+        </router-link>
+
       </el-menu-item-group>
     </el-submenu>
 
