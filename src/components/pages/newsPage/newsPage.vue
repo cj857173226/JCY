@@ -56,8 +56,6 @@ export default {
     handleScroll(){
       var _this = this;
       var content = document.getElementById("news-content");
-      console.log(Math.ceil(content.scrollTop)+content.offsetHeight);
-      console.log(content.scrollHeight);
       if(Math.ceil(content.scrollTop)+content.offsetHeight >= content.scrollHeight){
         if(!this.noMoreData){
           this.loadMore = true;

@@ -132,7 +132,7 @@
       </el-menu-item-group>
     </el-submenu>
 
-    <el-submenu index="7" v-if="IdentityType==1?true:false">
+    <!-- <el-submenu index="7" v-if="IdentityType==1?true:false">
 
       <template slot="title">
         <i class="fa fa-database"></i>
@@ -174,7 +174,7 @@
               </el-menu-item>
             </router-link>
           </el-menu-item-group>
-        </el-submenu>
+        </el-submenu> -->
 
       </el-menu-item-group>
     </el-submenu>

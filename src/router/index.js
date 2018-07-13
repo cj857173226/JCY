@@ -221,38 +221,38 @@ let router =  new Router({
             name: '已反馈',
           }
         },
-        {
-          path:'reviewInternetCue',
-          name:reviewInternetCue,
-          component:reviewInternetCue,
-          meta:{
-            name: '审核线索',
-          }
-        },
-        {
-          path:'knowledgeInput',
-          name:knowledgeInput,
-          component:knowledgeInput,
-          meta:{
-            name: '知识库录入',
-          }
-        },
-        {
-          path:'internetCueManageNo',
-          name:internetCueManageNo,
-          component:internetCueManageNo,
-          meta:{
-            name: '互联网未处理',
-          }
-        },
-        {
-          path:'internetCueManageYes',
-          name:internetCueManageYes,
-          component:internetCueManageYes,
-          meta:{
-            name: '互联网已处理',
-          }
-        },
+        // {
+        //   path:'reviewInternetCue',
+        //   name:reviewInternetCue,
+        //   component:reviewInternetCue,
+        //   meta:{
+        //     name: '审核线索',
+        //   }
+        // },
+        // {
+        //   path:'knowledgeInput',
+        //   name:knowledgeInput,
+        //   component:knowledgeInput,
+        //   meta:{
+        //     name: '知识库录入',
+        //   }
+        // },
+        // {
+        //   path:'internetCueManageNo',
+        //   name:internetCueManageNo,
+        //   component:internetCueManageNo,
+        //   meta:{
+        //     name: '互联网未处理',
+        //   }
+        // },
+        // {
+        //   path:'internetCueManageYes',
+        //   name:internetCueManageYes,
+        //   component:internetCueManageYes,
+        //   meta:{
+        //     name: '互联网已处理',
+        //   }
+        // },
       ]
     },
     {

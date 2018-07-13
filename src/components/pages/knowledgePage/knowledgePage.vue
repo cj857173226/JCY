@@ -61,7 +61,6 @@ export default {
       var _this = this;
       var content = document.getElementById("knowledge-content");
       if(Math.ceil(content.scrollTop)+content.offsetHeight >= content.scrollHeight){
-        console.log(1);
         if(!this.noMoreData){
           this.loadMore = true;
           this.pageNum += 1;
