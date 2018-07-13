@@ -80,8 +80,8 @@ button:active{
   /*表格组件样式覆盖*/
   .el-table td,
   .el-table th{
-    padding: 0;
-    height: 40px;
+    padding: 0!important;
+    height: 40px!important;
     text-align: center;
   }
 
@@ -141,8 +141,8 @@ button:active{
   @media (max-width: 1440px) {
     .el-table td,
     .el-table th{
-      padding: 0;
-      height: 32px;
+      padding: 0!important;
+      height: 32px!important;
       text-align: center;
     }
     .el-table .cell{
