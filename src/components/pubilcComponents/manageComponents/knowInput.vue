@@ -1,4 +1,5 @@
 <template>
+  <transition name="toggleShow">
   <div id="knowBox" v-show="isShow">
     <div id="knowledgeInput">
       <div id="knowledge-header">
@@ -52,6 +53,7 @@
       </div>
     </div>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -212,6 +214,14 @@
     width: 100%;
     background-color: rgba(0,0,0,.4);
     z-index: 1000;
+    &.toggleShow-enter-active,
+    &.toggleShow-leave-active {
+      transition: opacity .5s;
+    }
+    &.toggleShow-enter,
+    &.toggleShow-leave-to {
+      opacity: 0;
+    }
     #knowledgeInput{
       position: absolute;
       left: 50%;
