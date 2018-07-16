@@ -127,16 +127,58 @@
         isReturn: false,//返回按钮显示
         provinces: "",//省份
         provincesSearch: "",//搜索省份,
-        clickMapStatus: true//点击省份
+        clickMapStatus: true,//点击省份
+        myChart: "",
+        nowMoveData: [],
+        moveData: [//移入提示
+          {name: '北京'},
+          {name: '天津'},
+          {name: '上海'},
+          {name: '重庆'},
+          {name: '河北'},
+          {name: '河南'},
+          {name: '云南'},
+          {name: '辽宁'},
+          {name: '黑龙江'},
+          {name: '湖南'},
+          {name: '安徽'},
+          {name: '山东'},
+          {name: '新疆'},
+          {name: '江苏'},
+          {name: '浙江'},
+          {name: '江西'},
+          {name: '湖北'},
+          {name: '广西'},
+          {name: '甘肃'},
+          {name: '山西'},
+          {name: '内蒙古'},
+          {name: '陕西'},
+          {name: '吉林'},
+          {name: '福建'},
+          {name: '贵州'},
+          {name: '广东'},
+          {name: '青海'},
+          {name: '西藏'},
+          {name: '四川'},
+          {name: '宁夏'},
+          {name: '海南'},
+          {name: '台湾'},
+          {name: '香港'},
+          {name: '澳门'}
+        ]
       }
     },
     methods : {
       //图表初始化
       initChart() {
+        if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
+          this.myChart.dispose();
+        }
         let myChart = echarts.init(document.getElementById('newsAnalysis_main'));
         let option =  this.getOption();
         let _this = this;
         myChart.setOption(option);
+        this.myChart = myChart;
         if(this.clickMapStatus) {
           _this.echartClick(myChart);//添加点击省份
         }
@@ -156,10 +198,7 @@
                   let x = item.JWD.split(",")[0];
                   let y = item.JWD.split(",")[1];
                   let val = item.PC;
-                  if(index%5==0) {
-                    data.push([x, y, val]);
-                  }
-                  // data.push([x, y, val]);
+                  data.push([x, y, val]);
                 }
               });
               _this.optionData = data;
@@ -177,6 +216,11 @@
         let _this = this;
         if(_this.clickMapStatus) {
           myChart.on('click', function (params) {
+            _this.axios({
+              url: '@/.././static/map/province/' + params.name + '.json'
+            }).then(function(res){
+              console.log(res.data)
+            })
             _this.mapType = params.name;
             _this.clickMapStatus = false;
             _this.initChart();
@@ -194,52 +238,107 @@
       //获取option设置
       getOption() {
         let _this = this;
-        let option =  {
-          backgroundColor: '#eee',
-          // title : {
-          //   text: '全国检察机关公益诉讼新闻热力图',
-          //   x:'center',
-          //   textStyle: {
-          //     color: 'black',
-          //     fontSize: 18
-          //   }
-          // },
-          tooltip : {
-            trigger: 'item',
-            formatter: '{b}'
-          },
-          series : [
-            {
-              name: '北京',
-              type: 'map',
-              mapType: _this.mapType,
-              roam: false,
-              hoverable: true,
-              data:[],
-              heatmap: {
-                minAlpha: 0.1,
-                data: _this.optionData
-              },
-              itemStyle:{
-                normal:{
-                  label:{
-                    show:true,
-                    textStyle:{
-                      fontSize : '14',
-                      fontFamily:'Microsoft YaHei',
-                      color:'#fff'
-                    }
-                  },
-                  borderColor:'#a4d2ec',
-                  borderWidth:1,
-                  areaStyle:{
-                    color: '#3f7696'
-                  }
-                }
-              }
+        var option = {
+          title: {
+            text: '全国',
+            left: 'center',
+            textStyle: {
+              color: '#000'
             }
-          ]
+          },
+          backgroundColor: '#fff',
+          visualMap: {
+            min: 0,
+            max: 500,
+            splitNumber: 5,
+            inRange: {
+              color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+            },
+            textStyle: {
+              color: '#000'
+            }
+          },
+          geo: {
+            map: _this.mapType,
+            label: {
+              normal:{
+                show:true,
+                textStyle:{
+                  color:'#fff',
+                  fontSize:13
+                }
+              },
+            },
+            roam: true,
+            itemStyle: {
+              normal: {
+                areaColor: '#3f7696',
+                borderColor: '#a4d2ec'
+              },
+              emphasis: {
+                areaColor: '#a4d2ec'
+              }
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: function (params) {
+                console.log(params);
+                return params.name ;
+              }
+            },
+          },
+          series: [
+            {
+            name: _this.mapType,
+            type: 'heatmap',
+            coordinateSystem: 'geo',
+            data: _this.optionData,
+          },
+            {
+              type: 'map',
+              geoIndex: 0,
+              data: _this.nowMoveData
+            }
+          ],
         };
+        // let option =  {
+        //   backgroundColor: '#eee',
+        //   tooltip : {
+        //     trigger: 'item',
+        //     formatter: '{b}'
+        //   },
+        //   series : [
+        //     {
+        //       name: '北京',
+        //       type: 'map',
+        //       mapType: _this.mapType,
+        //       roam: false,
+        //       hoverable: true,
+        //       data:[],
+        //       heatmap: {
+        //         minAlpha: 0.1,
+        //         data: _this.optionData
+        //       },
+        //       itemStyle:{
+        //         normal:{
+        //           label:{
+        //             show:true,
+        //             textStyle:{
+        //               fontSize : '14',
+        //               fontFamily:'Microsoft YaHei',
+        //               color:'#fff'
+        //             }
+        //           },
+        //           borderColor:'#a4d2ec',
+        //           borderWidth:1,
+        //           areaStyle:{
+        //             color: '#3f7696'
+        //           }
+        //         }
+        //       }
+        //     }
+        //   ]
+        // };
         return option;
       },
       //窗口改变重绘图表
