@@ -9,15 +9,19 @@
       return {
         optionData: "",
         isLoading: false,
-        isReturn: false,//返回按钮显示
+        myChart: "",
       }
     },
     methods : {
       //图表初始化
       initChart() {
+        if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
+          this.myChart.dispose();
+        }
         let myChart = echarts.init(document.getElementById('heatmap_main'));
         let option =  this.getOption();
         myChart.setOption(option);
+        this.myChart = myChart;
       },
       getChinaData() {
         let _this = this;
@@ -25,7 +29,7 @@
         _this.isLoading = true;
         _this.axios({
           url: webApi.Host + webApi.News.GetCityFreq,
-          timeout: 5000,
+          timeout: 15000,
         })
           .then(function(res){
             if(res.data.code==0) {
@@ -34,9 +38,7 @@
                   let x = item.JWD.split(",")[0];
                   let y = item.JWD.split(",")[1];
                   let val = item.PC;
-                  if(index%5==0) {
-                    data.push([x, y, val]);
-                  }
+                  data.push([x, y, val]);
                 }
               });
               _this.optionData = data;
@@ -52,51 +54,62 @@
       //获取option设置
       getOption() {
         let _this = this;
-        let option =  {
-          backgroundColor: '#fff',
-          title : {
-            text: '全国检察机关公益诉讼新闻热力图',
-            x:'center',
+        var option = {
+          title: {
+            text: "全国检察机关公益诉讼新闻热力图",
+            left: 'center',
             textStyle: {
-              color: 'black',
+              color: '#000',
               fontSize: 18
             }
           },
-          tooltip : {
-            trigger: 'item',
-            formatter: '{b}'
+          backgroundColor: '#fff',
+          visualMap: {
+            show: false,
+            min: 0,
+            max: 300,
+            splitNumber: 5,
+            inRange: {
+              color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+            },
+            textStyle: {
+              color: '#000'
+            }
           },
-          series : [
-            {
-              name: '北京',
-              type: 'map',
-              mapType: 'china',
-              roam: false,
-              hoverable: true,
-              data:[],
-              heatmap: {
-                minAlpha: 0.1,
-                data: _this.optionData
-              },
-              itemStyle:{
-                normal:{
-                  label:{
-                    show:true,
-                    textStyle:{
-                      fontSize : '14',
-                      fontFamily:'Microsoft YaHei',
-                      color:'#fff'
-                    }
-                  },
-                  borderColor:'#a4d2ec',
-                  borderWidth:1,
-                  areaStyle:{
-                    color: '#3f7696'
-                  }
+          geo: {
+            map: 'china',
+            label: {
+              normal:{
+                show:true,
+                textStyle:{
+                  color:'#fff',
+                  fontSize:13
                 }
+              },
+              emphasis: {
+                color: 'green'
+              }
+            },
+            roam: false,
+            itemStyle: {
+              normal: {
+                areaColor: '#3f7696',
+                borderColor: '#a4d2ec'
+              },
+              emphasis: {
+                areaColor: '#a4d2ec'
               }
             }
-          ]
+          },
+          series: [
+            {
+              name: 'china',
+              type: 'heatmap',
+              coordinateSystem: 'geo',
+              data: _this.optionData,
+              center: [ '50%' , '50%'],
+            },
+          ],
         };
         return option;
       },

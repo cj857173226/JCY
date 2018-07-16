@@ -13,10 +13,10 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :lg="16">
+      <el-col :lg="12">
         <heatmap></heatmap>
       </el-col>
-      <el-col :lg="8">
+      <el-col :lg="12">
         <!--关键词图表-->
         <word-cloud></word-cloud>
         <!--线索领域占比图-->
@@ -30,7 +30,8 @@
           <!--标题-->
           <div class="text_head">
             <span>新闻动态</span>
-            <router-link tag="span" to="home/news">更多>></router-link>
+            <span @click="clickMore('home/news')">更多>></span>
+            <!--<router-link tag="span" to="home/news">更多>></router-link>-->
           </div>
           <!--内容-->
           <ul class="text_body" v-loading="newsLoading">
@@ -53,7 +54,8 @@
           <!--标题-->
           <div class="text_head">
             <span>理论研究 | 法律规章</span>
-            <router-link tag="span" to="/home/knowledge">更多>></router-link>
+            <!--<router-link tag="span" to="/home/knowledge">更多>></router-link>-->
+            <span @click="clickMore('/home/knowledge')">更多>></span>
           </div>
           <!--内容-->
           <ul class="text_body" v-loading="knowLoading">
@@ -96,6 +98,10 @@
       }
     },
     methods: {
+      //点击更多,跳转(新闻,知识库)
+      clickMore(path) {
+        this.$router.push({path:path});
+      },
       //跳转详情
       details(type,id) {
         let path = "";
@@ -192,17 +198,17 @@
           console.log(err)
         })
 
-        _this.axios({
-          method: 'post',
-          url: webApi.Host + webApi.Stats.CountReciveClues,
-          timeout: 2000
-        }).then(function(res){
-          if(res.data.code==0){
-            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data,icon:'fa-check-circle'});
-          }
-        }).catch(function(err){
-          console.log(err)
-        })
+        // _this.axios({
+        //   method: 'post',
+        //   url: webApi.Host + webApi.Stats.CountReciveClues,
+        //   timeout: 2000
+        // }).then(function(res){
+        //   if(res.data.code==0){
+        //     setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data,icon:'fa-check-circle'});
+        //   }
+        // }).catch(function(err){
+        //   console.log(err)
+        // })
       }
     },
     mounted() {
