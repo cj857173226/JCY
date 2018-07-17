@@ -4,26 +4,25 @@
       <div class="header_left">
         检察机关公益诉讼新闻热力图
       </div>
-      <div class="header_right">
-        <el-form :inline="true" class="header_form">
-          <el-form-item >
-            <i  class="fa fa-th"></i>
-          </el-form-item>
-          <el-form-item label="选择省份 :">
-            <el-select class="provinces_select" v-model="provinces">
-              <el-option label="全部" value="quanbu"></el-option>
-              <el-option label="四川" value="sichuan"></el-option>
-              <el-option label="北京" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
+      <!--<div class="header_right">-->
+        <!--<el-form :inline="true" class="header_form">-->
+          <!--<el-form-item >-->
+            <!--<i  class="fa fa-th"></i>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="选择省份 :">-->
+            <!--<area-select style="line-height: 100%;margin-top: 4px;" class="provinces_select" :level="0" type="text" :data = "pcaa" v-model="citySelected"></area-select>-->
+            <!--&lt;!&ndash;<el-select class="provinces_select" v-model="provinces_select">&ndash;&gt;-->
+              <!--&lt;!&ndash;<el-option v-for="(item,index) in provinces" :key="index" :label="item.DM" :value="item.DM"></el-option>&ndash;&gt;-->
+            <!--&lt;!&ndash;</el-select>&ndash;&gt;-->
+          <!--</el-form-item>-->
 
-          <el-form-item >
-            <el-input  class="provinces_search" v-model="provincesSearch" placeholder="搜索省份">
-              <i  slot="suffix" class="provinces_icon iconfont icon-sousuo" @click="search"></i>
-            </el-input>
-          </el-form-item>
-        </el-form>
-      </div>
+          <!--<el-form-item >-->
+            <!--<el-input  class="provinces_search" v-model="provincesSearch" placeholder="搜索省份">-->
+              <!--<i  slot="suffix" class="provinces_icon iconfont icon-sousuo" @click="search"></i>-->
+            <!--</el-input>-->
+          <!--</el-form-item>-->
+        <!--</el-form>-->
+      <!--</div>-->
     </div>
     <div id="newsAnalysis_body">
       <div id="newsAnalysis_main" ref="heatmap" v-loading="isLoading">
@@ -50,6 +49,7 @@
 </template>
 
 <script>
+  import { pca, pcaa } from 'area-data';
   export default {
     data() {
       return {
@@ -57,12 +57,17 @@
         isLoading: false,
         mapType: 'china',//地图类型
         mapTitle: '全国',//地名名称
+        max: '',//
         isReturn: false,//返回按钮显示
+        provinces_select: '',//选择省份
         provinces: "",//省份
         provincesSearch: "",//搜索省份,
         freqData: "",//地区频次数据
         clickMapStatus: true,//点击省份
         myChart: "",
+        pca: pca,
+        pcaa: pcaa,
+        citySelected:[],
       }
     },
     methods : {
@@ -97,6 +102,9 @@
           .then(function(res){
             if(res.data.code==0) {
               _this.freqData = res.data.data;
+              if(!_this.provinces) {
+                _this.provinces = res.data.data;
+              }
               res.data.data.forEach(function(item,index){
                 if(item.JWD) {
                   let x = item.JWD.split(",")[0];
@@ -134,12 +142,18 @@
         this.mapType = 'china';
         this.mapTitle = "全国";
         this.clickMapStatus = true;
-        this.initChart();
+        this.getChinaData();
         this.isReturn = false;
       },
       //获取option设置
       getOption() {
         let _this = this;
+        let max;
+        if(_this.mapType=="china") {
+          max = 300;
+        }else {
+          max = 10;
+        }
         var option = {
           title: {
             text: _this.mapTitle,
@@ -151,10 +165,11 @@
           backgroundColor: '#fff',
           visualMap: {
             min: 0,
-            max: 300,
+            max: max,
             splitNumber: 5,
             inRange: {
-              color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+              // color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+              color: ['blue', 'blue', 'green', 'yellow', 'red']
             },
             textStyle: {
               color: '#000'
@@ -222,6 +237,11 @@
       this.getChinaData();
       this.hasScroll();
     },
+    watch: {
+      provinces_select() {
+        console.log(this.provinces_select)
+      }
+    },
     destroyed() {
       window.removeEventListener('resize',this.initChart);
     }
@@ -254,9 +274,14 @@
           margin-top: 10px;
           .el-form-item {
             margin-bottom: 0;
-          }
-          .provinces_select {
-            width: 108px;
+            .provinces_search {
+              width: 110px;
+              .provinces_icon {
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
           }
         }
       }
@@ -310,6 +335,9 @@
             width: 50%;
             text-align: center;
             margin-right: -3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             &:first-child {
               &:after {
                 position: absolute;
@@ -350,14 +378,6 @@
         width: calc(40% - 16px);
         .header_form {
           margin-top: 5px;
-          .provinces_search {
-            width: 130px;
-            .provinces_icon {
-              &:hover {
-                cursor: pointer;
-              }
-            }
-          }
         }
       }
     }
