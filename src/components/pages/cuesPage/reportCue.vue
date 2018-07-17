@@ -171,7 +171,7 @@
         let _this = this;
         _this.axios({
           methods:'get',
-          url:webApi.Host + webApi.Clue.GetReportCluesTypes
+          url:webApi.Host + webApi.Clue.GetClueTypes
         }).then(function(res){
           if(res.data.code == 0){
             let data = res.data.data;

@@ -81,7 +81,7 @@ button:active{
   .el-table td,
   .el-table th{
     padding: 0!important;
-    height: 40px;
+    height: 40px!important;
     text-align: center;
   }
 
@@ -142,7 +142,7 @@ button:active{
     .el-table td,
     .el-table th{
       padding: 0!important;
-      height: 32px;
+      height: 32px!important;
       text-align: center;
     }
     .el-table .cell{

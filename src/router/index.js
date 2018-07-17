@@ -16,7 +16,8 @@ import internetCue from '../components/pages/cuesPage/internetCue'
 import welfareCue from '../components/pages/cuesPage/welfareCue'
   //热点线索
 import heartCue  from '../components/pages/cuesPage/heartCue'
-
+  //自行發現綫索
+import selfDiscovery from '../components/pages/cuesPage/selfDiscovery'
 //关注线索
 import followCue from '../components/pages/cuesPage/followCue'
 
@@ -48,11 +49,6 @@ import waitFeedback from '../components/pages/subordinatePage/waitFeedback'//待
 import complete from '../components/pages/subordinatePage/complete'//完成
 
 
-//管理模块
-import reviewInternetCue from '../components/manage/reviewInternetCue' //审核互联网线索
-import knowledgeInput from '../components/manage/knowledgeManage' //知识库录入
-import internetCueManageNo from '../components/manage/internetCueManageNo' //互联网线索管理未审批
-import internetCueManageYes from '../components/manage/internetCueManageYes' //互联网线索管理已审批
 Vue.use(Router)
 
 let router =  new Router({
@@ -104,6 +100,15 @@ let router =  new Router({
           meta:{
             keepAlive: true,
             name:'热点线索'
+          }
+        },
+        {
+          path:'selfDiscovery',
+          name:selfDiscovery,
+          component:selfDiscovery,
+          meta:{
+            keepAlive: true,
+            name:'自行发现线索'
           }
         },
         {
@@ -221,38 +226,6 @@ let router =  new Router({
             name: '已反馈',
           }
         },
-        // {
-        //   path:'reviewInternetCue',
-        //   name:reviewInternetCue,
-        //   component:reviewInternetCue,
-        //   meta:{
-        //     name: '审核线索',
-        //   }
-        // },
-        // {
-        //   path:'knowledgeInput',
-        //   name:knowledgeInput,
-        //   component:knowledgeInput,
-        //   meta:{
-        //     name: '知识库录入',
-        //   }
-        // },
-        // {
-        //   path:'internetCueManageNo',
-        //   name:internetCueManageNo,
-        //   component:internetCueManageNo,
-        //   meta:{
-        //     name: '互联网未处理',
-        //   }
-        // },
-        // {
-        //   path:'internetCueManageYes',
-        //   name:internetCueManageYes,
-        //   component:internetCueManageYes,
-        //   meta:{
-        //     name: '互联网已处理',
-        //   }
-        // },
       ]
     },
     {

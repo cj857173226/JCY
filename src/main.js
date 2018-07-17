@@ -9,13 +9,16 @@ import ElementUI from 'element-ui'; //引入element-ui
 import 'font-awesome/css/font-awesome.css'; //引入font awsome字体图标
 import '../src/static/webApi.js'; //引入接口
 import '../src/static/common.js';
+import registerMap from '../src/static/map.js'; //引入注册地图
 import vueKindEditor from 'vue-kindeditor'
 import '../static/kindeditor/kindeditor-all.js'
 import '../static/kindeditor/themes/default/default.css'
 import '../static/kindeditor/lang/zh-CN'
+import echarts from 'echarts' //引入echarts
+import 'echarts-wordcloud' //引入echarts文字云
 
 import VueAreaLinkage from 'vue-area-linkage';
-import 'vue-area-linkage/dist/index.css'; 
+import 'vue-area-linkage/dist/index.css';
 
  //axios请求拦截器
 axios.interceptors.request.use(config=>{
@@ -53,6 +56,7 @@ axios.interceptors.response.use(response=>{
 
 Vue.use(ElementUI);   //使用elementUi
 Vue.prototype.axios = axios; //vue原型上挂载axios
+Vue.prototype.echarts = echarts; //vue原型上挂载echarts
 Vue.config.productionTip = false
 Vue.use(vueKindEditor)
 Vue.use(VueAreaLinkage)
@@ -71,7 +75,7 @@ new Vue({
     }
   },
   mounted(){
-
+    registerMap(this)//注册地图
   }
 })
 
