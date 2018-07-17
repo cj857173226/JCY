@@ -110,8 +110,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small">移除</el-button>
+              <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
+              <el-button @click='remove(scope.row.XSBH)' type="text" size="small">移除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -176,14 +176,17 @@
         time = year + '-' + month + '-' + day;
         return time;
       },
-      remove(index,id) {//移除关注
+      remove(id) {//移除关注
         let url = (webApi.ClueManager.UnFollowClue).format({id: id});
+        console.log(url);
         this.axios({
           method: 'post',
           url: url,
-          timeout: 2000,
+          timeout: 5000,
         }).then(function(res){
-          console.log(res)
+          if(res.data.code==0){
+             this.getFollowList();
+          }
         }).catch(function(err){
           console.log(err)
         })
@@ -250,7 +253,6 @@
             _this.pageSize = res.data.data.pageSize;
             _this.isLoading = false;
           }
-          console.log(res)
         }).catch(function(err){
           _this.isLoading = false;
         })
