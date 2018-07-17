@@ -86,7 +86,7 @@
                 textPadding: 0,
                 autoSize: {
                   enable: true,
-                  minSize: 16
+                  minSize: 14
                 },
                 data: data
               }]

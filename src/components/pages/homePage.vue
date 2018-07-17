@@ -186,17 +186,17 @@
           console.log(err)
         })
 
-        _this.axios({
-          method: 'post',
-          url: webApi.Host + webApi.Stats.CountUnReciveClues,
-          timeout: 2000,
-        }).then(function(res){
-          if(res.data.code==0){
-            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
-          }
-        }).catch(function(err){
-          console.log(err)
-        })
+        // _this.axios({
+        //   method: 'post',
+        //   url: webApi.Host + webApi.Stats.CountUnReciveClues,
+        //   timeout: 2000,
+        // }).then(function(res){
+        //   if(res.data.code==0){
+        //     setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
+        //   }
+        // }).catch(function(err){
+        //   console.log(err)
+        // })
 
         // _this.axios({
         //   method: 'post',
