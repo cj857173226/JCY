@@ -33,7 +33,7 @@
       </div>
       <ul id="region_list_header" ref="listHeader">
         <li>
-          <p>省份</p>
+          <p>{{listName}}</p>
           <p>总量/条</p>
         </li>
       </ul>
@@ -57,6 +57,7 @@
         isLoading: false,
         mapType: 'china',//地图类型
         mapTitle: '全国',//地名名称
+        listName: "省份",//
         max: '',//
         isReturn: false,//返回按钮显示
         provinces_select: '',//选择省份
@@ -117,6 +118,9 @@
               _this.initChart();//初始化图表
               _this.isLoading = false;
               _this.resizeWindow();
+              _this.$nextTick(()=>{
+                _this.hasScroll();
+              })
             }
           }).catch(function(err) {
           _this.isLoading = false;
@@ -131,6 +135,7 @@
             if(params.name!="台湾"){
               _this.mapType = params.name;
               _this.mapTitle = params.name;
+              _this.listName = '市区';
               _this.clickMapStatus = false;//设置点击状态(为true则添加点击事件)
               _this.getChinaData();//获取数据
               _this.isReturn = true;//返回全国地图
@@ -141,6 +146,7 @@
       returnChina() {//返回中国地图
         this.mapType = 'china';
         this.mapTitle = "全国";
+        this.listName = '省份';
         this.clickMapStatus = true;
         this.getChinaData();
         this.isReturn = false;
@@ -152,7 +158,7 @@
         if(_this.mapType=="china") {
           max = 300;
         }else {
-          max = 10;
+          max = 100;
         }
         var option = {
           title: {
@@ -225,6 +231,7 @@
         let bodyHeight = parseInt(window.getComputedStyle(listBody,null).height);
         if(height > bodyHeight) {
           listHeader.style.paddingRight = '17px';
+
         }else {
           listHeader.style.paddingRight = '0px';
         }
@@ -235,7 +242,6 @@
     },
     mounted() {
       this.getChinaData();
-      this.hasScroll();
     },
     watch: {
       provinces_select() {
