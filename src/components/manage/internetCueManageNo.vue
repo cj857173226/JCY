@@ -39,10 +39,6 @@
                         range-separator="-"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
-<<<<<<< HEAD
-=======
-
->>>>>>> b9541b5db58295d140007c3172c6c3670fa3279f
                     </el-date-picker>
                 </div>
             </div>
@@ -163,7 +159,7 @@ export default {
                     FBSJ:'2014-04-28 00:00:00', //发布时间
                     CJSJ:'2018-06-21 07:17:14', //采集时间
                     XSLY:'互联网线索', //线索来源
-                    SSDY:'请选择',
+                    SSDY:'请选择', //所属地域
                     XSLB:'', //所属领域
                     XSML:'', //所属门类
                     GJC:'', //关键词
@@ -187,8 +183,7 @@ export default {
                     ZY:'', //摘要
                 }
             ],
-            siteList:[   //采集网站
-            ],
+            siteList:[],   //采集网站
             page:1, //页码
             pageSize: 20,//每页条数
             totalPages:1,//总条数
@@ -197,7 +192,6 @@ export default {
             site:'',//来源站点
             order:'cjsj',//排序方式
             timeSearch:'', //时间范围
-
 
             isChooseCity:false,
             pca: pca,
@@ -246,9 +240,6 @@ export default {
         resize(){
             let _this = this;
             _this.tableH = _this.$refs.cueList.clientHeight;
-        },
-        addInternet(){
-
         }
     },
     //实例销毁钩子

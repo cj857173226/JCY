@@ -59,7 +59,6 @@
 				this.password = pwdState.password;
 			}
 
-
       var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
       if(isChrome && window.navigator.userAgent.indexOf("compatible") == -1 && window.navigator.userAgent.indexOf("MSIE") == -1 && window.navigator.userAgent.indexOf("Opera") == -1 && window.navigator.userAgent.indexOf("Edge") == -1 && window.navigator.userAgent.indexOf("Firefox") == -1) {
         this.noChrome = false;
@@ -89,7 +88,7 @@
           that.isLogin = true;
           that.axios({
             method:'post',
-            url: url,
+            url: webApi.Host + webApi.Auth.Login,
             data: jsonVal,
           }).then(function(res){
             that.isLogin = false;

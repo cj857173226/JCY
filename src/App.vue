@@ -80,7 +80,7 @@ button:active{
   /*表格组件样式覆盖*/
   .el-table td,
   .el-table th{
-    padding: 0;
+    padding: 0!important;
     height: 40px;
     text-align: center;
   }
@@ -122,7 +122,7 @@ button:active{
   }
   .el-table .cell{
     height: 40px;
-    line-height: 40px;
+    line-height: 40px!important;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -141,13 +141,13 @@ button:active{
   @media (max-width: 1440px) {
     .el-table td,
     .el-table th{
-      padding: 0;
+      padding: 0!important;
       height: 32px;
       text-align: center;
     }
     .el-table .cell{
       height: 32px;
-      line-height: 32px;
+      line-height: 32px!important;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
