@@ -14,7 +14,8 @@ import vueKindEditor from 'vue-kindeditor'
 import '../static/kindeditor/kindeditor-all.js'
 import '../static/kindeditor/themes/default/default.css'
 import '../static/kindeditor/lang/zh-CN'
-
+import echarts from 'echarts' //引入echarts
+import 'echarts-wordcloud' //引入echarts文字云
 
 import VueAreaLinkage from 'vue-area-linkage';
 import 'vue-area-linkage/dist/index.css';
@@ -55,6 +56,7 @@ axios.interceptors.response.use(response=>{
 
 Vue.use(ElementUI);   //使用elementUi
 Vue.prototype.axios = axios; //vue原型上挂载axios
+Vue.prototype.echarts = echarts; //vue原型上挂载echarts
 Vue.config.productionTip = false
 Vue.use(vueKindEditor)
 Vue.use(VueAreaLinkage)

@@ -28,7 +28,9 @@
         let data = [];
         _this.isLoading = true;
         _this.axios({
-          url: webApi.Host + webApi.News.GetCityFreq,
+          url: (webApi.News.GetCityFreq).format({
+            province: ""
+          }),
           timeout: 15000,
         })
           .then(function(res){
@@ -70,7 +72,8 @@
             max: 300,
             splitNumber: 5,
             inRange: {
-              color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+              // color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+              color: ['blue', 'blue', 'green', 'yellow', 'red']
             },
             textStyle: {
               color: '#000'

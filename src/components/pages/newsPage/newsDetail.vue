@@ -36,7 +36,9 @@ export default {
   methods:{
     //返回
     backNav(){
-      this.$router.go(-1);
+      this.$router.push({
+        path:'/home/news'
+      });
     },
     //查看源地址
     originAddress(){
@@ -68,14 +70,14 @@ export default {
 #news-detail{
   #news-header{
     width: 100%;
-    height: 40px;
+    height: 50px;
     background: #EEEEEE;
     border-bottom: 1px solid #dcdcdc;
     .news-icon{
       display: inline-block;
-      width: 40px;
-      height: 40px;
-      line-height: 40px;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
       text-align: center;
       font-size: 16px;
       border-right: 1px solid #dcdcdc;
@@ -88,7 +90,7 @@ export default {
       cursor: pointer;
     }
     .back-btn:hover{
-      text-decoration: underline;
+      color:#00a65a;
     }
   }
   #news-content{
@@ -101,7 +103,7 @@ export default {
       color: #00a65a;
       position: relative;
       .back-btn{
-        position: absolute;    
+        position: absolute;
         top: 50%;
         left: 10px; 
         margin-top: -10px;
@@ -130,6 +132,18 @@ export default {
       span{
         line-height: 25px;
         display: block;
+      }
+    }
+  }
+}
+@media (max-width: 1440px) {
+  #news-detail{
+    #news-header{
+      height: 40px;
+      .news-icon{
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
       }
     }
   }

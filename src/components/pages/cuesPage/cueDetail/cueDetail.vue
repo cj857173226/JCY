@@ -11,13 +11,13 @@
                 <li :class="isThisNav == 1?'active':''" @click="chooseNav(1)">
                     <i class="fa fa-file-text-o"></i>
                     线索详情
-                </li><li :class="isThisNav == 2?'active':''" @click="chooseNav(2)">
+                </li><li v-show="followPage" :class="isThisNav == 2?'active':''" @click="chooseNav(2)">
                     <i class="fa fa-pencil-square-o"></i>
                     审批信息
-                </li><li v-show="identity == 1" :class="isThisNav == 3?'active':''" @click="chooseNav(3)" v-if="IdentityType==1?true:false">
+                </li><li v-show="followPage&&IdentityType == 1" :class="isThisNav == 3?'active':''" @click="chooseNav(3)" v-if="IdentityType==1?true:false">
                     <i class="fa fa-sitemap"></i>
                     分流下级院
-                </li><li :class="isThisNav == 4?'active':''" @click="chooseNav(4)">
+                </li><li v-show="followPage" :class="isThisNav == 4?'active':''" @click="chooseNav(4)">
                     <i class="fa fa-random"></i>
                     结果反馈
                 </li>
@@ -89,6 +89,7 @@ export default {
             confirmReceive:false, //线索是否确认接收
             isFollow:false, //该线索是否关注
             page: false, //待接收页
+            followPage: false
         }
     },
     mounted(){
@@ -120,6 +121,7 @@ export default {
         }else if(this.cueType == 5){
             this.cueFrom = '关注线索';
             this.isFollow = true;
+            this.followPage = true;
             if(this.$route.query.type2){
                 this.cueType = this.$route.query.type2;
             }
@@ -237,9 +239,7 @@ export default {
         },
         //返回上页
         backBtn(){
-            this.$router.push({
-                path:'/home/followCue'
-            });
+            this.$router.go(-1);
         },
         //切换顶部导航
         chooseNav(index){

@@ -61,7 +61,6 @@ export default {
       var _this = this;
       var content = document.getElementById("knowledge-content");
       if(Math.ceil(content.scrollTop)+content.offsetHeight >= content.scrollHeight){
-        console.log(1);
         if(!this.noMoreData){
           this.loadMore = true;
           this.pageNum += 1;
@@ -196,14 +195,15 @@ export default {
             position: relative;
             margin-bottom: 5px;
             .item-type{
-              display: inline-block;
-              height: 100%;
-              line-height: 30px;
-              background: #00a65a;
-              color: #fff;
-              width: 80px;
-              text-align: center;
-              margin-right: 5px;
+                display: inline-block;
+                line-height: 18px;
+                background: #00a65a;
+                color: #fff;
+                text-align: center;
+                margin-right: 5px;
+                font-size: 10px;
+                width: 50px;
+                height: 18px;
             }
             .type-blue{
               background: #498ec0;
