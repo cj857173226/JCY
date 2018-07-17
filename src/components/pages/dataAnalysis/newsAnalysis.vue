@@ -2,7 +2,7 @@
   <div id="newsAnalysis">
     <div class="newsAnalysis_header">
       <div class="header_left">
-        全国检察机关公益诉讼新闻热力图
+        检察机关公益诉讼新闻热力图
       </div>
       <div class="header_right">
         <el-form :inline="true" class="header_form">
@@ -39,77 +39,9 @@
         </li>
       </ul>
       <ul id="region_list" ref="listBody">
-        <li>
-          <p>四川</p>
-          <p>121</p>
-        </li>
-        <li>
-          <p>北京</p>
-          <p>12</p>
-        </li>
-        <li>
-          <p>重庆</p>
-          <p>122</p>
-        </li>
-        <li>
-          <p>湖南</p>
-          <p>122</p>
-        </li>
-        <li>
-          <p>新疆</p>
-          <p>12</p>
-        </li><li>
-        <p>上海</p>
-        <p>22</p>
-      </li><li>
-        <p>青海</p>
-        <p>12</p>
-      </li><li>
-        <p>陕西</p>
-        <p>13</p>
-      </li><li>
-        <p>辽宁</p>
-        <p>2</p>
-      </li><li>
-        <p>吉林</p>
-        <p>88</p>
-      </li><li>
-        <p>黑龙江</p>
-        <p>33</p>
-      </li><li>
-        <p>云南</p>
-        <p>99</p>
-      </li><li>
-        <p>广西</p>
-        <p>5</p>
-      </li>
-        <li>
-          <p>宁夏</p>
-          <p>55</p>
-        </li>
-        <li>
-          <p>山西</p>
-          <p>45</p>
-        </li>
-        <li>
-          <p>浙江</p>
-          <p>5</p>
-        </li>
-        <li>
-          <p>海南</p>
-          <p>75</p>
-        </li>
-        <li>
-          <p>江西</p>
-          <p>75</p>
-        </li>
-        <li>
-          <p>贵州</p>
-          <p>75</p>
-        </li>
-        <li>
-          <p>内蒙古</p>
-          <p>75</p>
+        <li v-for="(item,index) in freqData" :key="index">
+          <p v-text="item.DM"></p>
+          <p v-text="item.PC"></p>
         </li>
       </ul>
     </div>
@@ -124,19 +56,26 @@
         optionData: "",
         isLoading: false,
         mapType: 'china',//地图类型
+        mapTitle: '全国',//地名名称
         isReturn: false,//返回按钮显示
         provinces: "",//省份
         provincesSearch: "",//搜索省份,
-        clickMapStatus: true//点击省份
+        freqData: "",//地区频次数据
+        clickMapStatus: true,//点击省份
+        myChart: "",
       }
     },
     methods : {
       //图表初始化
       initChart() {
+        if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
+          this.myChart.dispose();
+        }
         let myChart = echarts.init(document.getElementById('newsAnalysis_main'));
         let option =  this.getOption();
         let _this = this;
         myChart.setOption(option);
+        this.myChart = myChart;
         if(this.clickMapStatus) {
           _this.echartClick(myChart);//添加点击省份
         }
@@ -144,22 +83,26 @@
       getChinaData() {
         let _this = this;
         let data = [];
+        let province = _this.mapType;
+        if(_this.mapType=="china") {
+          province = "";
+        }
         _this.isLoading = true;
         _this.axios({
-          url: webApi.Host + webApi.News.GetCityFreq,
-          timeout: 5000,
+          url: (webApi.News.GetCityFreq).format({
+            province: province
+          }),
+          timeout: 15000,
         })
           .then(function(res){
             if(res.data.code==0) {
+              _this.freqData = res.data.data;
               res.data.data.forEach(function(item,index){
                 if(item.JWD) {
                   let x = item.JWD.split(",")[0];
                   let y = item.JWD.split(",")[1];
                   let val = item.PC;
-                  if(index%5==0) {
-                    data.push([x, y, val]);
-                  }
-                  // data.push([x, y, val]);
+                  data.push([x, y, val]);
                 }
               });
               _this.optionData = data;
@@ -177,16 +120,19 @@
         let _this = this;
         if(_this.clickMapStatus) {
           myChart.on('click', function (params) {
-            _this.mapType = params.name;
-            _this.clickMapStatus = false;
-            _this.initChart();
-            _this.isReturn = true;
-
+            if(params.name!="台湾"){
+              _this.mapType = params.name;
+              _this.mapTitle = params.name;
+              _this.clickMapStatus = false;//设置点击状态(为true则添加点击事件)
+              _this.getChinaData();//获取数据
+              _this.isReturn = true;//返回全国地图
+            }
           });
         }
       },
       returnChina() {//返回中国地图
         this.mapType = 'china';
+        this.mapTitle = "全国";
         this.clickMapStatus = true;
         this.initChart();
         this.isReturn = false;
@@ -194,51 +140,60 @@
       //获取option设置
       getOption() {
         let _this = this;
-        let option =  {
-          backgroundColor: '#eee',
-          // title : {
-          //   text: '全国检察机关公益诉讼新闻热力图',
-          //   x:'center',
-          //   textStyle: {
-          //     color: 'black',
-          //     fontSize: 18
-          //   }
-          // },
-          tooltip : {
-            trigger: 'item',
-            formatter: '{b}'
+        var option = {
+          title: {
+            text: _this.mapTitle,
+            left: 'center',
+            textStyle: {
+              color: '#000',
+            }
           },
-          series : [
-            {
-              name: '北京',
-              type: 'map',
-              mapType: _this.mapType,
-              roam: false,
-              hoverable: true,
-              data:[],
-              heatmap: {
-                minAlpha: 0.1,
-                data: _this.optionData
-              },
-              itemStyle:{
-                normal:{
-                  label:{
-                    show:true,
-                    textStyle:{
-                      fontSize : '14',
-                      fontFamily:'Microsoft YaHei',
-                      color:'#fff'
-                    }
-                  },
-                  borderColor:'#a4d2ec',
-                  borderWidth:1,
-                  areaStyle:{
-                    color: '#3f7696'
-                  }
+          backgroundColor: '#fff',
+          visualMap: {
+            min: 0,
+            max: 300,
+            splitNumber: 5,
+            inRange: {
+              color: ['#d94e5d','#eac736','#50a3ba'].reverse()
+            },
+            textStyle: {
+              color: '#000'
+            }
+          },
+          geo: {
+            map: _this.mapType,
+            label: {
+              normal:{
+                show:true,
+                textStyle:{
+                  color:'#fff',
+                  fontSize:13
                 }
+              },
+              emphasis: {
+                color: 'green'
+              }
+            },
+            roam: false,
+            itemStyle: {
+              normal: {
+                areaColor: '#3f7696',
+                borderColor: '#a4d2ec'
+              },
+              emphasis: {
+                areaColor: '#a4d2ec'
               }
             }
-          ]
+          },
+          series: [
+            {
+            name: _this.mapType,
+            type: 'heatmap',
+            coordinateSystem: 'geo',
+            data: _this.optionData,
+            center: [ '50%' , '50%'],
+            },
+          ],
         };
         return option;
       },
@@ -287,7 +242,9 @@
         height: 60px;
         width: 60%;
         line-height: 60px;
+        font-size: 18px;
         text-align: center;
+        font-weight: bold;
       }
       .header_right {
         float: right;
@@ -386,7 +343,7 @@
       height: 50px;
       .header_left {
         height: 50px;
-        width: 40%;
+        width: 60%;
         line-height: 50px;
       }
       .header_right {

@@ -9,11 +9,15 @@
       return {
         optionData: "",
         isLoading: false,
+        myChart: "",
       }
     },
     methods : {
       //图表初始化
       initChart() {
+        if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
+          this.myChart.dispose();
+        }
         let myChart = echarts.init(document.getElementById('pieChart_main'));
         let _this = this;
         let  option;
@@ -23,7 +27,7 @@
           _this.axios({
             method: 'post',
             url: webApi.Host + webApi.Stats.CountMonthCluesType,
-            timeout: 5000,
+            timeout: 15000,
           })
             .then(function(res){
               if(res.data.code==0) {
@@ -49,6 +53,7 @@
                 myChart.setOption(option);
                 _this.optionData = dataArray;
                 _this.isLoading = false;
+                _this.myChart = myChart;
               }
             }).catch(function(err) {
             _this.isLoading = false;
@@ -58,6 +63,7 @@
           dataArray = _this.optionData;
           option =  _this.getOption(dataArray);
           myChart.setOption(option);
+          _this.myChart = myChart;
         }
       },
       //获取option设置

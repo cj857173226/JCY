@@ -9,11 +9,15 @@
           return {
             optionData: "",
             isLoading: false,
+            myChar: "",
           }
         },
         methods : {
           //图表初始化
           initChart() {
+            if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
+              this.myChart.dispose();
+            }
             let myChart = echarts.init(document.getElementById('wordCloud_main'));
             let _this = this;
             let  option ;
@@ -33,7 +37,7 @@
               _this.isLoading = true;
               _this.axios({
                 url: webApi.Host + webApi.Clue.GetWebClueKeywordFreq,
-                timeout: 5000,
+                timeout: 15000,
               })
                 .then(function(res){
                   if(res.data.code==0) {
@@ -50,6 +54,7 @@
                     myChart.setOption(option);
                     _this.optionData = data;
                     _this.isLoading = false;
+                    _this.myChart = myChart;
                   }
                 }).catch(function(err) {
                 _this.isLoading = false;
@@ -59,6 +64,7 @@
               data = _this.optionData;
               option =  _this.getOption(data);
               myChart.setOption(option);
+              _this.myChart = myChart;
             }
           },
           //获取option设置
@@ -80,7 +86,7 @@
                 textPadding: 0,
                 autoSize: {
                   enable: true,
-                  minSize: 16
+                  minSize: 14
                 },
                 data: data
               }]
