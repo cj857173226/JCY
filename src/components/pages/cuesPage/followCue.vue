@@ -110,13 +110,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-<<<<<<< HEAD
               <el-button title="详情" @click="details(scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
               <el-button title="取消关注" @click="cancelFollowClue(scope.row.XSBH,scope.row.XSSJBLY)" type="text" size="small" style="color: #F66"><i class="fa fa-trash-o"></i></el-button>
-=======
-              <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
-              <el-button @click='remove(scope.row.XSBH)' type="text" size="small">移除</el-button>
->>>>>>> aae70b0e0653d1d84d56472a79595ff67e966a67
             </template>
           </el-table-column>
         </el-table>

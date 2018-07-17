@@ -45,6 +45,7 @@
             <div class="right">
                 <div v-show="siteList.length>0" class="site-item" :class="{'site-item-on':site == item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
                 <div v-show="siteList.length==0"> 无 </div>
+              <check-box id="site-check"></check-box>
             </div>
           </div>
           <div class="cue-sort clearfix">
@@ -150,8 +151,12 @@
 </template>
 
 <script>
+  import checkBox from '../../pubilcComponents/toolComponets/checkBox'
   export default {
       name:'cue-list',
+      components:{
+          checkBox
+        },
       data(){
         return{
           //来源地址
@@ -573,15 +578,23 @@
             }
           }
           .right{
+            position: relative;
             float: left;
             font-size: 16px;
             height: 100%;
             width: calc(100% - 144px);
             padding: 0 20px;
             color: #333;
-            overflow:hidden;
-            text-overflow:ellipsis;
-            white-space:nowrap;
+            #site-check{
+              position: absolute;
+              width: 100%;
+              top: 30px;
+              left: 0;
+              background: #FFFFFF;
+              z-index: 100;
+              height: 100px;
+              display: none;
+            }
             .site-item{
               height: 100%;
               float: left;

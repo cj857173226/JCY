@@ -6,9 +6,9 @@
         <side-menu></side-menu>
       </div>
       <div id="main-area">
-        <keep-alive include="cue-list,news-page">
+        <!--<keep-alive include="cue-list,news-page">-->
           <router-view/>
-        </keep-alive>
+        <!--</keep-alive>-->
       </div>
     </div>
     <o-footer id="footer"></o-footer>
