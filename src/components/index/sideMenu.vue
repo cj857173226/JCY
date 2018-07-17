@@ -84,6 +84,13 @@
           </el-menu-item>
         </router-link>
 
+        <router-link to="/home/selfDiscovery">
+          <el-menu-item index="2-5" :class="isThisNav == '自行发现线索'?'is-active':''" @click="switchNav('自行发现线索')">
+            <i class="fa  fa-search-plus "></i>
+            <span slot="title">自行发现线索</span>
+          </el-menu-item>
+        </router-link>
+
       </el-menu-item-group>
     </el-submenu>
     <router-link to="/home/followCue" v-if="IdentityType==1?true:false">

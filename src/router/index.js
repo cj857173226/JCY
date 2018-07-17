@@ -16,7 +16,8 @@ import internetCue from '../components/pages/cuesPage/internetCue'
 import welfareCue from '../components/pages/cuesPage/welfareCue'
   //热点线索
 import heartCue  from '../components/pages/cuesPage/heartCue'
-
+  //自行發現綫索
+import selfDiscovery from '../components/pages/cuesPage/selfDiscovery'
 //关注线索
 import followCue from '../components/pages/cuesPage/followCue'
 
@@ -99,6 +100,15 @@ let router =  new Router({
           meta:{
             keepAlive: true,
             name:'热点线索'
+          }
+        },
+        {
+          path:'selfDiscovery',
+          name:selfDiscovery,
+          component:selfDiscovery,
+          meta:{
+            keepAlive: true,
+            name:'自行发现线索'
           }
         },
         {

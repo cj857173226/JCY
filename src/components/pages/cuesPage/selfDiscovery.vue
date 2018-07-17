@@ -1,11 +1,11 @@
 <template>
-  <div id="heartClue">
-    <div class="heart-cue-head clearfix">
+  <div id="selfDiscovery">
+    <div class="self-cue-head clearfix">
       <div class="title-wrap clearfix">
         <div class="title-icon">
-          <i class="iconfont icon-remen"></i>
+          <i class="fa fa-search-plus"></i>
         </div>
-        <div class="title">热点线索</div>
+        <div class="title">自行发现线索</div>
       </div>
       <div class="search-wrap clearfix">
         <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getHeartCueList">
@@ -242,12 +242,12 @@
 </script>
 
 <style lang="scss" scoped>
-  #heartClue{
+  #selfDiscovery{
     height: 100%;
     max-height:100%;
     min-width: 750px;
     overflow-y:hidden;
-    .heart-cue-head{
+    .self-cue-head{
       height: 50px;
       width: 100%;
       line-height: 50px;
