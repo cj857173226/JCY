@@ -13,10 +13,10 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :lg="12">
+      <el-col :lg="16">
         <heatmap></heatmap>
       </el-col>
-      <el-col :lg="12">
+      <el-col :lg="8">
         <!--关键词图表-->
         <word-cloud></word-cloud>
         <!--线索领域占比图-->
