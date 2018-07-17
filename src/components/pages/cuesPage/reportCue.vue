@@ -189,19 +189,11 @@
           if(_this.type!= type){
             _this.page = 1;
             _this.type = type;
-            if(_this.reportCueList.length<=0){
-              return
-            }else {
-              _this.getReportCue();
-            }
+            _this.getReportCue();
           }else{
             _this.type = '';
             _this.page = 1;
-            if(_this.reportCueList.length<=0){
-              return
-            }else {
-              _this.getReportCue();
-            }
+            _this.getReportCue();
           }
         }
       },

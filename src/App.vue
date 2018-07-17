@@ -67,35 +67,35 @@ input:focus{
 
 button:focus,
 button:active{
-  outline: none;
+  outline: none ;
 }
 
 
   .el-dialog__header{
-    padding: 15px 20px 0;
+    padding: 15px 20px 0 !important;;
   }
   .el-dialog__body{
-    padding: 20px;
+    padding: 20px !important;;
   }
   /*表格组件样式覆盖*/
   .el-table td,
   .el-table th{
     padding: 0!important;
     height: 40px!important;
-    text-align: center;
+    text-align: center !important;;
   }
 
   .el-table th{
-    color: #333333;
-    background: #C0ECAA;
+    color: #333333 !important;;
+    background: #C0ECAA !important;;
   }
 
   .el-table__body tr:nth-child(2n){
-    background: #EEEEEE;
+    background: #EEEEEE !important;;
   }
 
   .el-table--border td, .el-table--border th, .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed{
-    border: none;
+    border: none !important;;
   }
   .el-table--striped .el-table__body tr.el-table__row--striped.current-row td,
   .el-table__body tr.current-row>td,
@@ -103,39 +103,39 @@ button:active{
   .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
   .el-table__body tr.hover-row.el-table__row--striped>td,
   .el-table__body tr.hover-row>td{
-    background: none;
+    background: none !important;;
   }
   .el-table--border, .el-table--group{
-    border: none;
+    border: none !important;;
   }
   .el-table--border::after, .el-table--group::after, .el-table::before{
-    background: none;
+    background: none !important;;
   }
   .el-table__fixed-right::before, .el-table__fixed::before{
-    background: none;
+    background: none !important;;
   }
   .el-table__fixed-right-patch{
-    background: #C0ECAA;
+    background: #C0ECAA !important;;
   }
   .el-table td, .el-table th.is-leaf{
-    border: none;
+    border: none !important;;
   }
   .el-table .cell{
-    height: 40px;
-    line-height: 40px!important;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    height: 40px !important;;
+    line-height: 40px !important;;
+    overflow: hidden !important;;
+    text-overflow: ellipsis !important;;
+    white-space: nowrap !important;;
   }
   .el-table .cell .td-content{
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    width: 100% !important;;
+    overflow: hidden !important;;
+    text-overflow: ellipsis !important;;
+    white-space: nowrap !important;;
   }
   /*分页插件*/
   .el-pagination{
-    text-align: center;
+    text-align: center !important;;
   }
 
   @media (max-width: 1440px) {
@@ -146,15 +146,15 @@ button:active{
       text-align: center;
     }
     .el-table .cell{
-      height: 32px;
-      line-height: 32px!important;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      height: 32px !important;;
+      line-height: 32px !important;;
+      overflow: hidden !important;;
+      text-overflow: ellipsis !important;;
+      white-space: nowrap !important;;
     }
     .el-input__inner {
-      height: 32px;
-      line-height: 32px;
+      height: 32px !important;;
+      line-height: 32px !important;;
     }
 
   }

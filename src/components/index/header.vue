@@ -91,18 +91,20 @@
        logout(){
          let _this = this;
 
-         // _this.axios({
-         //   method:'post',
-         //   url:webApi.Host + webApi.Auth.Logout,
-         // }).then(function(res){
-         //   console.log(res)
-         // }).catch(function(err){
-         //
-         // })
-         localStorage.removeItem("token");
-         _this.$router.push({
-           path: '/login'
-         });
+         _this.axios({
+           method:'post',
+           url:webApi.Host + webApi.Auth.Logout,
+         }).then(function(res){
+           if(res.data.code == 0){
+             localStorage.removeItem("token");
+             _this.$router.push({
+               path: '/login'
+             });
+           }
+         }).catch(function(err){
+
+         })
+
        },
        //修改密码模态
        resetModal(){
