@@ -171,7 +171,7 @@
         let _this = this;
         _this.axios({
           methods:'get',
-          url:webApi.Host + webApi.Clue.GetReportCluesTypes
+          url:webApi.Host + webApi.Clue.GetClueTypes
         }).then(function(res){
           if(res.data.code == 0){
             let data = res.data.data;
@@ -189,19 +189,11 @@
           if(_this.type!= type){
             _this.page = 1;
             _this.type = type;
-            if(_this.reportCueList.length<=0){
-              return
-            }else {
-              _this.getReportCue();
-            }
+            _this.getReportCue();
           }else{
             _this.type = '';
             _this.page = 1;
-            if(_this.reportCueList.length<=0){
-              return
-            }else {
-              _this.getReportCue();
-            }
+            _this.getReportCue();
           }
         }
       },

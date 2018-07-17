@@ -110,8 +110,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="details(scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small">查看</el-button>
-              <el-button type="text" size="small">移除</el-button>
+              <el-button title="详情" @click="details(scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
+              <el-button title="取消关注" @click="cancelFollowClue(scope.row.XSBH,scope.row.XSSJBLY)" type="text" size="small" style="color: #F66"><i class="fa fa-trash-o"></i></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -254,6 +254,64 @@
         }).catch(function(err){
           _this.isLoading = false;
         })
+      },
+      //取消关注线索
+      cancelFollowClue(clueId,clueType){
+        let _this = this;
+        let clueTypeNum;
+        if(clueType){
+          switch (clueType){
+            case '举报线索':
+              clueTypeNum = 1;
+              break;
+            case  '互联网线索':
+              clueTypeNum = 2;
+              break;
+            case '公益组织线索':
+              clueTypeNum = 3;
+              break;
+            case '热点线索':
+              clueTypeNum = 4;
+              break;
+            case '自行发现线索':
+              clueTypeNum = 4;
+              break
+          }
+        }
+        _this.$confirm('是否取消关注此线索?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if(_this.isLoading == false){
+            _this.axios({
+              method:'post',
+              url:webApi.ClueManager.UnFollowClue.format({xsid:clueId,xssjbly:clueTypeNum})
+            }).then(function(res){
+              console.log(res)
+              if(res.data.code == 0){
+                _this.getFollowList()
+              }else {
+                _this.$message({
+                  showClose: true,
+                  message: '发生错误,取消关注失败',
+                  type: 'error',
+                  duration:1000,
+                });
+              }
+            }).catch(function(err){
+              _this.$message({
+                showClose: true,
+                message: '发生错误,取消关注失败',
+                type: 'error',
+                duration:1000,
+              });
+            })
+          }
+        }).catch(() => {
+
+        });
+
       },
       //表格高度自适应
       tableResize(){
