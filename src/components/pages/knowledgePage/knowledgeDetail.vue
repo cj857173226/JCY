@@ -80,7 +80,7 @@ export default {
       cursor: pointer;
     }
     .back-btn:hover{
-      text-decoration: underline;
+      color:#00a65a;
     }
   }
   #knowledge-content{

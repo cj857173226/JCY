@@ -27,7 +27,7 @@
           <span v-show="noMoreData">已无更多数据</span>
           <span v-show="!noMoreData">继续滑动加载更多...</span>
         </li>
-      </ul> 
+      </ul>
     </div>
   </div>
 </template>
@@ -56,8 +56,6 @@ export default {
     handleScroll(){
       var _this = this;
       var content = document.getElementById("news-content");
-      console.log(Math.ceil(content.scrollTop)+content.offsetHeight);
-      console.log(content.scrollHeight);
       if(Math.ceil(content.scrollTop)+content.offsetHeight >= content.scrollHeight){
         if(!this.noMoreData){
           this.loadMore = true;
@@ -180,14 +178,13 @@ export default {
 
     }
     #news-content{
-      padding: 10px 40px;
       height: calc(100% - 40px);
       overflow: auto;
       width: 100%;
       ul{
         padding: 0;
         li{
-          padding: 10px;
+          padding: 10px 30px 15px 20px;
           .item-header{
             height: 30px;
             line-height: 30px;
@@ -207,27 +204,24 @@ export default {
             }
           }
           .item-header:before{
-            content:'';
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #00a65a;
-            top: 50%;
-            left: -10px;
+
           }
           .item-content{
             span{
-              overflow: hidden;
+              overflow : hidden;
               text-overflow: ellipsis;
-              display: -webkit-box;
+              display: -webkit-box ;
+              -webkit-line-clamp: 3;
               -webkit-box-orient: vertical;
-              -webkit-line-clamp: 1;
-
-              white-space: nowrap;
-              width: 100%;
-              display: block;
+              text-indent: 2em;
             }
           }
+        }
+        li:nth-child(2n){
+          background: #e4e4e4;
+        }
+        li:hover{
+          background:#F2F2F2;
         }
         .load-more{
           text-align: center;

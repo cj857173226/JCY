@@ -9,102 +9,97 @@
           return {
             optionData: "",
             isLoading: false,
-            myChar: "",
+            myChart: null,
+            cloudData:[], //文字云数据
           }
         },
         methods : {
-          //图表初始化
-          initChart() {
+          //初始化
+          initCloud(){
+            var _this = this;
             if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
               this.myChart.dispose();
             }
-            let myChart = echarts.init(document.getElementById('wordCloud_main'));
-            let _this = this;
-            let  option ;
-            let data = [];
-            function createRandomItemStyle() {
-              return {
-                normal: {
-                  color: 'rgb(' + [
-                    Math.round(Math.random() * 160),
-                    Math.round(Math.random() * 160),
-                    Math.round(Math.random() * 160)
-                  ].join(',') + ')'
-                }
-              };
-            }
-            if(!_this.optionData) {
-              _this.isLoading = true;
-              _this.axios({
-                url: webApi.Host + webApi.Clue.GetWebClueKeywordFreq,
-                timeout: 15000,
-              })
-                .then(function(res){
-                  if(res.data.code==0) {
-                    data = res.data.data;
-                    data.forEach(function(item){
-                      let color = createRandomItemStyle();
-                      item['name'] = item['Key'];
-                      delete item['Key']
-                      item['value'] = item['Value'];
-                      delete item['Value']
-                      item['itemStyle'] = color;
-                    })
-                    option =  _this.getOption(data);
-                    myChart.setOption(option);
-                    _this.optionData = data;
-                    _this.isLoading = false;
-                    _this.myChart = myChart;
-                  }
-                }).catch(function(err) {
-                _this.isLoading = false;
-                console.log(err)
-              })
-            }else {
-              data = _this.optionData;
-              option =  _this.getOption(data);
-              myChart.setOption(option);
-              _this.myChart = myChart;
-            }
-          },
-          //获取option设置
-          getOption(data) {
-            let option = {
-              backgroundColor: '#fff',
-              title: {
-                text: '活跃关键词',
-                x:'center'
+            console.log(this.myChart);
+            this.myChart = this.echarts.init(document.getElementById('wordCloud_main'));
+            this.myChart.setOption({
+              title:{
+                text:'活动关键词',
+                top: 'top',
+                left:'center'
               },
-              tooltip: {
-                show: true
-              },
+              tooltip:{},
               series: [{
-                name: '活跃关键词',
                 type: 'wordCloud',
-                size: ['100%', '80%'],
-                textRotation : [0,0],
-                textPadding: 0,
-                autoSize: {
-                  enable: true,
-                  minSize: 14
+                shape:'circle',
+                left:'center',
+                top:'center',
+                right: null,
+                bottom: null,
+                sizeRange:[12,50],
+                rotationRange:[-90,90],
+                rotationStep:45,
+                gridSize: 8,
+                drawOutOfBound:false,
+                textStyle:{
+                  normal: {
+                    fontFamily: 'sans-serif',
+                    fontWeight: 'bold',
+                    color: function () {
+                        return 'rgb(' + [
+                            Math.round(Math.random() * 160),
+                            Math.round(Math.random() * 160),
+                            Math.round(Math.random() * 160)
+                        ].join(',') + ')';
+                    }
+                  },
+                  emphasis: {
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                  }
                 },
-                data: data
+                data:_this.cloudData
               }]
-            };
-            return option;
+            })
+          },
+          //获取数据
+          getData(){
+            var _this = this;
+            _this.isLoading = true;
+            var data = [];
+            _this.axios({
+              url: webApi.Host + webApi.Clue.GetWebClueKeywordFreq,
+              timeout: 15000,
+            }).then(function(res){
+                if(res.data.code==0) {
+                  _this.isLoading = false;
+                  for(var i = 0; i<res.data.data.length; i++){
+                    var item = {};
+                    item['name'] = res.data.data[i].Key;
+                    item['value'] = res.data.data[i].Value;
+                    data.push(item);
+                  }
+                  _this.cloudData = data;
+                  _this.initCloud();
+                }
+              }).catch(function(err) {
+              _this.isLoading = false;
+              console.log(err)
+            })
           },
           //窗口改变重绘图表
           resizeWindow() {
             let _this = this;
-            window.addEventListener('resize',_this.initChart)
+            window.addEventListener('resize',_this.initCloud)
           },
         },
         mounted() {
-          this.initChart();//初始化图表
+          this.getData();//初始化图表
           this.resizeWindow();
+          console.log(this.echarts);
         },
         destroyed() {
-          window.removeEventListener('resize',this.initChart);
+          window.removeEventListener('resize',this.initCloud);
         }
     }
 </script>
