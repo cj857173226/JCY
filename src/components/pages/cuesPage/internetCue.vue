@@ -71,7 +71,7 @@
             label=""
             width="40">
             <template slot-scope="scope" >
-                <i v-show="scope.row.SFYD == 1" class="fa fa-circle isRead"></i>
+                <i v-show="scope.row.SFYD == 0" class="fa fa-circle isRead"></i>
             </template>
           </el-table-column>
           <el-table-column
@@ -128,8 +128,9 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="details(scope.$index, scope.row.XSBH)" type="text" size="small">查看</el-button>
-              <el-button @click="followClue(scope.row.XSBH ,'2')" type="text" size="small">关注</el-button>
+              <el-button @click="details(scope.$index, scope.row.XSBH)" title="详情" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
+              <el-button v-show="scope.row.SFGZ =='0'" title="未关注(关注)" @click="followClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart-o"></i></el-button>
+              <el-button v-show="scope.row.SFGZ =='1'" title="已关注(取消关注)" @click="cancelFollowClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart"></i></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -192,6 +193,7 @@
          }).then(function(res){
            _this.isLoad = false;
            if(res.data.code == 0){
+             console.log(res)
              let data = res.data.data.data;
              let ZYstr = '';
              for(let i = 0;i < data.length; i++){
@@ -201,6 +203,7 @@
                }
                data[i].ZY = ZYstr;
              }
+             _this.totalPages = res.data.data.total
              _this.internetCueList = data;
            }else {
              _this.$message.error(res.data.errorMessage);
@@ -217,6 +220,7 @@
           methods:'get',
           url:webApi.Host + webApi.Clue.GetClueTypes
         }).then(function(res){
+          console.log(res)
           if(res.data.code == 0){
             let data = res.data.data;
             _this.typeList = data;
@@ -250,11 +254,7 @@
          if(_this.order != order){
            _this.page = 1;
            _this.order = order;
-           if(_this.internetCueList.length<=0){
-             return
-           }else {
-             _this.getInternetCueList();
-           }
+           _this.getInternetCueList();
          }
        }
       },
@@ -265,19 +265,11 @@
         if(_this.site!= site){
           _this.page = 1;
           _this.site = site;
-          if(_this.internetCueList.length<=0){
-            return
-          }else {
-            _this.getInternetCueList();
-          }
+          _this.getInternetCueList();
         }else{
           _this.site = '';
           _this.page = 1;
-          if(_this.internetCueList.length<=0){
-            return
-          }else {
-            _this.getInternetCueList();
-          }
+          _this.getInternetCueList();
         }
       }
       },
@@ -289,19 +281,11 @@
         if(_this.type!= type){
           _this.page = 1;
           _this.type = type;
-          if(_this.internetCueList.length<=0){
-            return
-          }else {
-            _this.getInternetCueList();
-          }
+          _this.getInternetCueList();
         }else{
           _this.type = '';
           _this.page = 1;
-          if(_this.internetCueList.length<=0){
-            return
-          }else {
-            _this.getInternetCueList();
-          }
+          _this.getInternetCueList();
         }
       }
       },
@@ -325,29 +309,54 @@
           if(_this.isLoad ==false){
             _this.axios({
               method:'post',
-              url:webApi.ClueManager.FollowClue.format({id:clueId,xssjbly:clueType})
+              url:webApi.ClueManager.FollowClue.format({xsid:clueId,xssjbly:clueType})
             }).then(function(res){
               if(res.data.code == 0){
-                _this.getInternetCueList()
+                  _this.getInternetCueList()
+              }else {
+                _this.$message({
+                  showClose: true,
+                  message: '发生错误,关注失败',
+                  type: 'error',
+                  duration:1000,
+                });
               }
             }).catch(function(err){
-
+              _this.$message({
+                showClose: true,
+                message: '发生错误,关注失败',
+                type: 'error',
+                duration:1000,
+              });
             })
           }
       },
       //取消关注线索
-      cancelFollowClue(clueId){
+      cancelFollowClue(clueId,clueType){
         let _this = this;
         if(_this.isLoad ==false){
           _this.axios({
             method:'post',
-            url:webApi.ClueManager.UnFollowClue.format({id:clueId})
+            url:webApi.ClueManager.UnFollowClue.format({xsid:clueId,xssjbly:clueType})
           }).then(function(res){
+            console.log(res)
             if(res.data.code == 0){
               _this.getInternetCueList()
+            }else {
+              _this.$message({
+                showClose: true,
+                message: '发生错误,取消关注失败',
+                type: 'error',
+                duration:1000,
+              });
             }
           }).catch(function(err){
-
+            _this.$message({
+              showClose: true,
+              message: '发生错误,取消关注失败',
+              type: 'error',
+              duration:1000,
+            });
           })
         }
       },
