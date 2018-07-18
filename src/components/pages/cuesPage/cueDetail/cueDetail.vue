@@ -46,7 +46,7 @@
             </div><div class="content-box">
                 <div id="detail" v-show="isThisNav == 1">
                     <report-detail v-if="cueType == 1" ></report-detail>
-                    <internet-detail v-if="cueType == 2" @upup="getChild" :msg = 'msg'></internet-detail>
+                    <internet-detail @followData = "followCue" v-if="cueType == 2"></internet-detail>
                 </div>
                 <div id="approval" v-show="isThisNav == 2">
                     <approval></approval>
@@ -90,12 +90,11 @@ export default {
             isFollow:true, //该线索是否关注
             page: false, //待接收页
             followPage: false,
-            detailData:{}, //详情页数据
-            msg:'',
         }
     },
     mounted(){
         console.log("刷新");
+        var _this = this;
         //获取身份权限信息
         this.identity = localStorage.IdentityType;
 
@@ -122,8 +121,7 @@ export default {
             // this.isFollow = false;
         }else if(this.cueType == 5){
             this.cueFrom = '关注线索';
-            this.isFollow = true;
-            // this.followPage = true;
+            this.followPage = true;
             if(this.$route.query.type2){
                 this.cueType = this.$route.query.type2;
             }
@@ -165,39 +163,18 @@ export default {
         this.$route.meta.name = this.cueFrom;
         this.cueId = this.$route.query.id;
         this.cueDataGet();
+        
         // this.dataGet();
     },
     methods: {
-
-      // dataGet(){
-      //     let _this = this;
-      //     let type = _this.$route.query.type;
-      //     let url ;
-      //     switch (type){
-      //       case 1:
-      //         url = webApi.Clue.GetReportClueData.format({id:_this.$route.query.id});
-      //         break;
-      //       case 2:
-      //         url = webApi.Clue.GetWebClueData.format({id:_this.$route.query.id});
-      //         break;
-      //     }
-      //
-      //     this.axios({
-      //         method: 'get',
-      //         url:url,
-      //         timeout: 10000
-      //     }).then(function(response){
-      //         if(response.data.code == 0){
-      //           _this.detailData=response.data.data[0]
-      //           console.log(_this.detailData)
-      //         }else{
-      //
-      //         }
-      //     }).catch(function(error){
-      //         console.log(error);
-      //     })
-      // },
-
+        followCue(index){
+            var _this = this;
+            if(index == 0){
+                _this.isFollow = false;
+            }else if(index == 1){
+                _this.isFollow = true;
+            }
+        },
         //切换线索
         switchCue(index){
             var params = {
@@ -228,7 +205,7 @@ export default {
             var _this = this;
             if(index == 1){
                 //关注线索
-                if(this.isFollow == true&&this.gzId != ''){
+                if(this.isFollow == true){
                     //调用取消关注接口
                     this.axios({
                         method:'post',
@@ -244,7 +221,7 @@ export default {
                     }).catch(function(error){
                         console.log(error);
                     })
-                }else{
+                }else if(this.isFollow == false){
                     //调用关注接口
                     this.axios({
                         method:'post',
