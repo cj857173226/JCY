@@ -66,9 +66,12 @@
 
 <script>
 export default {
+    // props:{
+    //   cueData: Object,
+    // },
     data(){
         return{
-            cueData:{},
+          cueData:{}
         }
     },
     mounted(){
@@ -83,14 +86,16 @@ export default {
                 timeout: 10000
             }).then(function(response){
                 if(response.data.code == 0){
-                    _this.cueData = response.data.data[0];
+                  console.log(response.data.data[0])
+                  _this.cueData = response.data.data[0]
                 }else{
 
                 }
             }).catch(function(error){
                 console.log(error);
             })
-        }
+        },
+
     }
 }
 </script>

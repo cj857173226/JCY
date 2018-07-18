@@ -45,8 +45,8 @@
                 </span>
             </div><div class="content-box">
                 <div id="detail" v-show="isThisNav == 1">
-                    <report-detail v-if="cueType == 1"></report-detail>
-                    <internet-detail v-if="cueType == 2"></internet-detail>
+                    <report-detail v-if="cueType == 1" ></report-detail>
+                    <internet-detail v-if="cueType == 2" @upup="getChild" :msg = 'msg'></internet-detail>
                 </div>
                 <div id="approval" v-show="isThisNav == 2">
                     <approval></approval>
@@ -87,9 +87,11 @@ export default {
             cueFrom:'', //线索类别
             identity: null, //权限
             confirmReceive:false, //线索是否确认接收
-            isFollow:false, //该线索是否关注
+            isFollow:true, //该线索是否关注
             page: false, //待接收页
-            followPage: false
+            followPage: false,
+            detailData:{}, //详情页数据
+            msg:'',
         }
     },
     mounted(){
@@ -108,20 +110,20 @@ export default {
         this.cueType = this.$route.query.type;
         if(this.cueType == 1){
             this.cueFrom = '举报线索';
-            this.isFollow = false;
+            // this.isFollow = false;
         }else if(this.cueType == 2){
             this.cueFrom = '互联网线索';
-            this.isFollow = false;
+            // this.isFollow = false;
         }else if(this.cueType == 3){
             this.cueFrom = '公益诉讼线索';
-            this.isFollow = false;
+            // this.isFollow = false;
         }else if(this.cueType == 4){
             this.cueFrom = '热点线索';
-            this.isFollow = false;
+            // this.isFollow = false;
         }else if(this.cueType == 5){
             this.cueFrom = '关注线索';
             this.isFollow = true;
-            this.followPage = true;
+            // this.followPage = true;
             if(this.$route.query.type2){
                 this.cueType = this.$route.query.type2;
             }
@@ -163,8 +165,39 @@ export default {
         this.$route.meta.name = this.cueFrom;
         this.cueId = this.$route.query.id;
         this.cueDataGet();
+        // this.dataGet();
     },
     methods: {
+
+      // dataGet(){
+      //     let _this = this;
+      //     let type = _this.$route.query.type;
+      //     let url ;
+      //     switch (type){
+      //       case 1:
+      //         url = webApi.Clue.GetReportClueData.format({id:_this.$route.query.id});
+      //         break;
+      //       case 2:
+      //         url = webApi.Clue.GetWebClueData.format({id:_this.$route.query.id});
+      //         break;
+      //     }
+      //
+      //     this.axios({
+      //         method: 'get',
+      //         url:url,
+      //         timeout: 10000
+      //     }).then(function(response){
+      //         if(response.data.code == 0){
+      //           _this.detailData=response.data.data[0]
+      //           console.log(_this.detailData)
+      //         }else{
+      //
+      //         }
+      //     }).catch(function(error){
+      //         console.log(error);
+      //     })
+      // },
+
         //切换线索
         switchCue(index){
             var params = {
@@ -199,9 +232,10 @@ export default {
                     //调用取消关注接口
                     this.axios({
                         method:'post',
-                        url:webApi.ClueManager.UnFollowClue.format({id:this.gzId}),
+                        url:webApi.ClueManager.UnFollowClue.format({xsid:_this.cueId,xssjbly:_this.cueType}),
                         timeout:10000
                     }).then(function(response){
+                      console.log(response)
                         if(response.data.code == 0){
                             _this.isFollow = false;
                         }else{
@@ -214,9 +248,10 @@ export default {
                     //调用关注接口
                     this.axios({
                         method:'post',
-                        url:webApi.ClueManager.FollowClue.format({id:this.cueId,xssjbly:this.cueType}),
+                        url:webApi.ClueManager.FollowClue.format({xsid:_this.cueId,xssjbly:_this.cueType}),
                         timeout:10000
                     }).then(function(response){
+                      console.log(response)
                         if(response.data.code == 0){
                             _this.isFollow = true;
                             _this.gzId = response.data.data;
@@ -247,10 +282,10 @@ export default {
         },
         //线索数据获取
         cueDataGet(){
-            var _this = this;
-            if(this.cueType == 1){
+            let _this = this;
+            if(_this.cueType == 1){
                 //举报线索
-            }else if(this.cueType == 2){
+            }else if(_this.cueType == 2){
                 //互联网线索
             }
         }
@@ -352,7 +387,7 @@ export default {
             display: inline-block;
             width: 10%;
             vertical-align: top;
-            text-align: center;    
+            text-align: center;
             color: #00a65a;
             margin-top: 15px;
             cursor: pointer;
