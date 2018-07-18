@@ -115,6 +115,13 @@
       </el-menu-item>
     </router-link>
 
+    <router-link to="/home/UAV">
+      <el-menu-item index="13" :class="isThisNav == '无人机取证' ?'is-active':''" @click="switchNav('无人机取证')">
+        <i class="fa fa-get-pocket"></i>
+        <span slot="title">无人机取证</span>
+      </el-menu-item>
+    </router-link>
+
     <el-submenu index="6">
       <template slot="title">
         <i class="fa fa-cubes"></i>

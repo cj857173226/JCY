@@ -195,7 +195,11 @@
                 color: 'green'
               }
             },
-            roam: false,
+            roam: true,
+            scaleLimit: {
+              max: 2,
+              min: .7
+            },
             itemStyle: {
               normal: {
                 areaColor: '#3f7696',
