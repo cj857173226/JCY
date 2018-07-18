@@ -281,16 +281,16 @@
     /*头部*/
     .text_head {
       overflow: hidden;
-      background: url('../../assets/index/greenBg.jpg') no-repeat;
       color: white;
       font-size: 18px;
+      background: #48AE72;
       span {
         padding: 10px 20px;
         vertical-align: center;
         &:first-child {
           position: relative;
           float: left;
-          background-color: rgba(8,140,39,0.83);
+          background-color: #2B9759;
           &:after {
             position: absolute;
             right: -44px;
@@ -299,7 +299,7 @@
             width: 0;
             height: 0;
             border: 22px solid transparent;
-            border-left-color: rgba(8,140,39,0.83);
+            border-left-color: #2B9759;
           }
         }
         &:last-child {

@@ -44,6 +44,14 @@
              :height="tableH"
             style="width: 100%">
             <el-table-column
+              prop="SFYD"
+              label=""
+              width="40">
+              <template slot-scope="scope" >
+                <i v-show="scope.row.SFYD == 0" class="fa fa-circle isRead"></i>
+              </template>
+            </el-table-column>
+            <el-table-column
               prop=""
               label="举报内容"
               min-width="300">
@@ -99,8 +107,9 @@
               label="操作"
               width="100">
               <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row.XSBH)" type="text" size="small">查看</el-button>
-                <el-button type="text" size="small">关注</el-button>
+                <el-button @click="details(scope.row.XSBH,'1')" type="text" size="small">查看</el-button>
+                <el-button v-show="scope.row.SFGZ =='0'" title="未关注(关注)" @click="followClue(scope.row.XSBH ,'1')" style="color: #F66" type="text" size="small"><i class="fa fa-heart-o"></i></el-button>
+                <el-button v-show="scope.row.SFGZ =='1'" title="已关注(取消关注)" @click="cancelFollowClue(scope.row.XSBH ,'1')" style="color: #F66" type="text" size="small"><i class="fa fa-heart"></i></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -148,7 +157,7 @@
           _this.isLoad = true;
           let url = webApi.Clue.GetReportClues.format({keyword:_this.keyword,type:_this.type,p:_this.page,ps:_this.pageSize})
           _this.axios({
-            methods:'get',
+            method:'get',
             url:url
           }).then(function(res){
             _this.isLoad = false
@@ -170,7 +179,7 @@
       getClueType(){
         let _this = this;
         _this.axios({
-          methods:'get',
+          method:'get',
           url:webApi.Host + webApi.Clue.GetClueTypes
         }).then(function(res){
           if(res.data.code == 0){
@@ -206,12 +215,29 @@
       },
 
       // 查看详情
-      handleClick(id){
-        console.log(id);
-        this.$router.push({
-          path:'/home/cueDetail',
-          query:{type:1,id:id}
-        });
+      details(id,SFYD,xssjbly){
+        let _this = this;
+        if(SFYD != 0){
+          this.$router.push({
+            path:'/home/cueDetail',
+            query:{type:1,id:id}
+          });
+        }else {
+          _this.axios({
+            method:'POST',
+            url:webApi.Clue.ClueRead.format({xssjbly:xssjbly,xsbh:id})
+          }).then((res)=>{
+            this.$router.push({
+              path:'/home/cueDetail',
+              query:{type:1,id:id}
+            });
+          }).catch((err)=>{
+            this.$router.push({
+              path:'/home/cueDetail',
+              query:{type:1,id:id}
+            });
+          })
+        }
       },
 
       //关注线索
@@ -441,6 +467,9 @@
         height: calc( 100% - 210px);
         max-height: calc( 100% - 210px);
         overflow-y: hidden;
+        .isRead{
+          color: #F66;
+        }
       }
       .page-wrap{
         margin-top: 24px;
