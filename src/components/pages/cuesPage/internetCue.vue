@@ -45,6 +45,7 @@
             <div class="right">
                 <div v-show="siteList.length>0" class="site-item" :class="{'site-item-on':site == item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
                 <div v-show="siteList.length==0"> 无 </div>
+              <check-box id="site-check"></check-box>
             </div>
           </div>
           <div class="cue-sort clearfix">
@@ -128,7 +129,7 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="details(scope.$index, scope.row.XSBH)" title="详情" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
+              <el-button @click="details(scope.row.XSBH ,scope.row.SFYD,'2')" title="详情" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
               <el-button v-show="scope.row.SFGZ =='0'" title="未关注(关注)" @click="followClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart-o"></i></el-button>
               <el-button v-show="scope.row.SFGZ =='1'" title="已关注(取消关注)" @click="cancelFollowClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart"></i></el-button>
             </template>
@@ -150,8 +151,12 @@
 </template>
 
 <script>
+  import checkBox from '../../pubilcComponents/toolComponets/checkBox'
   export default {
       name:'cue-list',
+      components:{
+          checkBox
+        },
       data(){
         return{
           //来源地址
@@ -188,7 +193,7 @@
          _this.isLoad = true;
          let url = webApi.Clue.GetWebClues.format({keyword:_this.keyword,type:_this.type,site:_this.site,order:_this.order,p:_this.page,ps:_this.pageSize})
          _this.axios({
-           methods:'get',
+           method:'get',
            url:url
          }).then(function(res){
            _this.isLoad = false;
@@ -217,10 +222,9 @@
       getClueType(){
         let _this = this;
         _this.axios({
-          methods:'get',
+          method:'get',
           url:webApi.Host + webApi.Clue.GetClueTypes
         }).then(function(res){
-          console.log(res)
           if(res.data.code == 0){
             let data = res.data.data;
             _this.typeList = data;
@@ -234,7 +238,7 @@
       getClueSites(){
         let _this = this;
         _this.axios({
-          methods:'get',
+          method:'get',
           url:webApi.Host + webApi.Clue.GetClueSites
         }).then(function(res){
           if(res.data.code == 0){
@@ -297,11 +301,34 @@
         _this.getInternetCueList();
       },
       // 查看详情
-      details(index,id){
-        this.$router.push({
-          path:'/home/cueDetail',
-          query:{type:2,id:id}
-        });
+      details(id,SFYD,xssjbly){
+        let _this = this;
+        if(SFYD != 0){
+          this.$router.push({
+            path:'/home/cueDetail',
+            query:{type:2,id:id}
+          });
+        }else {
+          _this.axios({
+            method:'POST',
+            url:webApi.Clue.ClueRead.format({xssjbly:xssjbly,xsbh:id})
+          }).then((res)=>{
+            this.$router.push({
+              path:'/home/cueDetail',
+              query:{type:2,id:id}
+            });
+          }).catch((err)=>{
+            this.$router.push({
+              path:'/home/cueDetail',
+              query:{type:2,id:id}
+            });
+          })
+
+        }
+        // this.$router.push({
+        //   path:'/home/cueDetail',
+        //   query:{type:2,id:id}
+        // });
       },
       //关注线索
       followClue(clueId,clueType){
@@ -573,15 +600,23 @@
             }
           }
           .right{
+            position: relative;
             float: left;
             font-size: 16px;
             height: 100%;
             width: calc(100% - 144px);
             padding: 0 20px;
             color: #333;
-            overflow:hidden;
-            text-overflow:ellipsis;
-            white-space:nowrap;
+            #site-check{
+              position: absolute;
+              width: 100%;
+              top: 30px;
+              left: 0;
+              background: #FFFFFF;
+              z-index: 100;
+              height: 100px;
+              display: none;
+            }
             .site-item{
               height: 100%;
               float: left;

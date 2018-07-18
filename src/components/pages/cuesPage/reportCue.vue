@@ -148,7 +148,7 @@
           _this.isLoad = true;
           let url = webApi.Clue.GetReportClues.format({keyword:_this.keyword,type:_this.type,p:_this.page,ps:_this.pageSize})
           _this.axios({
-            methods:'get',
+            method:'get',
             url:url
           }).then(function(res){
             _this.isLoad = false
@@ -170,7 +170,7 @@
       getClueType(){
         let _this = this;
         _this.axios({
-          methods:'get',
+          method:'get',
           url:webApi.Host + webApi.Clue.GetClueTypes
         }).then(function(res){
           if(res.data.code == 0){
