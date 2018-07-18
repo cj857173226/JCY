@@ -135,7 +135,7 @@ button:active{
   }
   /*分页插件*/
   .el-pagination{
-    text-align: center !important;;
+    text-align: center !important;
   }
 
   @media (max-width: 1440px) {
@@ -152,7 +152,7 @@ button:active{
       text-overflow: ellipsis !important;;
       white-space: nowrap !important;;
     }
-    .el-input__inner {
+    .el-pagination .el-input__inner {
       height: 32px !important;;
       line-height: 32px !important;;
     }

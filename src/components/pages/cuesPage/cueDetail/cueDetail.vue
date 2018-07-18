@@ -46,7 +46,7 @@
             </div><div class="content-box">
                 <div id="detail" v-show="isThisNav == 1">
                     <report-detail v-if="cueType == 1" ></report-detail>
-                    <internet-detail v-if="cueType == 2" @upup="getChild" :msg = 'msg'></internet-detail>
+                    <internet-detail v-if="cueType == 2"></internet-detail>
                 </div>
                 <div id="approval" v-show="isThisNav == 2">
                     <approval></approval>
