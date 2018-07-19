@@ -15,6 +15,7 @@ import '../static/kindeditor/themes/default/default.css'
 import '../static/kindeditor/lang/zh-CN'
 import echarts from 'echarts' //引入echarts
 import 'echarts-wordcloud' //引入echarts文字云
+import VueAMap from 'vue-amap'
 
 import VueAreaLinkage from 'vue-area-linkage';
 import 'vue-area-linkage/dist/index.css';
@@ -59,6 +60,12 @@ Vue.prototype.echarts = echarts; //vue原型上挂载echarts
 Vue.config.productionTip = false
 Vue.use(vueKindEditor)
 Vue.use(VueAreaLinkage)
+Vue.use(VueAMap)
+VueAMap.initAMapApiLoader({
+  key:'ec846332e8f15a595aa59e60d5d6d8b7',
+  plugin:['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType'],
+  v:'1.4.4'
+});
 
 const Bus = new Vue()
 

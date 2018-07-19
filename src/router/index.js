@@ -37,6 +37,7 @@ import newsDetail from '../components/pages/newsPage/newsDetail'
 //数据分析
 import newsAnalysis from  '../components/pages/dataAnalysis/newsAnalysis' //新闻热力分析
 import cueFieldAnalysis from  '../components/pages/dataAnalysis/cueFieldAnalysis' //线索领域分析
+import infoAnalysis from '../components/pages/dataAnalysis/infoAnalysis' //信息分析
 
 //领导页面
 import waitApproval from '../components/pages/leaderPage/waitApproval'//待审批线索
@@ -178,6 +179,14 @@ let router =  new Router({
           component:cueFieldAnalysis,
           meta:{
             name: '线索领域分析',
+          }
+        },
+        {
+          path:'infoAnalysis',
+          name:infoAnalysis,
+          component:infoAnalysis,
+          meta:{
+            name: '信息分析',
           }
         },
         {

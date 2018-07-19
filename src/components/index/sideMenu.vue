@@ -3,7 +3,7 @@
     <router-link to="/home">
       <el-menu-item index="1" :class="isThisNav == '主页'?'is-active':''" @click="switchNav('主页')">
         <i class="iconfont icon-zhuye"></i>
-        <span slot="title">主页</span>
+        <span slot="title">系统主页</span>
       </el-menu-item>
     </router-link>
 
@@ -166,6 +166,13 @@
           <el-menu-item index="6-2" :class="isThisNav == '线索领域分析'?'is-active':''" @click="switchNav('线索领域分析')">
             <i class="fa fa-window-restore"></i>
             <span slot="title">线索领域分析</span>
+          </el-menu-item>
+        </router-link>
+
+        <router-link to="/home/infoAnalysis">
+          <el-menu-item index="6-3" :class="isThisNav == '信息分析'?'is-active':''" @click="switchNav('信息分析')">
+            <i class="fa fa-window-restore"></i>
+            <span slot="title">信息分析</span>
           </el-menu-item>
         </router-link>
 

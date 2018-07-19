@@ -4,7 +4,7 @@
       <span class="knowledge-icon">
         <i class="fa fa-graduation-cap"></i>
       </span>
-      <span class="knowledge-title">知识库</span>
+      <span class="knowledge-title">{{type}}</span>
       <div class="search-wrap clearfix">
         <input class="search-ipt" type="text" placeholder="请输入内容" v-model="keyword">
         <span class="search-btn" @click="searchBtn">
