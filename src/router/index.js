@@ -48,6 +48,8 @@ import waitReceive from '../components/pages/subordinatePage/waitReceive'//待�
 import waitFeedback from '../components/pages/subordinatePage/waitFeedback'//待反馈线索
 import complete from '../components/pages/subordinatePage/complete'//完成
 
+//无人机取证
+import UAV from '../components/pages/UAV/UAV'
 
 Vue.use(Router)
 
@@ -224,6 +226,14 @@ let router =  new Router({
           component: complete,
           meta: {
             name: '已反馈',
+          }
+        },
+        {
+          path: 'UAV',
+          name: UAV,
+          component: UAV,
+          meta: {
+            name: '无人机取证',
           }
         },
       ]

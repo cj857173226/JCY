@@ -1,7 +1,7 @@
 <template>
     <div id="send">
         <el-select class="select" v-model="text">
-            <el-option v-bind:value="item.DWMC" :name="item.DWBH" v-for="item in XJY">{{item.DWMC}}</el-option>
+            <el-option v-bind:value="item.DWMC" :name="item.DWBH" v-for="(item,index) in XJY" :key="index">{{item.DWMC}}</el-option>
         </el-select>
         <el-button @click="confirmBtn">确认分流</el-button>
     </div>

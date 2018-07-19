@@ -163,18 +163,23 @@
         _this.endDate = endDate;
       },
       timeFormat(date) {
-        let time = date;
-        let year = time.getFullYear();
-        let month = time.getMonth() + 1;
-        let day = time.getDate();
-        if(month < 10) {
-          month =  '0' + month;
+        if(date) {
+          let time = date;
+          let year = time.getFullYear();
+          let month = time.getMonth() + 1;
+          let day = time.getDate();
+          if(month < 10) {
+            month =  '0' + month;
+          }
+          if(day < 10 ) {
+            day =  '0' + day;
+          }
+          time = year + '-' + month + '-' + day;
+          return time;
+        }else {
+          return date;
         }
-        if(day < 10 ) {
-          day =  '0' + day;
-        }
-        time = year + '-' + month + '-' + day;
-        return time;
+
       },
       remove(id) {//移除关注
         let url = (webApi.ClueManager.UnFollowClue).format({id: id});
@@ -252,9 +257,21 @@
             _this.total = res.data.data.total;
             _this.pageSize = res.data.data.pageSize;
             _this.isLoading = false;
+          }else {
+            _this.isLoading = false;
+            _this.$message({
+              showClose: true,
+              message: res.data.errorMessage,
+              duration:2000,
+            })
           }
         }).catch(function(err){
           _this.isLoading = false;
+          _this.$message({
+            showClose: true,
+            message: err.data.errorMessage,
+            duration:2000
+          })
         })
       },
       //取消关注线索

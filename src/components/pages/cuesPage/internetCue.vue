@@ -43,9 +43,10 @@
                 采集网站:
             </div>
             <div class="right">
-                <div v-show="siteList.length>0" class="site-item" :class="{'site-item-on':site == item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
+              <div v-show="siteList.length>0" class="site-item" :class="{'site-item-on': site== item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
+                <!--<div v-show="siteList.length>0" class="site-item site-item-on" >某网站</div>-->
                 <div v-show="siteList.length==0"> 无 </div>
-              <check-box id="site-check"></check-box>
+                <!--<check-box @currSite="currSite" :site-list = 'siteList' v-show="siteList.length>0"></check-box>-->
             </div>
           </div>
           <div class="cue-sort clearfix">
@@ -186,6 +187,11 @@
       _this.getClueType(); //获取线索类型
     },
     methods:{
+        // 当前选择的数据来源(网站) ----子传父
+      currSite(site){
+        console.log(site)
+      },
+
         //获取互联网线索列表
       getInternetCueList(){
         let _this = this;
@@ -196,9 +202,9 @@
            method:'get',
            url:url
          }).then(function(res){
+             console.log(res.data)
            _this.isLoad = false;
            if(res.data.code == 0){
-             console.log(res)
              let data = res.data.data.data;
              let ZYstr = '';
              for(let i = 0;i < data.length; i++){
@@ -323,12 +329,7 @@
               query:{type:2,id:id}
             });
           })
-
         }
-        // this.$router.push({
-        //   path:'/home/cueDetail',
-        //   query:{type:2,id:id}
-        // });
       },
       //关注线索
       followClue(clueId,clueType){
@@ -607,16 +608,6 @@
             width: calc(100% - 144px);
             padding: 0 20px;
             color: #333;
-            #site-check{
-              position: absolute;
-              width: 100%;
-              top: 30px;
-              left: 0;
-              background: #FFFFFF;
-              z-index: 100;
-              height: 100px;
-              display: none;
-            }
             .site-item{
               height: 100%;
               float: left;
@@ -784,6 +775,5 @@
         }
       }
     }
-
   }
 </style>
