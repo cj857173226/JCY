@@ -123,6 +123,8 @@
           background-color: #eeeeee;
           max-width: 300px;
           padding-bottom: 34px;
+          width: 300px;
+          height: 300px;
           overflow: hidden;
           .img-list-time {
             position: absolute;
@@ -136,7 +138,8 @@
           img {
             display: block;
             width: 100%;
-            height: auto;
+            height: 100%;
+            /*height: auto;*/
             &:hover {
               cursor:pointer;
               transform: scale(1.2);
