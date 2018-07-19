@@ -42,17 +42,13 @@
                 <i class="iconfont icon-caiji"></i>
                 采集网站:
             </div>
-            <div class="right">
-              <div v-show="siteList.length>0"  class="site-item" :class="{'site-item-on': site== item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
-                <!--<div v-show="siteList.length>0" class="site-item site-item-on" >某网站</div>-->
-              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
-              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
-              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
-              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
-              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
-              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
-                <div v-show="siteList.length==0"> 无 </div>
-                <!--<check-box @currSite="currSite" :site-list = 'siteList' v-show="siteList.length>0"></check-box>-->
+            <div class="right" >
+              <div v-show="siteList.length>0" class="site-check-btn" :class="{'site-check-btn-on':siteCheckShow}" >
+                <i class="el-icon-d-caret"></i>
+              </div>
+              <span v-show="siteList.length>0" class="curr-site" v-text="site==''?'全部':site" @click.stop.prevent="siteModal"></span>
+              <check-box :site-list = 'siteList' :curr-site="site" @currSite="currSite" v-show="siteCheckShow"  @click.stop.prevent></check-box>
+              <span v-show="siteList.length==0">无</span>
             </div>
           </div>
           <div class="cue-sort clearfix">
@@ -183,6 +179,7 @@
           order:'cjsj',//排序方式
           site:'',//来源站点
           isLoad:false,//数据是否在加载
+          siteCheckShow:false,//是否显示网站筛选框
         }
       },
     mounted(){
@@ -191,12 +188,13 @@
      _this.getInternetCueList(); //获取互联网线索列表
      _this.getClueSites(); //获取来源网站
       _this.getClueType(); //获取线索类型
+      window.onclick=function(){
+        _this.siteCheckShow=false;
+      }
     },
+
     methods:{
-        // 当前选择的数据来源(网站) ----子传父
-      currSite(site){
-        console.log(site)
-      },
+
 
         //获取互联网线索列表
       getInternetCueList(){
@@ -266,20 +264,22 @@
          }
        }
       },
+      //网站来源筛选弹出框
+      siteModal(){
+          let _this = this;
+          _this.siteCheckShow = !_this.siteCheckShow;
+      },
       //按线索来源筛选
-      clueSiteOder(site){
-        let _this = this;
-      if(_this.isLoad == false){
-        if(_this.site!= site){
-          _this.page = 1;
+      // 当前选择的数据来源(网站) ----子传父
+      currSite(site){
+        let _this = this ;
+        if(_this.site== site){
+          return
+        }else {
           _this.site = site;
-          _this.getInternetCueList();
-        }else{
-          _this.site = '';
-          _this.page = 1;
+          _this.siteCheckShow = false;
           _this.getInternetCueList();
         }
-      }
       },
 
       //按举报类型筛选
@@ -606,22 +606,15 @@
             width: calc(100% - 144px);
             padding: 0 20px;
             color: #333;
-            overflow: hidden;
-            .site-item{
-              height: 100%;
-              float: left;
-              margin-right: 20px;
-              cursor: pointer;
-              -webkit-transition: all 0.3s;
-              -moz-transition: all 0.3s;
-              -ms-transition: all 0.3s;
-              -o-transition: all 0.3s;
-              transition: all 0.3s;
-            }
-            .site-item-on{
+            .curr-site{
               color: #FF6600;
+              cursor: pointer;
             }
-            .site-item:hover{
+            .site-check-btn{
+              display: inline-block;
+              cursor:default;
+            }
+            .site-check-btn-on{
               color: #FF6600;
             }
             .sort-item-tip{
