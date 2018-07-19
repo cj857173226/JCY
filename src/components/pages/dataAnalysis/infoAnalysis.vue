@@ -12,7 +12,9 @@ import lightMap from '../../pubilcComponents/toolComponets/lightMap'
 export default {
     components:{lightMap},
     data(){
-
+        return{
+            
+        }
     }
 }
 </script>
