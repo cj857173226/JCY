@@ -169,6 +169,13 @@
           </el-menu-item>
         </router-link>
 
+        <router-link to="/home/infoAnalysis">
+          <el-menu-item index="6-3" :class="isThisNav == '信息分析'?'is-active':''" @click="switchNav('信息分析')">
+            <i class="fa fa-window-restore"></i>
+            <span slot="title">信息分析</span>
+          </el-menu-item>
+        </router-link>
+
       </el-menu-item-group>
     </el-submenu>
     <!--<el-menu-item index="7">-->
