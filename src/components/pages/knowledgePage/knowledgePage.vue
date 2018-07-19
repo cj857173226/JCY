@@ -83,11 +83,17 @@ export default {
     },
     //查看详情
     checkDetail(item){
-      this.$router.push({path: '/home/knowledgeDetail',query:{id:item.BH}});
+      this.$router.push({path: '/home/knowledgeDetail',query:{id:item.BH,type:this.type}});
     },
     //获取知识库数据
     knowledgeDataGet(){
+      console.log(2);
       var _this = this;
+      if(this.$route.fullPath.split('?')[1].split('=')[1] == 1){
+        this.type = '理论研究';
+      }else if(this.$route.fullPath.split('?')[1].split('=')[1] == 2){
+        this.type = '法律法规';
+      }
       var params = {
         keyword: _this.keyword,
         type: _this.type,
@@ -111,7 +117,15 @@ export default {
         _this.isLoad = false;
       })
     }
-  }
+  },
+  watch:{
+    '$route.fullPath':function(){
+      console.log(1);
+      this.knowledgeData = [];
+      this.isLoad = true;
+      this.knowledgeDataGet();
+    }
+  } 
 }
 </script>
 

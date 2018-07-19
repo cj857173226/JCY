@@ -208,6 +208,7 @@
            method:'get',
            url:url
          }).then(function(res){
+             console.log(res.data)
            _this.isLoad = false;
            if(res.data.code == 0){
              let data = res.data.data.data;

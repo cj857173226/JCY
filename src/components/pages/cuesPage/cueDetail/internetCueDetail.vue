@@ -87,7 +87,8 @@ export default {
             }).then(function(response){
                 if(response.data.code == 0){
                   console.log(response.data.data[0])
-                  _this.cueData = response.data.data[0]
+                  _this.cueData = response.data.data[0];
+                  _this.$emit("followData",response.data.data[0].SFGZ)
                 }else{
 
                 }
