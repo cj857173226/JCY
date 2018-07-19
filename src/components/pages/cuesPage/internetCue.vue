@@ -43,8 +43,14 @@
                 采集网站:
             </div>
             <div class="right">
-              <div v-show="siteList.length>0" class="site-item" :class="{'site-item-on': site== item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
+              <div v-show="siteList.length>0"  class="site-item" :class="{'site-item-on': site== item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
                 <!--<div v-show="siteList.length>0" class="site-item site-item-on" >某网站</div>-->
+              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
                 <div v-show="siteList.length==0"> 无 </div>
                 <!--<check-box @currSite="currSite" :site-list = 'siteList' v-show="siteList.length>0"></check-box>-->
             </div>
@@ -204,16 +210,7 @@
          }).then(function(res){
            _this.isLoad = false;
            if(res.data.code == 0){
-             console.log(res)
              let data = res.data.data.data;
-             let ZYstr = '';
-             for(let i = 0;i < data.length; i++){
-               let str = data[i].ZY.split("<br/>");
-               for(let j= 0;j<str.length;j++){
-                 ZYstr += str[j];
-               }
-               data[i].ZY = ZYstr;
-             }
              _this.totalPages = res.data.data.total
              _this.internetCueList = data;
            }else {
@@ -608,6 +605,7 @@
             width: calc(100% - 144px);
             padding: 0 20px;
             color: #333;
+            overflow: hidden;
             .site-item{
               height: 100%;
               float: left;
