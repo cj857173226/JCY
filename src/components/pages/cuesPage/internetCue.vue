@@ -45,12 +45,12 @@
             <div class="right">
               <div v-show="siteList.length>0"  class="site-item" :class="{'site-item-on': site== item }" @click="clueSiteOder(item)" v-for="(item,index) in siteList" >{{item}}</div>
                 <!--<div v-show="siteList.length>0" class="site-item site-item-on" >某网站</div>-->
-              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
-              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
-              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
-              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
-              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
-              <div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>
+              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
+              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
+              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
+              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
+              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
+              <!--<div class="site-item ">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</div>-->
                 <div v-show="siteList.length==0"> 无 </div>
                 <!--<check-box @currSite="currSite" :site-list = 'siteList' v-show="siteList.length>0"></check-box>-->
             </div>
