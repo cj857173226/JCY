@@ -4,7 +4,7 @@
       <span class="knowledge-icon">
         <i class="fa fa-graduation-cap"></i>
       </span>
-      <span class="knowledge-title">知识库</span>
+      <span class="knowledge-title">{{type}}</span>
       <div class="search-wrap clearfix">
         <input class="search-ipt" type="text" placeholder="请输入内容" v-model="keyword">
         <span class="search-btn" @click="searchBtn">
@@ -16,7 +16,7 @@
       <ul>
         <li v-for="item in knowledgeData">
           <div class="item-header">
-            <span :class="['item-type',item.SSLB == '理论研究'?'':'type-blue']">{{item.SSLB}}</span>
+            <!--<span :class="['item-type',item.SSLB == '理论研究'?'':'type-blue']">{{item.SSLB}}</span>-->
             <span class="item-title" @click="checkDetail(item)">{{item.BT}}</span>
           </div>
           <div class="item-content">
@@ -31,7 +31,7 @@
           <span v-show="noMoreData">已无更多数据</span>
           <span v-show="!noMoreData">继续滑动加载更多...</span>
         </li>
-      </ul> 
+      </ul>
     </div>
   </div>
 </template>
@@ -83,11 +83,16 @@ export default {
     },
     //查看详情
     checkDetail(item){
-      this.$router.push({path: '/home/knowledgeDetail',query:{id:item.BH}});
+      this.$router.push({path: '/home/knowledgeDetail',query:{id:item.BH,type:this.type}});
     },
     //获取知识库数据
     knowledgeDataGet(){
       var _this = this;
+      if(this.$route.fullPath.split('?')[1].split('=')[1] == 1){
+        this.type = '理论研究';
+      }else if(this.$route.fullPath.split('?')[1].split('=')[1] == 2){
+        this.type = '法律法规';
+      }
       var params = {
         keyword: _this.keyword,
         type: _this.type,
@@ -110,6 +115,13 @@ export default {
       }).catch(function(error){
         _this.isLoad = false;
       })
+    }
+  },
+  watch:{
+    '$route.fullPath':function(){
+      this.knowledgeData = [];
+      this.isLoad = true;
+      this.knowledgeDataGet();
     }
   }
 }
@@ -182,13 +194,12 @@ export default {
       }
     }
     #knowledge-content{
-      padding: 10px 40px;
       height: calc(100% - 40px);
       overflow: auto;
       ul{
         padding: 0;
         li{
-          padding: 10px;
+          padding: 10px 30px 15px 20px;
           .item-header{
             height: 30px;
             line-height: 30px;
@@ -218,32 +229,27 @@ export default {
               cursor: pointer;
             }
           }
-          .item-header:before{
-            content:'';
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #00a65a;
-            top: 50%;
-            left: -10px;
-          }
           .item-content{
             margin-bottom: 5px;
             span{
-              overflow: hidden;
+              overflow : hidden;
               text-overflow: ellipsis;
-              display: -webkit-box;
+              display: -webkit-box ;
+              -webkit-line-clamp: 3;
               -webkit-box-orient: vertical;
-              -webkit-line-clamp: 1;
-              white-space: nowrap;
-              width: 100%;
-              display: block;
+              text-indent: 2em;
             }
           }
           .item-time{
             font-size: 12px;
             color: #848484;
           }
+        }
+        li:nth-child(2n){
+          background: #e4e4e4;
+        }
+        li:hover{
+          background:#F2F2F2;
         }
         .load-more{
           text-align: center;

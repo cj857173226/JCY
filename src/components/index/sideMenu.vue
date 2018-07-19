@@ -3,7 +3,7 @@
     <router-link to="/home">
       <el-menu-item index="1" :class="isThisNav == '主页'?'is-active':''" @click="switchNav('主页')">
         <i class="iconfont icon-zhuye"></i>
-        <span slot="title">主页</span>
+        <span slot="title">系统主页</span>
       </el-menu-item>
     </router-link>
 
@@ -108,12 +108,38 @@
       </el-menu-item>
     </router-link>
 
-    <router-link to="/home/knowledge">
+    <!-- <router-link to="/home/knowledge">
       <el-menu-item index="5" :class="isThisNav == '知识库' || isThisNav == '知识库详情'?'is-active':''" @click="switchNav('知识库')">
         <i class="iconfont icon-boshimao"></i>
         <span slot="title">知识库</span>
       </el-menu-item>
-    </router-link>
+    </router-link> -->
+
+    <el-submenu index = "5">
+      <template slot="title">
+        <i class="fa fa-cubes"></i>
+        <span slot="title">知识库</span>
+      </template>
+      <el-menu-item-group >
+        <template slot="title" id="menu-group-title" style="display:none"></template>
+
+        <router-link to="/home/knowledge?knowtype=1">
+          <el-menu-item index="5-1" :class="isThisNav == '理论研究' || isThisNav == '知识库详情'?'is-active':''" @click="switchNav('理论研究')">
+            <i class="iconfont icon-boshimao"></i>
+            <span slot="title">理论研究</span>
+          </el-menu-item>
+        </router-link>
+        <router-link to="/home/knowledge?knowtype=2">
+          <el-menu-item index="5-2" :class="isThisNav == '法律法规' || isThisNav == '知识库详情'?'is-active':''" @click="switchNav('法律法规')">
+            <i class="iconfont icon-boshimao"></i>
+            <span slot="title">法律法规</span>
+          </el-menu-item>
+        </router-link>
+
+      </el-menu-item-group>
+    </el-submenu>
+
+    
 
     <router-link to="/home/UAV">
       <el-menu-item index="13" :class="isThisNav == '无人机取证' ?'is-active':''" @click="switchNav('无人机取证')">
@@ -143,6 +169,13 @@
           </el-menu-item>
         </router-link>
 
+        <router-link to="/home/infoAnalysis">
+          <el-menu-item index="6-3" :class="isThisNav == '信息分析'?'is-active':''" @click="switchNav('信息分析')">
+            <i class="fa fa-window-restore"></i>
+            <span slot="title">信息分析</span>
+          </el-menu-item>
+        </router-link>
+
       </el-menu-item-group>
     </el-submenu>
     <!--<el-menu-item index="7">-->
@@ -159,7 +192,7 @@
     data(){
       return{
         IdentityType: localStorage.getItem('IdentityType'),//身份信息
-        openeds: ['2','6','7','7-3'],
+        openeds: ['2','5','6','7','7-3'],
         isThisNav: '',
       }
     },
@@ -191,6 +224,17 @@
         }
       }else{
         this.isThisNav = this.$route.meta.name;
+        if(this.$route.meta.name == '知识库'||this.$route.meta.name == '知识库详情'){
+          if(this.$route.fullPath.split('?')[1].split('=')[1] == 1){
+            this.isThisNav = '理论研究';
+          }else if(this.$route.fullPath.split('?')[1].split('=')[1] == 2){
+            this.isThisNav = '法律法规';
+          }else if(this.$route.query.knowtype == 1){
+            this.isThisNav = '理论研究';
+          }else if(this.$route.query.knowtype == 2){
+            this.isThisNav = '法律法规';
+          }
+        }
       };
       var _this = this;
       this.$root.Bus.$on('changeIdentity',function(val){
