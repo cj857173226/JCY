@@ -3,7 +3,7 @@
     <router-link to="/home">
       <el-menu-item index="1" :class="isThisNav == '主页'?'is-active':''" @click="switchNav('主页')">
         <i class="iconfont icon-zhuye"></i>
-        <span slot="title">主页</span>
+        <span slot="title">系统主页</span>
       </el-menu-item>
     </router-link>
 
