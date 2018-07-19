@@ -57,6 +57,10 @@
       getOption() {
         let _this = this;
         var option = {
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}'
+          },
           title: {
             text: "全国检察机关公益诉讼新闻热力图",
             left: 'center',
@@ -70,10 +74,10 @@
             show: false,
             min: 0,
             max: 300,
-            splitNumber: 5,
+            splitNumber: 50,
             inRange: {
               // color: ['#d94e5d','#eac736','#50a3ba'].reverse()
-              color: ['blue', 'blue', 'green', 'yellow', 'red']
+              color: ['blue', 'green', 'yellow', 'red']
             },
             textStyle: {
               color: '#000'
@@ -90,7 +94,7 @@
                 }
               },
               emphasis: {
-                color: 'green'
+                color: '#fff'
               }
             },
             roam: true,
@@ -100,11 +104,12 @@
             },
             itemStyle: {
               normal: {
-                areaColor: '#3f7696',
-                borderColor: '#a4d2ec'
+                // areaColor: '#3f7696',
+                areaColor: '#a4d2ec',
+                borderColor: '#3f7696'
               },
               emphasis: {
-                areaColor: '#a4d2ec'
+                areaColor: '#3f7696'
               }
             }
           },
@@ -116,6 +121,46 @@
               data: _this.optionData,
               center: [ '50%' , '50%'],
             },
+            {
+              geoIndex: 0,
+              type: 'map',
+              data: [
+                {name: '北京'},
+                {name: '天津'},
+                {name: '上海'},
+                {name: '重庆'},
+                {name: '河北'},
+                {name: '河南'},
+                {name: '云南'},
+                {name: '辽宁'},
+                {name: '黑龙江'},
+                {name: '湖南'},
+                {name: '安徽'},
+                {name: '山东'},
+                {name: '新疆'},
+                {name: '江苏'},
+                {name: '浙江'},
+                {name: '江西'},
+                {name: '湖北'},
+                {name: '广西'},
+                {name: '甘肃'},
+                {name: '山西'},
+                {name: '内蒙古'},
+                {name: '陕西'},
+                {name: '吉林'},
+                {name: '福建'},
+                {name: '贵州'},
+                {name: '广东'},
+                {name: '青海'},
+                {name: '西藏'},
+                {name: '四川'},
+                {name: '宁夏'},
+                {name: '海南'},
+                {name: '台湾'},
+                {name: '香港'},
+                {name: '澳门'}
+              ],
+            },
           ],
         };
         return option;
@@ -124,7 +169,7 @@
       resizeWindow() {
         let _this = this;
         window.addEventListener('resize',_this.initChart);
-      }
+      },
     },
     mounted() {
       this.getChinaData();

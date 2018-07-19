@@ -161,11 +161,31 @@
           for(let i in obj) {
             _this.$set(obj, i, newObj[i]);
           }
+        };
+        let role = localStorage.getItem('user');
+        if(role=='admin'){
+          _this.getAdminDataCount(setDataCount)//获取管理员主页数据统计信息
+        }else {
+          _this.dataCount = [//数据统计
+            {title: "线索总量", val: 0,icon:'fa-list'},
+            {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+            {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+            {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+          ];
         }
+      },
+      getAdminDataCount(setDataCount){//获取管理员主页数据统计信息
+        let _this = this;
+        _this.dataCount = [//数据统计
+          {title: "线索总量", val: 0,icon:'fa-list'},
+          {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+        ];
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountMonthClues,
-          timeout: 2000,
+          timeout: 4000,
         }).then(function(res){
           if(res.data.code==0){
             setDataCount(_this.dataCount[0],{title: '线索总量', val: res.data.data.Total,icon:'fa-list'});
@@ -177,7 +197,7 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountFollowClues,
-          timeout: 2000,
+          timeout: 4000,
         }).then(function(res){
           if(res.data.code==0){
             setDataCount(_this.dataCount[1],{title: '关注线索总量', val: res.data.data,icon:'fa-heart-o'});
@@ -186,29 +206,29 @@
           console.log(err)
         })
 
-        // _this.axios({
-        //   method: 'post',
-        //   url: webApi.Host + webApi.Stats.CountUnReciveClues,
-        //   timeout: 2000,
-        // }).then(function(res){
-        //   if(res.data.code==0){
-        //     setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
-        //   }
-        // }).catch(function(err){
-        //   console.log(err)
-        // })
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountMonthSubHandled,
+          timeout: 4000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
 
-        // _this.axios({
-        //   method: 'post',
-        //   url: webApi.Host + webApi.Stats.CountReciveClues,
-        //   timeout: 2000
-        // }).then(function(res){
-        //   if(res.data.code==0){
-        //     setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data,icon:'fa-check-circle'});
-        //   }
-        // }).catch(function(err){
-        //   console.log(err)
-        // })
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountMonthSubReciveClues,
+          timeout: 4000
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data,icon:'fa-check-circle'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
       }
     },
     mounted() {
