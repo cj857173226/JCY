@@ -81,7 +81,8 @@
           <el-table-column
             prop="ZY"
             label="内容"
-            min-width="300">
+            min-width="300"
+            >
             <template slot-scope="scope">
               <el-popover trigger="click" placement="top" >
                 <p style="text-indent: 2em;">{{ scope.row.ZY }}</p>
@@ -194,7 +195,6 @@
     },
 
     methods:{
-
 
         //获取互联网线索列表
       getInternetCueList(){
