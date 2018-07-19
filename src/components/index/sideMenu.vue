@@ -172,7 +172,7 @@
         <router-link to="/home/infoAnalysis">
           <el-menu-item index="6-3" :class="isThisNav == '信息分析'?'is-active':''" @click="switchNav('信息分析')">
             <i class="fa fa-window-restore"></i>
-            <span slot="title">信息分析</span>
+            <span slot="title">深圳环保数据分析</span>
           </el-menu-item>
         </router-link>
 
