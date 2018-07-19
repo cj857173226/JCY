@@ -16,7 +16,7 @@
       <ul>
         <li v-for="item in knowledgeData">
           <div class="item-header">
-            <span :class="['item-type',item.SSLB == '理论研究'?'':'type-blue']">{{item.SSLB}}</span>
+            <!--<span :class="['item-type',item.SSLB == '理论研究'?'':'type-blue']">{{item.SSLB}}</span>-->
             <span class="item-title" @click="checkDetail(item)">{{item.BT}}</span>
           </div>
           <div class="item-content">
@@ -31,7 +31,7 @@
           <span v-show="noMoreData">已无更多数据</span>
           <span v-show="!noMoreData">继续滑动加载更多...</span>
         </li>
-      </ul> 
+      </ul>
     </div>
   </div>
 </template>
@@ -87,7 +87,6 @@ export default {
     },
     //获取知识库数据
     knowledgeDataGet(){
-      console.log(2);
       var _this = this;
       if(this.$route.fullPath.split('?')[1].split('=')[1] == 1){
         this.type = '理论研究';
@@ -120,12 +119,11 @@ export default {
   },
   watch:{
     '$route.fullPath':function(){
-      console.log(1);
       this.knowledgeData = [];
       this.isLoad = true;
       this.knowledgeDataGet();
     }
-  } 
+  }
 }
 </script>
 
@@ -196,13 +194,12 @@ export default {
       }
     }
     #knowledge-content{
-      padding: 10px 40px;
       height: calc(100% - 40px);
       overflow: auto;
       ul{
         padding: 0;
         li{
-          padding: 10px;
+          padding: 10px 30px 15px 20px;
           .item-header{
             height: 30px;
             line-height: 30px;
@@ -232,32 +229,27 @@ export default {
               cursor: pointer;
             }
           }
-          .item-header:before{
-            content:'';
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #00a65a;
-            top: 50%;
-            left: -10px;
-          }
           .item-content{
             margin-bottom: 5px;
             span{
-              overflow: hidden;
+              overflow : hidden;
               text-overflow: ellipsis;
-              display: -webkit-box;
+              display: -webkit-box ;
+              -webkit-line-clamp: 3;
               -webkit-box-orient: vertical;
-              -webkit-line-clamp: 1;
-              white-space: nowrap;
-              width: 100%;
-              display: block;
+              text-indent: 2em;
             }
           }
           .item-time{
             font-size: 12px;
             color: #848484;
           }
+        }
+        li:nth-child(2n){
+          background: #e4e4e4;
+        }
+        li:hover{
+          background:#F2F2F2;
         }
         .load-more{
           text-align: center;
