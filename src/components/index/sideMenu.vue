@@ -139,7 +139,7 @@
       </el-menu-item-group>
     </el-submenu>
 
-    
+
 
     <router-link to="/home/UAV">
       <el-menu-item index="13" :class="isThisNav == '无人机取证' ?'is-active':''" @click="switchNav('无人机取证')">
