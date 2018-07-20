@@ -25,7 +25,7 @@
       <!--</div>-->
     </div>
     <div id="newsAnalysis_body">
-      <div id="newsAnalysis_main" ref="heatmap" v-loading="isLoading">
+      <div id="newsAnalysis_main" ref="heatmap" v-loading="isLoading"  element-loading-background="transparent">
       </div>
       <div class="map_return"  v-show="isReturn" @click="returnChina">
         <i class="fa fa-reply"></i>
@@ -37,7 +37,7 @@
           <p>总量/条</p>
         </li>
       </ul>
-      <ul id="region_list" ref="listBody" v-loading="isLoading">
+      <ul id="region_list" ref="listBody" v-loading="isLoading" element-loading-background="transparent">
         <li v-for="(item,index) in freqData" :key="index">
           <p v-text="item.DM"></p>
           <p v-text="item.PC"></p>
@@ -54,7 +54,7 @@
     data() {
       return {
         moveData: [],//移入data
-        optionData: "",
+        optionData: "",//热力图配置数据(经纬度、频次)
         isLoading: false,
         mapType: 'china',//地图类型
         mapTitle: '全国',//地名名称
@@ -91,13 +91,15 @@
       },
       getChinaData() {
         let _this = this;
-        let data = [];
+        let data = [];//热力图数据,经纬度、频次
         // let moveData = [];
+        let listBody = _this.$refs.listBody;
         let province = _this.mapType;
         if(_this.mapType=="china") {
           province = "";
         }
         _this.isLoading = true;
+        listBody.style.overflowY="hidden";
         _this.axios({
           url: (webApi.News.GetCityFreq).format({
             province: province
@@ -120,18 +122,12 @@
                     _this.maxVal = val;
                   }
                   data.push([x, y, val]);
-                  // moveData.push({name: item.DM})
-                  // moveData.push({name: item.DM,value: val,itemStyle:{
-                  //     areaColor: '#a4d2ec'
-                  //   }})
                 }
               });
-              // console.log(_this.maxVal);
-              // console.log(JSON.stringify(data))
               _this.optionData = data;
-              // _this.moveData = moveData;
               _this.initChart();//初始化图表
               _this.isLoading = false;
+              listBody.style.overflowY="auto";
               _this.resizeWindow();
               _this.$nextTick(()=>{
                 _this.hasScroll();
@@ -139,6 +135,7 @@
             }
           }).catch(function(err) {
           _this.isLoading = false;
+          listBody.style.overflowY="auto";
           console.log(err)
         })
       },
@@ -147,7 +144,7 @@
         let _this = this;
         if(_this.clickMapStatus) {
           myChart.on('click', function (params) {
-            if(params.name!="台湾"&&params.name!="南海诸岛"){
+            if(params.name!="台湾"&&params.name){
               _this.mapType = params.name;
               _this.mapTitle = params.name;
               _this.listName = '市区';
@@ -183,7 +180,20 @@
         var option = {
           tooltip: {
             trigger: 'item',
-            formatter: "{b}"
+            // formatter: "{b}"
+            formatter: function(params){
+              for(let i=0;i<_this.freqData.length;i++){
+                if(_this.freqData[i].DM==params.name){
+                  params.value = _this.freqData[i].PC;
+                  break;
+                }
+              }
+              if(params.name&&params.value&&params.name!="台湾"){
+                return params.name+" : "+params.value
+              }else if(params.name&&params.name!="台湾") {
+                return params.name;
+              }
+            }
           },
           title: {
             text: _this.mapTitle,
@@ -198,11 +208,6 @@
             min: 0,
             max: maxVal,
             splitNumber: splitNum,
-            // splitList: [
-            //   {start: _this.maxVal},
-            //   {start: 1, end:  _this.maxVal, label: '10 到 200（自定义label）'},
-            //   {start: .9, end: 0}
-            // ],
             inRange: {
               // color: ['#d94e5d','#eac736','#50a3ba'].reverse()
               color: ['blue', 'green', 'yellow', 'red']
