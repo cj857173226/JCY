@@ -1,33 +1,32 @@
 <template>
-    <div id="checkBox">
-      <span :class="{'on':currSite==''}" @click="selectSite('')">全部</span>
-      <span :class="{'on':currSite==item}" v-for="(item,index) in siteList" @click="selectSite(item)"  @click.stop.prevent  >{{item}}</span>
-    </div>
+  <div id="tableCheckBox">
+    <span :class="{'on':currTable==item}" v-for="(item,index) in tableNames" @click="selectTable(item)"  @click.stop.prevent  >{{item}}</span>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "checkBox",
-        props:['siteList','currSite'],
-      data(){
-          return{
+  export default {
+    name: "tableCheckBox",
+    props:['tableNames','currTable'],
+    data(){
+      return{
 
-          }
-      },
-      mounted(){
+      }
+    },
+    mounted(){
 
-      },
-      methods:{
-        selectSite(item){
-          this.$emit('currSite',item)
-        }
+    },
+    methods:{
+      selectTable(item){
+        this.$emit('currTable',item)
       }
     }
+  }
 
 </script>
 
 <style lang="scss" scoped>
-  #checkBox{
+  #tableCheckBox{
     position: absolute;
     padding: 10px 20px;
     max-height: 100px;
@@ -62,7 +61,7 @@
     }
   }
   @media (max-width: 1440px){
-    #checkBox{
+    #tableCheckBox{
       span{
         height: 30px;
         line-height: 30px;
