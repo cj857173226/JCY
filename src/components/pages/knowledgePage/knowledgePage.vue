@@ -2,7 +2,7 @@
   <div id="knowledge">
     <div id="knowledge-header">
       <span class="knowledge-icon">
-        <i class="fa fa-graduation-cap"></i>
+        <i :class="['fa', type=='理论研究'?'fa-graduation-cap':'fa fa-columns']"></i>
       </span>
       <span class="knowledge-title">{{type}}</span>
       <div class="search-wrap clearfix">
