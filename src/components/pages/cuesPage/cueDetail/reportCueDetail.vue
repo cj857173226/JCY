@@ -63,11 +63,15 @@ export default {
             }).then(function(response){
                 if(response.data.code == 0){
                     _this.cueData = response.data.data[0];
+                    if(response.data.data[0].SFYD == 0){
+                        _this.readed();
+                    }
                     var tp = JSON.parse(_this.cueData.TP);
                     var sp = JSON.parse(_this.cueData.SP);
                     _this.cueData.TP = tp;
                     _this.cueData.SP = sp;
                     _this.getTPSPData();
+                    _this.$emit("followData",response.data.data[0].SFGZ)
                 }else{
 
                 }
@@ -93,6 +97,26 @@ export default {
                     _this.SP.push(src);
                 }
             }
+        },
+        //标为已读
+        readed(){
+            var _this = this;
+            this.axios({
+                method:'post',
+                url:webApi.Clue.ClueRead.format({xssjbly:1,xsbh:this.$route.query.id}),
+                timeout:10000
+            }).then(function(response){
+                if(response.data.code == 0){
+                    console.log('已读');
+                }else{
+                    _this.$message({
+                        message:'已读出现错误,请联系维护人员',
+                        type:'error'
+                    })
+                }
+            }).catch(function(error){
+
+            })
         }
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="amap-page-container">
         <el-amap ref="map" vid="amap" :center="center" :zoom="zoom" class="amap-demo">
-            <el-amap-marker :events="item.events" v-for="(item,index) in markers" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events" :key="index" v-for="(item,index) in markers" :position="item.position" :template="item.template"></el-amap-marker>
             <el-amap-info-window
                 :position="currentWindow.position"
                 :content="currentWindow.content"
@@ -63,7 +63,6 @@ export default {
                             _this.windows.forEach(window => {
                                 window.visible = false;
                             });
-
                             _this.currentWindow.position = [114.015973657,22.5760535462 + i * 0.001];
                             _this.currentWindow.content = '家兴';
                             _this.$nextTick(() => {

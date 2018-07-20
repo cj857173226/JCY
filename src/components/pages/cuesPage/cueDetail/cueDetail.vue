@@ -45,7 +45,7 @@
                 </span>
             </div><div class="content-box">
                 <div id="detail" v-show="isThisNav == 1">
-                    <report-detail v-if="cueType == 1" ></report-detail>
+                    <report-detail @followData = "followCue" v-if="cueType == 1" ></report-detail>
                     <internet-detail @followData = "followCue" v-if="cueType == 2"></internet-detail>
                 </div>
                 <div id="approval" v-show="isThisNav == 2">
@@ -87,13 +87,12 @@ export default {
             cueFrom:'', //线索类别
             identity: null, //权限
             confirmReceive:false, //线索是否确认接收
-            isFollow:true, //该线索是否关注
+            isFollow:false, //该线索是否关注
             page: false, //待接收页
             followPage: false,
         }
     },
     mounted(){
-        console.log("刷新");
         var _this = this;
         //获取身份权限信息
         this.identity = localStorage.IdentityType;
