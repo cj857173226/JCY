@@ -29,7 +29,7 @@
         <div class="text_box">
           <!--标题-->
           <div class="text_head">
-            <span>新闻动态</span>
+            <span>新闻聚合</span>
             <span @click="clickMore('home/news')">更多>></span>
             <!--<router-link tag="span" to="home/news">更多>></router-link>-->
           </div>
@@ -53,15 +53,15 @@
         <div class="text_box">
           <!--标题-->
           <div class="text_head">
-            <span>理论研究 | 法律规章</span>
+            <span>理论研究 | 法律法规</span>
             <!--<router-link tag="span" to="/home/knowledge">更多>></router-link>-->
-            <span @click="clickMore('/home/knowledge')">更多>></span>
+            <span @click="clickMore('/home/knowledge?knowtype=1')">更多>></span>
           </div>
           <!--内容-->
           <ul class="text_body" v-loading="knowLoading">
             <li v-for="(item, index) in knowledgeData.slice(0,6)" :key="index">
               <div class="text_title">
-                <p v-text="item.BT" @click="details('know',item.BH)"></p>
+                <p v-text="item.BT" @click="details('know',item.BH,item.SSLB)"></p>
                 <p>
                   <span>来源: {{item.LY}}</span>
                   <span>发布时间: {{item.FBSJ}}</span>
@@ -103,7 +103,7 @@
         this.$router.push({path:path});
       },
       //跳转详情
-      details(type,id) {
+      details(type,id,SSLB) {
         let path = "";
         if(type=="news") {
           path = '/home/newsDetail';
@@ -112,7 +112,7 @@
         }
         this.$router.push({
           path: path,
-          query: {id: id}
+          query: {id: id,type:SSLB}
         })
       },
       getNewsData() {//获取新闻动态信息、知识库信息
@@ -129,7 +129,7 @@
         _this.axios({//新闻动态
           method: 'get',
           url: (webApi.News.GetTopNews).format({'top': 6}),
-          timeout: 4000,
+          timeout: 10000,
         }).then(function(res){
           if(res.data.code==0) {
             setDataContent(res.data.data.data);
@@ -143,7 +143,7 @@
         _this.axios({//知识库
           method: 'get',
           url: (webApi.Knowledge.GetTop).format({'top': 6}),
-          timeout: 4000,
+          timeout: 10000,
         }).then(function(res){
           if(res.data.code==0) {
             setDataContent(res.data.data.data);
@@ -185,7 +185,7 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountMonthClues,
-          timeout: 4000,
+          timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
             setDataCount(_this.dataCount[0],{title: '线索总量', val: res.data.data.Total,icon:'fa-list'});
@@ -197,7 +197,7 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountFollowClues,
-          timeout: 4000,
+          timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
             setDataCount(_this.dataCount[1],{title: '关注线索总量', val: res.data.data,icon:'fa-heart-o'});
@@ -209,7 +209,7 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountMonthSubHandled,
-          timeout: 4000,
+          timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
             setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
@@ -221,7 +221,7 @@
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountMonthSubReciveClues,
-          timeout: 4000
+          timeout: 10000
         }).then(function(res){
           if(res.data.code==0){
             setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data,icon:'fa-check-circle'});
