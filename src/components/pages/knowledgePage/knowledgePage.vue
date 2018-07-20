@@ -2,7 +2,7 @@
   <div id="knowledge">
     <div id="knowledge-header">
       <span class="knowledge-icon">
-        <i class="fa fa-graduation-cap"></i>
+        <i :class="['fa', type=='理论研究'?'fa-graduation-cap':'fa fa-columns']"></i>
       </span>
       <span class="knowledge-title">{{type}}</span>
       <div class="search-wrap clearfix">
@@ -51,9 +51,10 @@ export default {
     }
   },
   mounted(){
-    var _this = this;
     this.isLoad = true;
+    this.$root.Bus.$emit('changeMenu','5-1');
     this.knowledgeDataGet();
+    console.log(1);
   },
   methods: {
     //鼠标滚动加载
@@ -121,6 +122,7 @@ export default {
     '$route.fullPath':function(){
       this.knowledgeData = [];
       this.isLoad = true;
+      this.pageNum = 1;
       this.knowledgeDataGet();
     }
   }
