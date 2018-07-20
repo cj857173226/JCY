@@ -33,7 +33,6 @@
     max-height: 100px;
     overflow-y: auto;
     width: 100%;
-    top: 40px;
     left: 0;
     background: #FFFFFF;
     z-index: 100;
@@ -41,6 +40,7 @@
     -webkit-box-shadow: 4px 6px 8px rgba(0,0,0,0.3);
     -moz-box-shadow: 4px 6px 8px rgba(0,0,0,0.3);
     box-shadow: 4px 6px 8px rgba(0,0,0,0.3);
+    text-align: left;
     span{
       cursor: pointer;
       display: inline-block;
@@ -63,7 +63,6 @@
   }
   @media (max-width: 1440px){
     #checkBox{
-      top: 30px;
       span{
         height: 30px;
         line-height: 30px;

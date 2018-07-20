@@ -24,10 +24,13 @@
               <div class="title-label">
                 表名:
               </div>
-              <div class="title"></div>
+              <div class="title">
+                啊实打实的阿斯顿啊打啊实打实的阿斯顿啊打啊实打实的阿斯顿啊打啊实打实的阿斯顿啊打
+              </div>
               <div class="check-btn">
                 <i class="el-icon-d-caret"></i>
               </div>
+              <check-box class="list-check-box" :site-list = 'listNames' :curr-site="site" @currSite="" v-show="listCheckShow"  @click.stop.prevent></check-box>
             </div>
             <div class="curr-list-wrap">
                 <div class="cue-list" ref="cueList" >
@@ -118,9 +121,10 @@
 
 <script>
 import lightMap from '../../pubilcComponents/toolComponets/lightMap'
+import checkBox from '../../pubilcComponents/toolComponets/checkBox'
 const cityOptions = ['啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊!!!!!!!!!!!!!!!!!!aaaaaaaaaaaaaaaa!', '北京', '广州', '深圳'];
 export default {
-    components:{lightMap},
+    components:{lightMap,checkBox},
     data(){
         return{
           checkAll: false,
@@ -139,6 +143,13 @@ export default {
           order:'cjsj',//排序方式
           site:'',//来源站点
           isLoad:false,//数据是否在加载
+          currListName:'表1',
+          listNames:[
+            '这个这个表',
+            '那个那个表',
+            '这又是什么表'
+          ],
+          listCheckShow:false
         }
     },
   mounted(){
@@ -281,6 +292,7 @@ export default {
       .list-wrap{
         height:calc(100% - 240px);
         .list-check-wrap{
+          position: relative;
           height: 40px;
           border-top: 1px solid #e4e7ed;
           font-size: 16px;
@@ -291,16 +303,35 @@ export default {
             width: 80px;
             background: #E5E5E5;
             height: 100%;
-
           }
           .title{
-
+            float: left;
+            width: calc( 100% - 120px);
+            max-width: calc( 100% - 120px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 20px;
+            color: #f60;
+            cursor: default;
           }
           .check-btn{
             height: 100%;
             float:right;
             width: 40px;
+            -webkit-transition: all 0.3s;
+            -moz-transition: all 0.3s;
+            -ms-transition: all 0.3s;
+            -o-transition: all 0.3s;
+            transition: all 0.3s;
             background: #E5E5E5;
+            cursor: pointer;
+          }
+          .check-btn:hover{
+            color: #f60;
+          }
+          .list-check-box{
+            top: 39px;
           }
         }
         .curr-list-wrap{
