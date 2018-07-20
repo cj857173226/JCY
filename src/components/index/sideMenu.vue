@@ -117,7 +117,7 @@
 
     <el-submenu index = "5">
       <template slot="title">
-        <i class="fa fa-cubes"></i>
+        <i class="fa fa-leanpub"></i>
         <span slot="title">知识库</span>
       </template>
       <el-menu-item-group >
@@ -131,7 +131,7 @@
         </router-link>
         <router-link to="/home/knowledge?knowtype=2">
           <el-menu-item index="5-2" :class="isThisNav == '法律法规' || isThisNav == '知识库详情'?'is-active':''" @click="switchNav('法律法规')">
-            <i class="iconfont icon-boshimao"></i>
+            <i class="fa fa-columns"></i>
             <span slot="title">法律法规</span>
           </el-menu-item>
         </router-link>
@@ -171,8 +171,15 @@
 
         <router-link to="/home/infoAnalysis">
           <el-menu-item index="6-3" :class="isThisNav == '信息分析'?'is-active':''" @click="switchNav('信息分析')">
-            <i class="fa fa-window-restore"></i>
-            <span slot="title">信息分析</span>
+            <i class="fa fa-inbox"></i>
+            <span slot="title">深圳环保数据分析</span>
+          </el-menu-item>
+        </router-link>
+
+        <router-link to="/home/politicsPenalty">
+          <el-menu-item index="6-4" :class="isThisNav == '行政处罚分析'?'is-active':''" @click="switchNav('行政处罚分析')">
+            <i class="fa fa-info-circle"></i>
+            <span slot="title">行政处罚数据</span>
           </el-menu-item>
         </router-link>
 

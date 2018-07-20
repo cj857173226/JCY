@@ -47,7 +47,7 @@
                 <i class="el-icon-d-caret"></i>
               </div>
               <span v-show="siteList.length>0" class="curr-site" v-text="site==''?'全部':site" @click.stop.prevent="siteModal"></span>
-              <check-box :site-list = 'siteList' :curr-site="site" @currSite="currSite" v-show="siteCheckShow"  @click.stop.prevent></check-box>
+              <check-box class="site-check-box" :site-list = 'siteList' :curr-site="site" @currSite="currSite" v-show="siteCheckShow"  @click.stop.prevent></check-box>
               <span v-show="siteList.length==0">无</span>
             </div>
           </div>
@@ -81,7 +81,8 @@
           <el-table-column
             prop="ZY"
             label="内容"
-            min-width="300">
+            min-width="300"
+            >
             <template slot-scope="scope">
               <el-popover trigger="click" placement="top" >
                 <p style="text-indent: 2em;">{{ scope.row.ZY }}</p>
@@ -194,7 +195,6 @@
     },
 
     methods:{
-
 
         //获取互联网线索列表
       getInternetCueList(){
@@ -606,6 +606,9 @@
             width: calc(100% - 144px);
             padding: 0 20px;
             color: #333;
+            .site-check-box{
+              top: 40px;
+            }
             .curr-site{
               color: #FF6600;
               cursor: pointer;
@@ -748,6 +751,9 @@
             border:1px solid #dcdcdc;
             .right{
               font-size: 14px;
+              .site-check-box{
+                top: 30px;
+              }
             }
           }
           .cue-sort{

@@ -4,7 +4,7 @@
       <span class="knowledge-icon">
         <i class="fa fa-graduation-cap" ></i>
       </span>
-      <span class="knowledge-title"><span class="back-btn" @click="backNav">知识库</span>/详情</span>
+      <span class="knowledge-title"><span class="back-btn" @click="backNav">{{type}}</span>/详情</span>
     </div>
     <div id="knowledge-content">
       <div id="knowledge-name">
@@ -27,10 +27,12 @@
 export default {
   data(){
     return{
-      knowledgeData:{}
+      knowledgeData:{},
+      type:'', //知识库类别
     }
   },
   mounted(){
+    this.type = this.$route.query.type;
     this.getknowledgeData();
   },
   methods:{

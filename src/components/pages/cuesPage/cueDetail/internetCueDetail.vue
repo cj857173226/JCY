@@ -78,6 +78,7 @@ export default {
         this.dataGet();
     },
     methods:{
+        //获取数据
         dataGet(){
             var _this = this;
             this.axios({
@@ -86,8 +87,10 @@ export default {
                 timeout: 10000
             }).then(function(response){
                 if(response.data.code == 0){
-                  console.log(response.data.data[0])
                   _this.cueData = response.data.data[0];
+                  if(response.data.data[0].SFYD == 0){
+                      _this.readed();
+                  }
                   _this.$emit("followData",response.data.data[0].SFGZ)
                 }else{
 
@@ -96,6 +99,26 @@ export default {
                 console.log(error);
             })
         },
+        //标为已读
+        readed(){
+            var _this = this;
+            this.axios({
+                method:'post',
+                url:webApi.Clue.ClueRead.format({xssjbly:2,xsbh:this.$route.query.id}),
+                timeout:10000
+            }).then(function(response){
+                if(response.data.code == 0){
+                    console.log('已读');
+                }else{
+                    _this.$message({
+                        message:'已读出现错误,请联系维护人员',
+                        type:'error'
+                    })
+                }
+            }).catch(function(error){
+
+            })
+        }
 
     }
 }
