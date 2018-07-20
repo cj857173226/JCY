@@ -19,20 +19,34 @@
             </el-select>
           </el-form-item>
           <el-form-item label="线索来源 :">
-            <el-select class="follow_select" v-model="followForm.source">
-              <el-option label="全部来源" value="1"></el-option>
+            <el-select class="follow_select" v-model="xssjbly">
+              <el-option label="全部" value=""></el-option>
+              <el-option label="举报线索" value="1"></el-option>
               <el-option label="互联网线索" value="2"></el-option>
-              <el-option label="举报线索" value="3"></el-option>
-              <el-option label="公益组织线索" value="4"></el-option>
-              <el-option label="热点线索" value="5"></el-option>
+              <el-option label="公益组织线索" value="3"></el-option>
+              <el-option label="热点线索" value="4"></el-option>
+              <el-option label="自行发现线索" value="5"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="线索发布开始时间 :">
-            <el-date-picker class="follow_date" :default-time="beginDate" type="date" placeholder="选择日期" v-model="beginDate"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="线索发布结束时间 :">
-            <el-date-picker class="follow_date" type="date" placeholder="选择日期" v-model="endDate"></el-date-picker>
-          </el-form-item>
+        <el-form-item label="线索发布时间 :">
+          <el-date-picker
+            v-model="timeSearch"
+            type="daterange"
+            align="right"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            range-separator="-"
+            unlink-panels
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
+         </el-form-item>
+          <!--<el-form-item label="线索发布开始时间 :">-->
+            <!--<el-date-picker class="follow_date" :default-time="beginDate" type="date" placeholder="选择日期" v-model="beginDate"></el-date-picker>-->
+          <!--</el-form-item>-->
+          <!--<el-form-item label="线索发布结束时间 :">-->
+            <!--<el-date-picker class="follow_date" type="date" placeholder="选择日期" v-model="endDate"></el-date-picker>-->
+          <!--</el-form-item>-->
           <el-form-item label="关键词 :" >
             <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
               <!--<i @click="clickIcon" slot="suffix" class="keyword_icon iconfont icon-sousuo"></i>-->
@@ -144,12 +158,8 @@
         pageNum:1, //页码
         pageSize: 20,//每页条数
         total: 0,//总条数
-        beginDate: "2018-02-01",//线索发布开始时间
-        endDate: "",//线索发布结束时间
-        followForm: {
-          type: '',
-          source: ''
-        },
+        timeSearch:[],
+        xssjbly: "",//线索数据来源
       }
     },
     mounted() {
@@ -178,8 +188,7 @@
         let _this = this;
         let endDate = new Date();
         let beginDate = new Date(endDate.getTime() - 3600 * 1000 * 24 * 30);
-        _this.beginDate = beginDate;
-        _this.endDate = endDate;
+        _this.timeSearch = [_this.timeFormat(beginDate),_this.timeFormat(endDate)];
       },
       timeFormat(date) {
         if(date) {
@@ -244,10 +253,11 @@
           'keyword': _this.keyword,
           'pageNum': _this.pageNum,
           'pageSize': _this.pageSize,
-          'beginDate': _this.timeFormat(_this.beginDate),
-          'endDate': _this.timeFormat(_this.endDate),
+          'beginDate': _this.timeSearch[0],
+          'endDate': _this.timeSearch[1],
           "xslb": _this.xslb,
-          "order": "fbsj"
+          "order": "fbsj",
+          "xssjbly": _this.xssjbly
         };
         _this.isLoading = true;
         _this.axios({
@@ -414,10 +424,10 @@
             margin-bottom: 10px;
           }
           .follow_select {
-            width: 100px;
+            width: 130px;
           }
           .follow_date {
-            width: 150px;
+            width: 130px;
             min-width: 135px;
           }
           .follow_input {
@@ -457,10 +467,10 @@
         .follow_filter {
           .follow_form {
             .follow_select {
-              width: 90px;
+              width: 130px;
             }
             .follow_date {
-              width: 135px;
+              width: 130px;
             }
             .follow_input {
               width: 180px;
