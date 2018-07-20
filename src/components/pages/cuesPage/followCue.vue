@@ -11,9 +11,11 @@
       <div class="follow_filter">
         <el-form class="follow_form" :inline="true" >
           <el-form-item label="所属领域 :">
-            <el-select class="follow_select" v-model="followForm.type">
-              <el-option label="全部" value="shanghai" selected></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+            <el-select class="follow_select" v-model="xslb">
+              <el-option label="全部" value="" ></el-option>
+              <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
+              <!--<el-option label="全部" value="shanghai" selected></el-option>-->
+              <!--<el-option label="区域二" value="beijing"></el-option>-->
             </el-select>
           </el-form-item>
           <el-form-item label="线索来源 :">
@@ -134,6 +136,7 @@
     data() {
       return {
         isLoading: false,
+        typeList: [],
         followList: [],//关键线索列表
         tableH:0, //表格高度
         keyword:'',//查询列表关键字
@@ -153,8 +156,24 @@
       this.tableResize();
       this.getDefaultDate();
       this.getFollowList();//获取关注线索列表
+      this.getClueType();//获取线索类别
     },
     methods: {
+      //获取门类
+      getClueType(){
+        let _this = this;
+        _this.axios({
+          method:'get',
+          url:webApi.Host + webApi.Clue.GetClueTypes
+        }).then(function(res){
+          if(res.data.code == 0){
+            let data = res.data.data;
+            _this.typeList = data;
+          }
+        }).catch(function(err){
+          console.log(err);
+        })
+      },
       getDefaultDate() {//设置默认日期
         let _this = this;
         let endDate = new Date();
