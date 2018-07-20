@@ -176,6 +176,13 @@
           </el-menu-item>
         </router-link>
 
+        <router-link to="/home/politicsPenalty">
+          <el-menu-item index="6-4" :class="isThisNav == '行政处罚分析'?'is-active':''" @click="switchNav('行政处罚分析')">
+            <i class="fa fa-info-circle"></i>
+            <span slot="title">行政处罚数据</span>
+          </el-menu-item>
+        </router-link>
+
       </el-menu-item-group>
     </el-submenu>
     <!--<el-menu-item index="7">-->
