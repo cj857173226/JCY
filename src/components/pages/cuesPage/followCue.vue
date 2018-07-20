@@ -249,6 +249,13 @@
       },
       getFollowList() {//获取关注线索列表
         let _this = this;
+        if(!_this.timeSearch) {
+          _this.$message({
+            message: "请选择时间!",
+            type: 'error'
+          });
+          return
+        }
         let data = {
           'keyword': _this.keyword,
           'pageNum': _this.pageNum,
@@ -372,9 +379,9 @@
       resize(){
         let _this = this;
         let width = document.body.offsetWidth;
-        if(width < 1675 && width > 1440) {
+        if(width < 1610 && width > 1440) {
           _this.$refs.cueList.style.height = 'calc(100% - 204px)';
-        }else if(width >= 1675) {
+        }else if(width >= 1610) {
           _this.$refs.cueList.style.height = 'calc(100% - 148px)';
         }else if(width <= 1440) {
           _this.$refs.cueList.style.height = 'calc(100% - 190px)';
