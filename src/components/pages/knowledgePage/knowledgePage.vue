@@ -51,8 +51,8 @@ export default {
     }
   },
   mounted(){
-    var _this = this;
     this.isLoad = true;
+    this.$root.Bus.$emit('changeMenu','5-1');
     this.knowledgeDataGet();
   },
   methods: {

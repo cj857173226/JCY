@@ -32,13 +32,26 @@ export default {
     }
   },
   mounted(){
+    if(this.$route.query.type == '理论研究'){
+      this.$root.Bus.$emit('changeMenu','5-1');
+    }else if(this.$route.query.type == '法律法规'){
+      this.$root.Bus.$emit('changeMenu','5-2');
+    }
     this.type = this.$route.query.type;
     this.getknowledgeData();
   },
   methods:{
     //返回
     backNav(){
-      this.$router.go(-1);
+      if(this.$route.query.type == '理论研究'){
+        this.$router.push({
+          path:'/home/knowledge?knowtype=1'
+        });
+      }else if(this.$route.query.type == '法律法规'){
+        this.$router.push({
+          path:'/home/knowledge?knowtype=2'
+        });
+      }
     },
     //获取数据
     getknowledgeData(){

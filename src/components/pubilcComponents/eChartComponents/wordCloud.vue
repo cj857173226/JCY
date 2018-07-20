@@ -20,7 +20,6 @@
             if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
               this.myChart.dispose();
             }
-            console.log(this.myChart);
             this.myChart = this.echarts.init(document.getElementById('wordCloud_main'));
             this.myChart.setOption({
               title:{
@@ -36,7 +35,7 @@
                 top:'center',
                 right: null,
                 bottom: null,
-                sizeRange:[20,50],
+                sizeRange:[20,40],
                 rotationRange:[-90,90],
                 rotationStep:45,
                 gridSize: 8,
@@ -96,7 +95,6 @@
         mounted() {
           this.getData();//初始化图表
           this.resizeWindow();
-          console.log(this.echarts);
         },
         destroyed() {
           window.removeEventListener('resize',this.initCloud);
