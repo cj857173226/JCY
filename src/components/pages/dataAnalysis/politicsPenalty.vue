@@ -9,20 +9,23 @@
           </div>
             <div class="search-wrap clearfix">
               <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入检索内容" @keyup.13="">
-              <span class="search-btn" @click="">
+              <span class="search-btn" @click.stop.prevent="search()">
                 <i class="iconfont icon-sousuo"></i>
               </span>
             </div>
         </div>
-        <div id="main-body" class="clearfix">
-          <div id="sideMenu-wrap">
+        <div id="main-body" class="clearfix" v-loading="isLoading"  ref="mainBody">
+          <div class="no-data" v-show="sideMenuList.length==0 && !isLoading">
+            <div class="text">{{noDataTip}}</div>
+          </div>
+          <div id="sideMenu-wrap" v-show="sideMenuList.length>0" ref="sideMenuWrap">
             <ul class="side-menu">
               <li class="menu-item" :class="{'menu-item-on':item == currMenuOn}" v-for="(item,index) in sideMenuList" @click.stop.prevent="checkResult(item)">{{item}}</li>
             </ul>
           </div>
-          <div id="result-wrap">
+          <div id="result-wrap"  ref="resultWrap">
             <div class="cue-list" ref="cueList" >
-              <el-table
+              <el-table v-show="header.length>0"
                 :data="oTable"
                 :max-height="tableH"
                 :height="tableH"
@@ -46,7 +49,7 @@
                 <!--</el-table-column>-->
               </el-table>
             </div>
-            <div class="page-wrap">
+            <div class="page-wrap" v-show="header.length>0">
               <el-pagination
                 @current-change=""
                 :page-size="pageSize"
@@ -56,7 +59,6 @@
               </el-pagination>
             </div>
           </div>
-
         </div>
     </div>
 </template>
@@ -69,32 +71,34 @@ export default {
       tableH:0, //表格高度
       keyword:'',
       sideMenuList:[
-        '表格1',
-        '表格2',
-        '表格3',
-        '表格4',
-        '表格5',
-        '表格6',
-        '表格7',
-        '表格8',
+        // '表格1',
+        // '表格2',
+        // '表格3',
+        // '表格4',
+        // '表格5',
+        // '表格6',
+        // '表格7',
+        // '表格8',
       ],
       currMenuOn:'表格1', //左边菜单当前选中
       header:[
-        '姓名',
-        '年龄',
-        '描述',
-        '时间',
+        // '姓名',
+        // '年龄',
+        // '描述',
+        // '时间',
       ],
       oTable:[
-        ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-        ['李四',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-        ['王麻子',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-        ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-        ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4']
+        // ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
+        // ['李四',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
+        // ['王麻子',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
+        // ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
+        // ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4']
       ],
-      pageSize:20,
-      currPage:1,
-      totalPages:1000,
+      pageSize:20,//每页多少条
+      currPage:1, //当前页
+      totalPages:1000,//总页数
+      isLoading:false,//是否在加载中
+      noDataTip:'请输入关键字查询结果'
     }
   },
   mounted(){
@@ -107,7 +111,42 @@ export default {
       let _this = this;
       _this.currMenuOn = currMenu;
     },
+    //全文检索
+    search(){
+      let _this = this;
+      _this.isLoading = true;
 
+        setTimeout(()=>{
+          _this.isLoading = false;
+          _this.sideMenuList = [
+            '表格1',
+            '表格2',
+            '表格3',
+            '表格4',
+            '表格5',
+            '表格6',
+            '表格7',
+            '表格8',
+          ];
+          _this.header=[
+            '姓名',
+            '年龄',
+            '描述',
+            '时间',
+          ];
+          _this.oTable=[
+            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
+            ['李四',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
+            ['王麻子',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
+            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
+            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4']
+          ]
+          _this.tableH = _this.$refs.cueList.clientHeight;
+        },2000)
+
+
+
+    },
 
     //表格高度自适应
     tableResize(){
@@ -257,6 +296,18 @@ export default {
        .page-wrap{
          margin-top: 24px;
          height: 40px;
+       }
+     }
+     .no-data{
+       display: flex;
+       height: 100%;
+       width: 100%;
+       align-items:center;
+       justify-content:center;
+       .text{
+         font-size: 30px;
+         font-weight: 800;
+         color: #CCCCCC;
        }
      }
    }

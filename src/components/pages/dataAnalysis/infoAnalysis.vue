@@ -245,6 +245,7 @@ export default {
           position: relative;
           height: 40px;
           border-top: 1px solid #e4e7ed;
+          border-bottom: 1px solid #e4e7ed;
           font-size: 16px;
           text-align: center;
           line-height: 38px;
@@ -292,7 +293,7 @@ export default {
           .list-check-box{
             top: 39px;
           }
-        }.curr-list-wrap
+        }
         .curr-list-wrap{
           height: calc(100% - 40px);
           .cue-list{
