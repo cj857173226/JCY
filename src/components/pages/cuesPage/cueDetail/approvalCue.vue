@@ -62,8 +62,13 @@ export default {
     methods:{
         //提交审批
         submitBtn(){
+            var _this = this;
             if(this.editorText.trim() == ''){
                 console.log('为空');
+                this.$message({
+                    message:'请输入内容',
+                    type:'error'
+                })
             }else{
                 this.textData = this.editorText
                 if(!localStorage.IdentityType){
@@ -71,8 +76,25 @@ export default {
                 }else{
                     if(this.identity == 1){
                         //管理员
-                    }else if(this.identity == 5){
-                        //下级院
+                        // var param = {
+                            
+                        // }
+                        // _this.axios({
+                        //     method:'post',
+                        //     url:webApi.Host + webApi.ClueManager.SaveClueOpinion,
+                        //     data:param,
+                        //     timeout: 10000
+                        // }).then(function(response){
+                        //     if(response.data.code == 0){
+
+                        //     }else{
+
+                        //     }
+                        // }).catch(function(error){
+
+                        // })
+                    }else if(this.identity == 3){
+                        //领导
                     }
                 }
             }
