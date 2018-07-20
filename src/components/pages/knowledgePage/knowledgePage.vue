@@ -54,6 +54,7 @@ export default {
     this.isLoad = true;
     this.$root.Bus.$emit('changeMenu','5-1');
     this.knowledgeDataGet();
+    console.log(1);
   },
   methods: {
     //鼠标滚动加载
@@ -121,6 +122,7 @@ export default {
     '$route.fullPath':function(){
       this.knowledgeData = [];
       this.isLoad = true;
+      this.pageNum = 1;
       this.knowledgeDataGet();
     }
   }
