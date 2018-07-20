@@ -24,13 +24,13 @@
               <div class="title-label">
                 表名:
               </div>
-              <div class="title">
-                {{currListName}}
+              <div class="title" @click.stop.prevent="checkTableModal">
+                {{currTableName}}
               </div>
-              <div class="check-btn">
+              <div class="check-btn" :class="{ 'check-on':listCheckShow}" @click.stop.prevent="checkTableModal">
                 <i class="el-icon-d-caret"></i>
               </div>
-              <check-box class="list-check-box" :site-list = 'listNames' :curr-site="site" @currSite="" v-show="listCheckShow"  @click.stop.prevent></check-box>
+              <check-box class="list-check-box" :table-names = 'tableNames' :curr-table="currTableName" @currTable="tableChecked" v-show="listCheckShow"  @click.stop.prevent></check-box>
             </div>
             <div class="curr-list-wrap">
                 <div class="cue-list" ref="cueList" >
@@ -39,7 +39,7 @@
                       :max-height="tableH"
                       :height="tableH"
                       style="width: 100%">
-                      <el-table-column  v-for="(item,key) in header"
+                      <el-table-column  v-for="(item,key) in header" :key=key
                         :label=item
                         min-width="100">
                         <template slot-scope="scope" >
@@ -70,7 +70,7 @@
 
 <script>
 import lightMap from '../../pubilcComponents/toolComponets/lightMap'
-import checkBox from '../../pubilcComponents/toolComponets/checkBox'
+import checkBox from '../../pubilcComponents/toolComponets/tableCheckBox'
 const cityOptions = ['啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊!!!!!!!!!!!!!!!!!!aaaaaaaaaaaaaaaa!', '北京', '广州', '深圳'];
 export default {
     components:{lightMap,checkBox},
@@ -88,9 +88,6 @@ export default {
             ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
             ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊']
           ],
-
-
-
           checkAll: false,
           checkedCities: ['上海', '北京'],
           cities: cityOptions,
@@ -107,8 +104,8 @@ export default {
           order:'cjsj',//排序方式
           site:'',//来源站点
           isLoad:false,//数据是否在加载
-          currListName:'默认初始表格名称',  //当前展示的表格名称
-          listNames:[
+          currTableName:'默认初始表格名称',  //当前展示的表格名称
+          tableNames:[
             '这个这个表',
             '那个那个表',
             '这又是什么表'
@@ -119,6 +116,9 @@ export default {
   mounted(){
     let _this = this;
     _this.tableResize();//表格高度自适应
+    window.onclick=function(){
+      _this.listCheckShow = false;
+    }
   },
   methods:{
     handleCheckAllChange(val) {
@@ -129,6 +129,17 @@ export default {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.cities.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+    },
+    //表格选择弹出
+    checkTableModal(){
+      let _this = this;
+      _this.listCheckShow = !_this.listCheckShow
+    },
+    //表格选择
+    tableChecked(curr){
+      let _this = this;
+      _this.currTableName = curr;
+      _this.listCheckShow = false;
     },
     //表格高度自适应
     tableResize(){
@@ -252,12 +263,20 @@ export default {
             white-space: nowrap;
             padding: 0 20px;
             color: #f60;
-            cursor: default;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
           }
           .check-btn{
             height: 100%;
             float:right;
             width: 40px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             -webkit-transition: all 0.3s;
             -moz-transition: all 0.3s;
             -ms-transition: all 0.3s;
@@ -266,13 +285,14 @@ export default {
             background: #E5E5E5;
             cursor: pointer;
           }
+          .check-on,
           .check-btn:hover{
             color: #f60;
           }
           .list-check-box{
             top: 39px;
           }
-        }
+        }.curr-list-wrap
         .curr-list-wrap{
           height: calc(100% - 40px);
           .cue-list{
@@ -298,6 +318,7 @@ export default {
           .search-wrap{
             height: 32px;
             .search-ipt{
+              font-size: 14px;
             }
             .search-btn{
               line-height: 32px;

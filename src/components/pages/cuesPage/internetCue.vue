@@ -43,7 +43,7 @@
                 采集网站:
             </div>
             <div class="right" >
-              <div v-show="siteList.length>0" class="site-check-btn" :class="{'site-check-btn-on':siteCheckShow}" >
+              <div v-show="siteList.length>0" class="site-check-btn" :class="{'site-check-btn-on':siteCheckShow}"  @click.stop.prevent="siteModal">
                 <i class="el-icon-d-caret"></i>
               </div>
               <span v-show="siteList.length>0" class="curr-site" v-text="site==''?'全部':site" @click.stop.prevent="siteModal"></span>
@@ -615,7 +615,11 @@
             }
             .site-check-btn{
               display: inline-block;
-              cursor:default;
+              cursor:pointer;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
             }
             .site-check-btn-on{
               color: #FF6600;

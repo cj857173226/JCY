@@ -139,7 +139,7 @@
       </el-menu-item-group>
     </el-submenu>
 
-    
+
 
     <router-link to="/home/UAV">
       <el-menu-item index="13" :class="isThisNav == '无人机取证' ?'is-active':''" @click="switchNav('无人机取证')">
@@ -179,7 +179,7 @@
         <router-link to="/home/politicsPenalty">
           <el-menu-item index="6-4" :class="isThisNav == '行政处罚分析'?'is-active':''" @click="switchNav('行政处罚分析')">
             <i class="fa fa-info-circle"></i>
-            <span slot="title">行政处罚数据</span>
+            <span slot="title">全文检索</span>
           </el-menu-item>
         </router-link>
 
