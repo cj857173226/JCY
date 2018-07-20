@@ -97,7 +97,7 @@
                 color: '#fff'
               }
             },
-            roam: true,
+            roam: false,
             scaleLimit: {
               max: 2,
               min: .7
