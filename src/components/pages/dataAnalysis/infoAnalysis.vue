@@ -25,7 +25,7 @@
                 表名:
               </div>
               <div class="title">
-                啊实打实的阿斯顿啊打啊实打实的阿斯顿啊打啊实打实的阿斯顿啊打啊实打实的阿斯顿啊打
+                {{currListName}}
               </div>
               <div class="check-btn">
                 <i class="el-icon-d-caret"></i>
@@ -35,77 +35,26 @@
             <div class="curr-list-wrap">
                 <div class="cue-list" ref="cueList" >
                     <el-table
-                      ref="oTable"
-                      :data=" internetCueList"
+                      :data="oTable"
                       :max-height="tableH"
                       :height="tableH"
                       style="width: 100%">
-                      <el-table-column
-                        prop="SFYD"
-                        label=""
-                        width="40">
+                      <el-table-column  v-for="(item,key) in header"
+                        :label=item
+                        min-width="100">
                         <template slot-scope="scope" >
-                          <i v-show="scope.row.SFYD == 0" class="fa fa-circle isRead"></i>
+                          <div class="td-content">
+                            {{oTable[scope.$index][key]}}
+                          </div>
                         </template>
                       </el-table-column>
-                      <el-table-column
-                        prop="ZY"
-                        label="内容"
-                        min-width="300"
-                      >
-                        <template slot-scope="scope">
-                          <el-popover trigger="click" placement="top" >
-                            <p style="text-indent: 2em;">{{ scope.row.ZY }}</p>
-                            <div slot="reference" class="td-content">
-                              {{ scope.row.ZY}}
-                            </div>
-                          </el-popover>
-                        </template>
-                      </el-table-column>
-                      <el-table-column
-                        prop="FBSJ"
-                        label="发布时间"
-                        min-width="180"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="CJSJ"
-                        label="采集时间"
-                        min-width="180"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="XSLB"
-                        label="所属领域"
-                        min-width="100"
-                      >
-                      </el-table-column>
-                      <el-table-column
-                        prop="XSLY"
-                        label="线索来源"
-                        width="150">
-                      </el-table-column>
-                      <el-table-column
-                        prop="GJC"
-                        label="关键词"
-                        width="200">
-                        <template slot-scope="scope">
-                          <el-popover trigger="click" placement="top" >
-                            <p>{{ scope.row.GJC }}</p>
-                            <div slot="reference" class="td-content">
-                              {{ scope.row.GJC}}
-                            </div>
-                          </el-popover>
-                        </template>
-                      </el-table-column>
+
                       <el-table-column
                         fixed="right"
                         label="操作"
-                        width="100">
+                        width="60">
                         <template slot-scope="scope">
-                          <el-button @click="details(scope.row.XSBH ,scope.row.SFYD,'2')" title="详情" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
-                          <el-button v-show="scope.row.SFGZ =='0'" title="未关注(关注)" @click="followClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart-o"></i></el-button>
-                          <el-button v-show="scope.row.SFGZ =='1'" title="已关注(取消关注)" @click="cancelFollowClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart"></i></el-button>
+                          <el-button type="text" size="medium"><i class="fa fa-location-arrow"></i></el-button>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -127,6 +76,21 @@ export default {
     components:{lightMap,checkBox},
     data(){
         return{
+          header:[
+            '姓名',
+            '年龄',
+            '描述',
+          ],
+          oTable:[
+            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
+            ['李四',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
+            ['王麻子',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
+            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
+            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊']
+          ],
+
+
+
           checkAll: false,
           checkedCities: ['上海', '北京'],
           cities: cityOptions,
@@ -143,7 +107,7 @@ export default {
           order:'cjsj',//排序方式
           site:'',//来源站点
           isLoad:false,//数据是否在加载
-          currListName:'表1',
+          currListName:'默认初始表格名称',  //当前展示的表格名称
           listNames:[
             '这个这个表',
             '那个那个表',
@@ -154,7 +118,6 @@ export default {
     },
   mounted(){
     let _this = this;
-    _this.getInternetCueList(); //获取互联网线索列表
     _this.tableResize();//表格高度自适应
   },
   methods:{
@@ -166,30 +129,6 @@ export default {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.cities.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-    },
-    //获取互联网线索列表
-    getInternetCueList(){
-      let _this = this;
-      if(_this.isLoad ==false){
-        _this.isLoad = true;
-        let url = webApi.Clue.GetWebClues.format({keyword:_this.keyword,type:_this.type,site:_this.site,order:_this.order,p:_this.page,ps:_this.pageSize})
-        _this.axios({
-          method:'get',
-          url:url
-        }).then(function(res){
-          console.log(res.data)
-          _this.isLoad = false;
-          if(res.data.code == 0){
-            let data = res.data.data.data;
-            _this.totalPages = res.data.data.total
-            _this.internetCueList = data;
-          }else {
-            _this.$message.error(res.data.errorMessage);
-          }
-        }).catch(function(err){
-          _this.isLoad = false;
-        })
-      }
     },
     //表格高度自适应
     tableResize(){
@@ -220,14 +159,14 @@ export default {
         height: 100%;
         float: left;
       .head{
-        height: 40px;
+        height: 50px;
         width: 100%;
         background: #EEEEEE;
         border-bottom: 1px solid #dcdcdc;
         .search-wrap{
           float: right;
           background: #FFFFFF;
-          height: 32px;
+          height: 42px;
           width: 300px;
           margin-right: 30px;
           margin-top: 4px;
@@ -238,7 +177,7 @@ export default {
           .search-ipt{
             width: 260px;
             float: left;
-            font-size: 14px;
+            font-size: 16px;
             height: 100%;
             border: none;
             padding-left: 10px;
@@ -249,7 +188,7 @@ export default {
             float: left;
             position: relative;
             height: 100%;
-            line-height: 32px;
+            line-height: 40px;
             width: 38px;
             color: #999999;
             text-align: center;
@@ -259,9 +198,9 @@ export default {
             content: '';
             position: absolute;
             left: 0;
-            top: 8px;
+            top: 10px;
             width: 2px;
-            height: 14px;
+            height: 20px;
             background: #dcdcdc;
           }
         }
@@ -348,4 +287,66 @@ export default {
         margin-left: 400px;
     }
 }
+
+  @media (max-width: 1440px) {
+    #info{
+
+      #tool-bar{
+
+        .head{
+          height: 40px;
+          .search-wrap{
+            height: 32px;
+            .search-ipt{
+            }
+            .search-btn{
+              line-height: 32px;
+            }
+            .search-btn:after{
+              left: 0;
+              top: 8px;
+              width: 2px;
+              height: 14px;
+            }
+          }
+        }
+        .check-wrap{
+          .check-group{
+
+            .check-item{
+
+            }
+          }
+        }
+        .list-wrap{
+          .list-check-wrap{
+            height: 30px;
+            font-size: 14px;
+            line-height: 29px;
+            .title-label{
+
+            }
+            .title{
+
+            }
+            .check-btn{
+            }
+            .check-btn:hover{
+            }
+            .list-check-box{
+              top: 29px;
+            }
+          }
+          .curr-list-wrap{
+            height: calc(100% - 30px);
+            .cue-list{
+            }
+          }
+        }
+      }
+      #map-bar{
+
+      }
+    }
+  }
 </style>
