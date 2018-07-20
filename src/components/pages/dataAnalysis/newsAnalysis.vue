@@ -37,7 +37,7 @@
           <p>总量/条</p>
         </li>
       </ul>
-      <ul id="region_list" ref="listBody">
+      <ul id="region_list" ref="listBody" v-loading="isLoading">
         <li v-for="(item,index) in freqData" :key="index">
           <p v-text="item.DM"></p>
           <p v-text="item.PC"></p>
@@ -227,7 +227,7 @@
             },
             roam: true,
             scaleLimit: {
-              max: 2,
+              max: 1.3,
               min: .7
             },
             itemStyle: {
