@@ -4,10 +4,19 @@
             <el-amap-marker :events="item.events" :key="index" v-for="(item,index) in markers" :position="item.position" :template="item.template"></el-amap-marker>
             <el-amap-info-window
                 :position="currentWindow.position"
-                :content="currentWindow.content"
-                :visible="currentWindow.visible"
-                :events="currentWindow.events"
-            ></el-amap-info-window>
+                :visible = "currentWindow.visible"
+            >
+                <div :style="amapWindow">
+                    <div>
+                        <span>名称</span>
+                        <span>{{content.name}}</span>
+                    </div>
+                    <div>
+                        <span>内容</span>
+                        <span>{{content.content}}</span>
+                    </div>
+                </div>
+            </el-amap-info-window>
         </el-amap>
     </div>
 </template>
@@ -19,38 +28,23 @@ export default {
             zoom: 11, //地图放大级别
             center: [114.025973657,22.5460535462], //地图中心左边(深圳)
             markers:[], //图标标点
-            windows: [
-                {
-                position: [114.025973657,22.5460535462],
-                content: 'Hi! I am here!',
-                visible: true,
-                events: {
-                    close() {
-                    console.log('close infowindow1');
-                    }
-                }
-                }, {
-                position: [114.025173657,22.5468535462],
-                content: 'Hi! I am here too!',
-                visible: true,
-                events: {
-                    close() {
-                    console.log('close infowindow2');
-                    }
-                }
-                }
-            ],
+            amapWindow:{
+
+            },
+            content:{
+                name:'XXXX',
+                content:'撒打算'
+            },
             currentWindow:{
                 position:[114.025973657,22.5460535462],
-                content:'HI',
-                visible:true,
-                events:{
-                }
+                // content:'HI',
+                visible:false,
+                // events:{
+                // }
             },
         }
     },
     mounted(){
-        this.currentWindow = this.windows[0];
         let marker = [];
         let _this = this;
         for(let i = 0;i<2;i++){
@@ -60,14 +54,19 @@ export default {
                     template:'<i class="fa fa-bandcamp font-icon" style="font-size: 30px"></i>',
                     events:{
                         click:(o)=>{
-                            _this.windows.forEach(window => {
-                                window.visible = false;
-                            });
-                            _this.currentWindow.position = [114.015973657,22.5760535462 + i * 0.001];
-                            _this.currentWindow.content = '家兴';
+                            // _this.showInfo = true;
+                            _this.currentWindow = {
+                                position:[114.015973657,22.5760535462 + i * 0.001],
+                                visible:false,
+                            };
+                            _this.content = {
+                                name:i,
+                                content:'XXX' + i
+                            }
                             _this.$nextTick(() => {
                                 _this.currentWindow.visible = true;
                             });
+                            console.log(_this.currentWindow);
                         }
                     }
                 }

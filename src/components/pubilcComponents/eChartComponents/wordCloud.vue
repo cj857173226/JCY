@@ -36,7 +36,7 @@
                 top:'center',
                 right: null,
                 bottom: null,
-                sizeRange:[12,50],
+                sizeRange:[20,50],
                 rotationRange:[-90,90],
                 rotationStep:45,
                 gridSize: 8,
