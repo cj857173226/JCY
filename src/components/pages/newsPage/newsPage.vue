@@ -49,6 +49,7 @@ export default {
   mounted(){
     var _this = this;
     this.isLoad = true;
+    this.$root.Bus.$emit('changeMenu','news');
     this.newsDataGet();
   },
   methods: {

@@ -148,6 +148,13 @@
       </el-menu-item>
     </router-link>
 
+    <router-link to="/home/politicsPenalty">
+      <el-menu-item index="14" :class="isThisNav == '行政处罚分析'?'is-actived':''" @click="switchNav('行政处罚分析')">
+        <i class="fa fa-info-circle"></i>
+        <span slot="title">大数据检索</span>
+      </el-menu-item>
+    </router-link>
+
     <el-submenu index="6">
       <template slot="title">
         <i class="fa fa-cubes"></i>
@@ -176,12 +183,6 @@
           </el-menu-item>
         </router-link>
 
-        <router-link to="/home/politicsPenalty">
-          <el-menu-item index="6-4" :class="isThisNav == '行政处罚分析'?'is-actived':''" @click="switchNav('行政处罚分析')">
-            <i class="fa fa-info-circle"></i>
-            <span slot="title">全文检索</span>
-          </el-menu-item>
-        </router-link>
 
       </el-menu-item-group>
     </el-submenu>
@@ -212,6 +213,8 @@
           _this.isThisNav = '理论研究';
         }else if(index == '5-2'){
           _this.isThisNav = '法律法规';
+        }else if(index == 'news'){
+          _this.isThisNav = _this.$route.meta.name;
         }
       })
       if(this.$route.query.type){

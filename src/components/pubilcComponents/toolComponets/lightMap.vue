@@ -5,6 +5,7 @@
             <el-amap-info-window
                 :position="currentWindow.position"
                 :visible = "currentWindow.visible"
+                :offset = "offset"
             >
                 <div :style="amapWindow">
                     <div>
@@ -42,6 +43,7 @@ export default {
                 // events:{
                 // }
             },
+            offset:[5,-15]
         }
     },
     mounted(){

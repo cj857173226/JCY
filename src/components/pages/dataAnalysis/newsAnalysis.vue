@@ -268,7 +268,7 @@
       setRegion() {
         let _this = this;
         this.axios({
-          url: '../../../../static/echarts/mapName.json'
+          url: '@/../static/echarts/mapName.json'
         }).then(function(res){
           _this.moveData = res.data;
         })
