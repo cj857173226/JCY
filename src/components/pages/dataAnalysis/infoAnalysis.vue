@@ -1,26 +1,14 @@
 <template>
     <div id="info">
-        <div id="tool-bar">
-          <div class="head">
-            <div class="search-wrap">
-              <input class="search-ipt" type="text"  placeholder="请输入内容">
-              <span class="search-btn" >
-                <i class="iconfont icon-sousuo"></i>
-              </span>
-            </div>
-          </div>
+        <div id="tool-bar" >
           <div class="check-wrap">
-            <template>
-              <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-              <div style="margin: 15px 0;"></div>
-              <el-checkbox-group class="check-group" v-model="checkedCities" @change="handleCheckedCitiesChange">
-                <el-checkbox class="check-item" v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-              </el-checkbox-group>
-            </template>
-            <el-button type="primary" size="mini">确定</el-button>
+            <el-checkbox class="check-all" :indeterminate="isIndeterminate" v-model="checkall" @change="handleCheckAllChange">全选</el-checkbox>
+            <el-checkbox-group class="check-group" v-model="checkedTable" @change="handleCheckedCitiesChange">
+              <el-checkbox class="check-item" v-for="table in allTableName" :label="table" :key="table">{{table}}</el-checkbox>
+            </el-checkbox-group>
           </div>
           <div class="list-wrap">
-            <div class="list-check-wrap clearfix">
+            <div class="list-check-wrap clearfix" v-show="checkedTable.length>0">
               <div class="title-label">
                 表名:
               </div>
@@ -30,20 +18,21 @@
               <div class="check-btn" :class="{ 'check-on':listCheckShow}" @click.stop.prevent="checkTableModal">
                 <i class="el-icon-d-caret"></i>
               </div>
-              <check-box class="list-check-box" :table-names = 'tableNames' :curr-table="currTableName" @currTable="tableChecked" v-show="listCheckShow"  @click.stop.prevent></check-box>
+              <check-box class="list-check-box" :table-names = 'checkedTable' :curr-table="currTableName" @currTable="tableChecked" v-show="listCheckShow"   @click.stop.prevent></check-box>
             </div>
-            <div class="curr-list-wrap">
+            <div class="curr-list-wrap" v-loading="isLoad">
                 <div class="cue-list" ref="cueList" >
                     <el-table
+                      v-show="header.length>0 && checkedTable.length>0"
                       :data="oTable"
                       :max-height="tableH"
                       :height="tableH"
                       style="width: 100%">
                       <el-table-column  v-for="(item,key) in header" :key=key
                         :label=item
-                        min-width="100">
+                        min-width="150">
                         <template slot-scope="scope" >
-                          <div class="td-content">
+                          <div class="td-content" :title=oTable[scope.$index][key]>
                             {{oTable[scope.$index][key]}}
                           </div>
                         </template>
@@ -59,6 +48,16 @@
                       </el-table-column>
                     </el-table>
                   </div>
+                <div class="page-wrap" v-show="header.length>0">
+                  <el-pagination
+                    @current-change="pageTo"
+                    :page-size="pageSize"
+                    :pager-count="pagecount"
+                    :current-page="page"
+                    layout="prev, pager, next, jumper"
+                    :total="totalPages">
+                  </el-pagination>
+                </div>
             </div>
           </div>
         </div>
@@ -71,74 +70,160 @@
 <script>
 import lightMap from '../../pubilcComponents/toolComponets/lightMap'
 import checkBox from '../../pubilcComponents/toolComponets/tableCheckBox'
-const cityOptions = ['啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊!!!!!!!!!!!!!!!!!!aaaaaaaaaaaaaaaa!', '北京', '广州', '深圳'];
 export default {
     components:{lightMap,checkBox},
     data(){
         return{
-          header:[
-            '姓名',
-            '年龄',
-            '描述',
-          ],
-          oTable:[
-            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
-            ['李四',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
-            ['王麻子',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
-            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊'],
-            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊']
-          ],
-          checkAll: false,
-          checkedCities: ['上海', '北京'],
-          cities: cityOptions,
+          checkall: false,
+          checkedTable: ['重点排污单位环境信息'],
           isIndeterminate: true,
-          tableH:0, //表格高度,
-          internetCueList:[
+          header:[ //表头
 
           ],
-          keyword:'',//查询列表关键字
-          type:'', //线索类型
+          oTable:[ //渲染表格
+
+          ],
+          tableH:0, //表格高度,
+          allTableName:['重点排污单位环境信息','生活垃圾焚烧厂一览表','危险化学品企业信息','非国家重点监控企业污染源监督性监测结果','深圳市自然灾害室内应急避难场所',
+          '深圳市严控废物经营单位名称','国家重点监控企业污染源监督性监测结果','湿地公园','自然保护区','森林公园','危险废物产生企业信息'],//所有表格名称
+          allTableId:{
+            '重点排污单位环境信息':'289569672',
+            '生活垃圾焚烧厂一览表':'664369253',
+            '危险化学品企业信息':'886003415',
+            '非国家重点监控企业污染源监督性监测结果':'982575290',
+            '深圳市自然灾害室内应急避难场所':'1341555166',
+            '深圳市严控废物经营单位名称':'1161369484',
+            '国家重点监控企业污染源监督性监测结果':'59049102',
+            '湿地公园':'789079836',
+            '自然保护区':'1301452358',
+            '森林公园':'789087524',
+            '危险废物产生企业信息':'1265508712'
+          },
+          currId:'',//当前表格编号
+          currIdArr:'',//所选表格ID集
           page:1, //页码
           pageSize: 20,//每页条数
-          totalPages:0,//总条数
-          order:'cjsj',//排序方式
-          site:'',//来源站点
+          totalPages:0, //总条数
+          pagecount:'3',
           isLoad:false,//数据是否在加载
-          currTableName:'默认初始表格名称',  //当前展示的表格名称
-          tableNames:[
-            '这个这个表',
-            '那个那个表',
-            '这又是什么表'
-          ],
-          listCheckShow:false
+          currTableName:'重点排污单位环境信息',  //当前展示的表格名称
+          listCheckShow:false,//是否显示表格选择框
         }
     },
   mounted(){
     let _this = this;
     _this.tableResize();//表格高度自适应
+    _this.returnId(); //返回所选表格ID
+    _this.changeId(); //切换表格
+    _this.getData(); // 获取表格数据
+    _this.getTotalPage(); //获取总页数
     window.onclick=function(){
       _this.listCheckShow = false;
     }
   },
   methods:{
+    //  切换当前ID(切换当前表)
+    changeId(){
+      let _this = this;
+      _this.currId = _this.allTableId[_this.currTableName];
+    },
+
+    //  全选
     handleCheckAllChange(val) {
-      this.checkedCities = val ? cityOptions : [];
+      this.checkedTable = val ? this.allTableName : [];
       this.isIndeterminate = false;
     },
+    //表格选择
     handleCheckedCitiesChange(value) {
       let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      this.checkall = checkedCount === this.allTableName.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.allTableName.length;
+      this.returnId()
     },
+
+    //返回当前所选表格编号
+    returnId(){
+      let _this = this;
+      let arr = [];
+      if(_this.checkedTable.length>0){
+        for(let index in _this.checkedTable){
+        arr.push(_this.allTableId[_this.checkedTable[index]]);
+        }
+        _this.currIdArr = arr;
+        console.log(_this.currIdArr)
+      }
+    },
+    //获取当前表格数据
+    getData(){
+      let _this = this;
+      if(!_this.isLoad){
+        _this.isLoad = true;
+        let url =  webApi.WebData.GetData.format({sjsybh:_this.currId,p:_this.page,ps:_this.pageSize});
+        _this.axios({
+          method:'GET',
+          url:url
+        }).then((res)=>{
+          _this.isLoad = false;
+          if(res.data.code == 0){
+            let header = [];
+            let tbody = [];
+            let data = res.data.data
+            for ( let key in data[0]){
+              header.push(key)
+            }
+           for(let i=0;i<data.length ;i++){
+             let arr = [];
+             for(let val in data[i]){
+               arr.push(data[i][val]);
+             }
+             tbody.push(arr)
+           }
+           _this.header =  header;
+           _this.oTable = tbody;
+          }
+
+        }).catch((err)=>{
+          _this.isLoad = false;
+        })
+      }
+    },
+    //获取总页数
+    getTotalPage(){
+      let _this = this;
+        let url =  webApi.WebData.CountData.format({sjsybh:_this.currId})
+        _this.axios({
+          method:'GET',
+          url:url
+        }).then((res)=>{
+          if(res.data.code == 0){
+            _this.totalPages = res.data.data
+          }
+        }).catch((err)=>{
+        })
+    },
+
+    //页码跳转
+    pageTo(val){
+      let _this = this;
+      _this.page = val;
+      _this.getData();
+    },
+
     //表格选择弹出
     checkTableModal(){
       let _this = this;
-      _this.listCheckShow = !_this.listCheckShow
+     if(_this.checkedTable.length>1){
+       _this.listCheckShow = !_this.listCheckShow
+     }
     },
     //表格选择
     tableChecked(curr){
       let _this = this;
       _this.currTableName = curr;
+      _this.changeId()
+      _this.page= 1;
+      _this.getData();
+      _this.getTotalPage();
       _this.listCheckShow = false;
     },
     //表格高度自适应
@@ -219,28 +304,39 @@ export default {
       .check-wrap{
         height: 200px;
         max-height: 200px;
-        padding: 10px 0 10px 20px;
+        padding: 10px;
+        .check-all{
+          margin-bottom: 10px;
+        }
+
         .check-group{
+          padding-top: 4px;
           width: 100%;
-          height: 120px;
-          max-height: 120px;
+          height: 130px;
+          max-height: 130px;
           overflow-y: auto;
           overflow-x: hidden;
           .check-item{
+            display: block;
             box-sizing: content-box;
-            margin:0;
-            padding-right: 30px;
-            padding-bottom: 15px;
-            height: 20px;
-            max-width: 200px;
+            padding: 0 10px;
+            margin-left:0;
+            margin-bottom: 4px;
+            max-width: 100%;
+            color: #333333;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
           }
         }
       }
       .list-wrap{
-        height:calc(100% - 240px);
+        height:calc(100% - 200px);
         .list-check-wrap{
           position: relative;
           height: 40px;
@@ -297,7 +393,16 @@ export default {
         .curr-list-wrap{
           height: calc(100% - 40px);
           .cue-list{
-            height: 100%;
+            height: calc(100% - 50px);
+          }
+          .page-wrap{
+            height: 50px;
+            .el-pagination{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100%;
+            }
           }
         }
       }
