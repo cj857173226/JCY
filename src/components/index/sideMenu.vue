@@ -148,8 +148,8 @@
       </el-menu-item>
     </router-link>
 
-    <router-link to="/home/politicsPenalty">
-      <el-menu-item index="14" :class="isThisNav == '行政处罚分析'?'is-actived':''" @click="switchNav('行政处罚分析')">
+    <router-link to="/home/search">
+      <el-menu-item index="14" :class="isThisNav == '全文搜索' || isThisNav == '全文搜索结果'?'is-actived':''" @click="switchNav('全文搜索')">
         <i class="fa fa-info-circle"></i>
         <span slot="title">大数据检索</span>
       </el-menu-item>

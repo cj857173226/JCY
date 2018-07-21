@@ -13,7 +13,7 @@
                         <span>{{content.name}}</span>
                     </div>
                     <div>
-                        <span>内容</span>
+                        <span @click="getData">内容</span>
                         <span>{{content.content}}</span>
                     </div>
                 </div>
@@ -24,14 +24,12 @@
 
 <script>
 export default {
+    props:['tableId'],
     data: function() {
         return {
             zoom: 11, //地图放大级别
             center: [114.025973657,22.5460535462], //地图中心左边(深圳)
             markers:[], //图标标点
-            amapWindow:{
-
-            },
             content:{
                 name:'XXXX',
                 content:'撒打算'
@@ -43,7 +41,8 @@ export default {
                 // events:{
                 // }
             },
-            offset:[5,-15]
+            offset:[5,-15],
+            data:[]
         }
     },
     mounted(){
@@ -75,8 +74,35 @@ export default {
             )
         };
         this.markers = marker;
+        this.getData();
     },
     methods: {
+        //获取数据
+        getData(){
+            console.log(this.tableId);
+            var _this = this;
+            for(var i = 0 ;i<this.tableId.length;i++){
+                _this.axios({
+                    method:'get',
+                    url:webApi.WebData.GetData.format({sjsybh:_this.tableId[i],p:1,ps:20000}),
+                    timeout: 10000
+                }).then(function(response){
+                    if(response.data.code == 0){
+                        _this.data.push(response.data.data);
+                        console.log(_this.data);
+                    }else{
+
+                    }
+                }).catch(function(error){
+
+                })
+            }
+        }
+    },
+    watch:{
+        tableId:function(){
+            this.getData();
+        }
     }
 }
 </script>
