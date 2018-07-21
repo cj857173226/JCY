@@ -1,5 +1,5 @@
 <template>
-    <div id="allSearch">
+    <div id="search-result">
         <div id="head" class="clearfix">
           <div class="title-wrap clearfix">
             <div class="title-icon">
@@ -8,22 +8,28 @@
             <div class="title">全文检索</div>
           </div>
             <div class="search-wrap clearfix">
-              <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入检索内容" @keyup.13="">
-              <span class="search-btn" @click.stop.prevent="search()">
+              <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入检索内容" @keyup.13="searchTo()">
+              <span class="search-btn" @click.stop.prevent="searchTo()">
                 <i class="iconfont icon-sousuo"></i>
               </span>
             </div>
         </div>
-        <div id="main-body" class="clearfix" v-loading="isLoading"  ref="mainBody">
-          <div class="no-data" v-show="sideMenuList.length==0 && !isLoading">
-            <div class="text">{{noDataTip}}</div>
-          </div>
-          <div id="sideMenu-wrap" v-show="sideMenuList.length>0" ref="sideMenuWrap">
+        <div id="main-body" class="clearfix"   ref="mainBody" v-loading="tableLoad">
+          <div id="sideMenu-wrap"  ref="sideMenuWrap" v-loading="isLoading">
             <ul class="side-menu">
-              <li class="menu-item" :class="{'menu-item-on':item == currMenuOn}" v-for="(item,index) in sideMenuList" @click.stop.prevent="checkResult(item)">{{item}}</li>
+              <li class="menu-item" :class="{'menu-item-on':item.name == currMenuOn}" v-for="(item,index) in sideMenuList" @click.stop.prevent="checkResult(item.name,item.numId,item.hit)">
+                <div class="text" :title="item.name">{{item.name}}</div>
+                <div class="hit">
+                  <i class="el-icon-loading" v-show="item.isLoad"></i>
+                  <span v-show="!item.isLoad">({{item.hit>9999? '9999+':item.hit}})</span>
+                </div>
+              </li>
             </ul>
           </div>
           <div id="result-wrap"  ref="resultWrap">
+            <div class="no-data" v-show="header.length==0">
+              <div class="text">{{noDataTip}}</div>
+            </div>
             <div class="cue-list" ref="cueList" >
               <el-table v-show="header.length>0"
                 :data="oTable"
@@ -32,9 +38,9 @@
                 style="width: 100%">
                 <el-table-column  v-for="(item,key) in header" :key=key
                                   :label=item
-                                  min-width="100">
+                                  min-width="200">
                   <template slot-scope="scope" >
-                    <div class="td-content">
+                    <div class="td-content" :title="oTable[scope.$index][key]">
                       {{oTable[scope.$index][key]}}
                     </div>
                   </template>
@@ -51,7 +57,7 @@
             </div>
             <div class="page-wrap" v-show="header.length>0">
               <el-pagination
-                @current-change=""
+                @current-change="pageTo"
                 :page-size="pageSize"
                 :current-page="currPage"
                 layout="total, prev, pager, next, jumper"
@@ -65,40 +71,30 @@
 
 <script>
 export default {
-  name:'allSearch',
+  name:'searchResult',
   data(){
     return {
       tableH:0, //表格高度
-      keyword:'',
+      keyword:this.$route.query.keyword,
       sideMenuList:[
-        // '表格1',
-        // '表格2',
-        // '表格3',
-        // '表格4',
-        // '表格5',
-        // '表格6',
-        // '表格7',
-        // '表格8',
+
       ],
-      currMenuOn:'表格1', //左边菜单当前选中
+      currMenuOn:'', //左边菜单当前选中
       header:[
-        // '姓名',
-        // '年龄',
-        // '描述',
-        // '时间',
+
       ],
       oTable:[
-        // ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-        // ['李四',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-        // ['王麻子',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-        // ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-        // ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4']
+
       ],
       pageSize:20,//每页多少条
       currPage:1, //当前页
-      totalPages:1000,//总页数
+      totalPages:0,//总页数
       isLoading:false,//是否在加载中
-      noDataTip:'请输入关键字查询结果'
+      noDataTip:'查询中,请稍后',
+      tableLoad:false, //表格是否加载
+      loadCount:0,// 加载计数器
+      currId :'', //当前表格查询ID；
+      allDataReady:false,//索引表是否全部加载完毕
     }
   },
   mounted(){
@@ -108,24 +104,168 @@ export default {
   },
   methods:{
     //选择查询结果
-    checkResult(currMenu){
+    checkResult(currMenu,id,totalPage){
       let _this = this;
-      _this.currMenuOn = currMenu;
+      if(!_this.allDataReady){
+        _this.$message({
+          message: '别着急,正在为你加载中',
+          type: 'warning'
+        });
+      }else {
+        _this.currPage = 1;
+        _this.currId = id;
+        _this.currMenuOn = currMenu;
+        _this.totalPages = totalPage;
+        if( _this.totalPages>0){
+          _this.getTableData();
+        }else {
+          _this.noDataTip='暂无相关数据';
+          _this.header = [];
+          _this.oTable = [];
+        }
+      }
+
     },
+    //当前页搜索
+    searchTo(){
+      let _this = this;
+      let _currKeyword = _this.$route.query.keyword;
+      if(!_this.keyword ==''){
+        // _this.noDataTip='查询中,请稍后';
+        // _this.currMenuOn='';
+        // _this.loadCount=0;
+        // _this.sideMenuList=[];
+        // _this.header = [];
+        // _this.oTable = [];
+        this.$router.push({
+          path:'/home/searchBlank',
+          query:{keyword:_this.keyword.trim()}
+        });
+      }else{
+        _this.$message({
+          message: '查询条件不能为空！',
+          type: 'warning'
+        });
+        _this.keyword = _currKeyword;
+      }
+    },
+
     //全文检索
     search(){
       let _this = this;
-      // _this.isLoading = true;
       if(!_this.isLoading){
+        _this.loadCount = 0;
+        _this.isLoading = true;
         _this.axios({
           method:'GET',
-          url:webApi.Host + webApi.WebData.GetAllTables
+          url:webApi.Host + webApi.WebData.GetAllTables,
         }).then((res)=>{
-          console.log(res)
+          _this.isLoading = false;
+          if(res.data.code==0){
+              let data = res.data.data;
+              let arr = [];
+              for( let key in data){
+                let obj =  {};
+                obj['name']=data[key];
+                obj['numId'] = key;
+                obj['isLoad'] =true;
+                arr.push(obj)
+              }
+              _this.sideMenuList = arr;
+              for (let i in _this.sideMenuList){
+                _this.keywordHit(_this.sideMenuList[i].numId)
+              }
+          }
         }).catch((err)=>{
+          _this.isLoading = false;
           alert(err)
         })
       }
+    },
+    //分页查询
+    pageTo(page){
+      let _this = this;
+      _this.currPage = page;
+      _this.getTableData()
+    },
+
+    //关键字命中
+    keywordHit(id){
+      let _this = this;
+      let sjsybh = id;
+      _this.axios({
+        methods:'get',
+        url:webApi.WebData.SearchIndex.format({sjsybh:sjsybh,keywords:_this.keyword}),
+      }).then((res)=>{
+        if(res.data.code == 0){
+          let data = res.data.data
+          _this.loadCount +=1;
+          for(let j in _this.sideMenuList){
+            if(_this.sideMenuList[j].numId == data.sjsybh){
+              _this.sideMenuList[j]['hit'] = data.result;
+              _this.sideMenuList[j]['isLoad'] =false;
+            }
+          }
+          console.log(_this.loadCount)
+          if(_this.loadCount == _this.sideMenuList.length){
+
+            _this.allDataReady = true;
+            _this.checkResult(_this.sideMenuList[0].name,_this.sideMenuList[0].numId,_this.sideMenuList[0].hit)
+          }
+        }
+      }).catch(()=>{
+        _this.$message({
+          message: '发生错误',
+          type: 'error'
+        });
+      })
+    },
+
+    //获取表格数据
+    getTableData(){
+      let _this = this;
+      _this.tableLoad = true;
+      _this.axios({
+        method:'get',
+        url:webApi.WebData.SearchDetail.format({sjsybh:_this.currId,keywords:_this.keyword,p:_this.currPage,ps:_this.pageSize})
+      }).then((res)=>{
+        _this.tableLoad = false;
+        if(res.data.code==0){
+          let header = [];
+          let tbody = [];
+          let data = res.data.data;
+          if(data.length>0){
+            for ( let key in data[0]){
+              header.push(key)
+            }
+            for(let i=0;i<data.length ;i++){
+              let arr = [];
+              for(let val in data[i]){
+                arr.push(data[i][val]);
+              }
+              tbody.push(arr)
+            }
+            _this.header =  header;
+            _this.oTable = tbody;
+          }else {
+            _this.noDataTip='暂无相关数据';
+            _this.header =  header;
+            _this.oTable = tbody;
+          }
+
+        }else {
+          _this.$message({
+            message: res.errorMessage,
+            type: 'error'
+          });
+        }
+      }).catch((err)=>{
+        _this.tableLoad = false;
+        _this.$message({
+          message: '发生错误',
+          type: 'error'
+        });
+      })
     },
 
     //表格高度自适应
@@ -141,16 +281,25 @@ export default {
       _this.tableH = _this.$refs.cueList.clientHeight;
     }
   },
-
+  cancel() {
+    this.source.cancel('')
+  },
   //实例销毁钩子
   destroyed(){
     window.removeEventListener('resize',this.resize)
-  }
+  },
+  // watch:{
+  //   '$route.fullPath':function(){
+  //     let _this = this;
+  //     _this.tableResize();//表格高度自适应
+  //     _this.search()
+  //   }
+  // }
 }
 </script>
 
 <style lang="scss" scoped>
-  #allSearch{
+  #search-result{
     height: 100%;
     #head{
       height: 50px;
@@ -229,7 +378,7 @@ export default {
      #sideMenu-wrap{
         float: left;
         height: 100%;
-        width: 250px;
+        width: 300px;
         border-right: 1px solid #E5E5E5;
        .side-menu{
          padding: 0;
@@ -242,20 +391,35 @@ export default {
          -ms-user-select: none;
          user-select: none;
          .menu-item{
+           position: relative;
            height: 40px;
            line-height: 40px;
            padding:0 20px;
            width: 100%;
-           overflow: hidden;
-           -ms-text-overflow: ellipsis;
-           text-overflow: ellipsis;
-            white-space: nowrap;
            cursor: pointer;
            -webkit-transition: all 0.2s;
            -moz-transition: all 0.2s;
            -ms-transition: all 0.2s;
            -o-transition: all 0.2s;
            transition: all 0.2s;
+           .text{
+             height: 100%;
+             width: 200px;
+             overflow: hidden;
+             -ms-text-overflow: ellipsis;
+             text-overflow: ellipsis;
+             white-space: nowrap;
+           }
+           .hit{
+            position: absolute;
+             right: 0;
+             top: 0;
+             height: 40px;
+             line-height: 40px;
+             width: 60px;
+             text-align: center;
+             color: red;
+           }
          }
          .menu-item:hover{
            background: rgba(41, 255, 24, 0.16);
@@ -269,7 +433,19 @@ export default {
      #result-wrap{
        float: left;
        height: 100%;
-       width: calc(100% - 250px);
+       width: calc(100% - 300px);
+       .no-data{
+         display: flex;
+         height: 100%;
+         width: 100%;
+         align-items:center;
+         justify-content:center;
+         .text{
+           font-size: 30px;
+           font-weight: 800;
+           color: #CCCCCC;
+         }
+       }
        .cue-list{
          height: calc(100% - 64px);
        }
@@ -278,23 +454,12 @@ export default {
          height: 40px;
        }
      }
-     .no-data{
-       display: flex;
-       height: 100%;
-       width: 100%;
-       align-items:center;
-       justify-content:center;
-       .text{
-         font-size: 30px;
-         font-weight: 800;
-         color: #CCCCCC;
-       }
-     }
+
    }
   }
 
   @media (max-width: 1440px) {
-    #allSearch{
+    #search-result{
       #head{
         height: 40px;
         line-height: 40px;
@@ -337,6 +502,12 @@ export default {
             .menu-item{
               height: 32px;
               line-height: 32px;
+              .text{
+              }
+              .hit{
+                height: 30px;
+                line-height: 30px;
+              }
             }
             .menu-item:hover{
             }
