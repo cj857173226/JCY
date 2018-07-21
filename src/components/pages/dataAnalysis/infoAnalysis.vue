@@ -62,7 +62,7 @@
           </div>
         </div>
         <div id="map-bar">
-            <light-map></light-map>
+            <light-map :tableId="currIdArr"></light-map>
         </div>
     </div>
 </template>
@@ -100,7 +100,7 @@ export default {
             '危险废物产生企业信息':'1265508712'
           },
           currId:'',//当前表格编号
-          currIdArr:'',//所选表格ID集
+          currIdArr:[],//所选表格ID集
           page:1, //页码
           pageSize: 20,//每页条数
           totalPages:0, //总条数

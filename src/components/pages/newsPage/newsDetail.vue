@@ -31,6 +31,7 @@ export default {
     }
   },
   mounted(){
+    this.$root.Bus.$emit('changeMenu','news');
     this.getNewsData();
   },
   methods:{
