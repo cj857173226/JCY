@@ -43,18 +43,17 @@
                         label="操作"
                         width="60">
                         <template slot-scope="scope">
-                          <el-button type="text" size="medium"><i class="fa fa-location-arrow"></i></el-button>
+                          <el-button @click="moveToCenter(scope)" type="text" size="medium"><i class="fa fa-location-arrow"></i></el-button>
                         </template>
                       </el-table-column>
                     </el-table>
                   </div>
-                <div class="page-wrap" v-show="header.length>0">
+                <div class="page-wrap" v-show="currIdArr.length>0">
                   <el-pagination
                     @current-change="pageTo"
                     :page-size="pageSize"
-                    :pager-count="pagecount"
                     :current-page="page"
-                    layout="prev, pager, next, jumper"
+                    layout="prev, pager, next"
                     :total="totalPages">
                   </el-pagination>
                 </div>
@@ -85,7 +84,7 @@ export default {
           ],
           tableH:0, //表格高度,
           allTableName:['重点排污单位环境信息','生活垃圾焚烧厂一览表','危险化学品企业信息','非国家重点监控企业污染源监督性监测结果','深圳市自然灾害室内应急避难场所',
-          '深圳市严控废物经营单位名称','国家重点监控企业污染源监督性监测结果','湿地公园','自然保护区','森林公园','危险废物产生企业信息'],//所有表格名称
+          '深圳市严控废物经营单位名称','国家重点监控企业污染源监督性监测结果','湿地公园','自然保护区','森林公园'],//所有表格名称
           allTableId:{
             '重点排污单位环境信息':'289569672',
             '生活垃圾焚烧厂一览表':'664369253',
@@ -97,14 +96,14 @@ export default {
             '湿地公园':'789079836',
             '自然保护区':'1301452358',
             '森林公园':'789087524',
-            '危险废物产生企业信息':'1265508712'
+            // '危险废物产生企业信息':'1265508712'
           },
           currId:'',//当前表格编号
           currIdArr:[],//所选表格ID集
           page:1, //页码
           pageSize: 20,//每页条数
           totalPages:0, //总条数
-          pagecount:'3',
+          pagecount:3,
           isLoad:false,//数据是否在加载
           currTableName:'重点排污单位环境信息',  //当前展示的表格名称
           listCheckShow:false,//是否显示表格选择框
@@ -122,6 +121,30 @@ export default {
     }
   },
   methods:{
+    //移动地图
+    moveToCenter(scope){
+      console.log(scope);
+      var data = scope.row;
+      var name = scope.store.states.columns;
+      var position = '';
+      for(var i = 0;i<name.length;i++){
+        if(name[i].label == '经纬度'){
+          position = data[i];
+        }
+      }
+      if(position == ''||position == null){
+        this.$message({
+          message:'暂无此坐标',
+          type:'error'
+        })
+        return;
+      }else{
+        var obj = position.split(',');
+        obj[0] = parseFloat(obj[0]);
+        obj[1] = parseFloat(obj[1]);
+        this.$root.Bus.$emit('moveToCenter',obj);
+      }
+    },
     //  切换当前ID(切换当前表)
     changeId(){
       let _this = this;
@@ -138,11 +161,32 @@ export default {
       let checkedCount = value.length;
       this.checkall = checkedCount === this.allTableName.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.allTableName.length;
-      this.returnId()
+      this.returnId();
+      console.log(value);
+      console.log(this.currTableName);
+      var _this = this;
+      var isTrue = false;
+      if(value.length > 0){
+        for(var i in value){
+          if(value[i] == _this.currTableName){
+            isTrue = true;
+            return;
+          }
+        };
+        if(!isTrue){
+          _this.currTableName = value[0];
+          _this.currId = _this.allTableId[value[0]];
+          _this.page= 1;
+          _this.getTotalPage();
+          _this.getData();
+        }
+      }
+      console.log(this.currIdArr);
     },
 
     //返回当前所选表格编号
     returnId(){
+      console.log(2);
       let _this = this;
       let arr = [];
       if(_this.checkedTable.length>0){
@@ -150,8 +194,11 @@ export default {
         arr.push(_this.allTableId[_this.checkedTable[index]]);
         }
         _this.currIdArr = arr;
-        console.log(_this.currIdArr)
+      }else if(_this.checkedTable.length == 0){
+        _this.currIdArr =[];
       }
+        console.log(_this.currIdArr)
+
     },
     //获取当前表格数据
     getData(){
