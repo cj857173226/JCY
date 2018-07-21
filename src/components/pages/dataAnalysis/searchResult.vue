@@ -104,6 +104,7 @@ export default {
   mounted(){
     let _this = this;
     _this.tableResize();//表格高度自适应
+    _this.search()
   },
   methods:{
     //选择查询结果
@@ -114,38 +115,17 @@ export default {
     //全文检索
     search(){
       let _this = this;
-      _this.isLoading = true;
-
-        setTimeout(()=>{
-          _this.isLoading = false;
-          _this.sideMenuList = [
-            '表格1',
-            '表格2',
-            '表格3',
-            '表格4',
-            '表格5',
-            '表格6',
-            '表格7',
-            '表格8',
-          ];
-          _this.header=[
-            '姓名',
-            '年龄',
-            '描述',
-            '时间',
-          ];
-          _this.oTable=[
-            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-            ['李四',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-            ['王麻子',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4'],
-            ['张三',19,'啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊','2018-4-4']
-          ]
-          _this.tableH = _this.$refs.cueList.clientHeight;
-        },2000)
-
-
-
+      // _this.isLoading = true;
+      if(!_this.isLoading){
+        _this.axios({
+          method:'GET',
+          url:webApi.Host + webApi.WebData.GetAllTables
+        }).then((res)=>{
+          console.log(res)
+        }).catch((err)=>{
+          alert(err)
+        })
+      }
     },
 
     //表格高度自适应
