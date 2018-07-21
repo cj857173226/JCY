@@ -76,6 +76,14 @@ var webApi = {
     Get: '/api/Knowledge/Get/{id}', //获取指定信息; 方式:GET; 是否需要token:不需要；参数说明:[id=》未注释；]
     GetTop: '/api/Knowledge/GetTop?top={top}', //获取首页显示的信息; 方式:GET; 是否需要token:不需要；参数说明:[top=》前几条，默认10条，最大10条。【参数暂时不用】；]
   },
+//。根据方法设置token
+  WebData : {
+    CountData: '/api/WebData/CountData?sjsybh={sjsybh}', //; 方式:GET; 是否需要token:需要；参数说明:[sjsybh=》未注释；]
+    GetData: '/api/WebData/GetData?sjsybh={sjsybh}&p={p}&ps={ps}', //; 方式:GET; 是否需要token:需要；参数说明:[sjsybh=》未注释；p=》未注释；ps=》未注释；]
+    GetAllTables: '/api/WebData/GetAllTables', //; 方式:GET; 是否需要token:需要；参数说明:[]
+    SearchDetail: '/api/WebData/SearchDetail?sjsybh={sjsybh}&keywords={keywords}&p={p}&ps={ps}', //; 方式:GET; 是否需要token:需要；参数说明:[sjsybh=》未注释；keywords=》未注释；p=》未注释；ps=》未注释；]
+    SearchIndex: '/api/WebData/SearchIndex?sjsybh={sjsybh}&keywords={keywords}', //; 方式:GET; 是否需要token:需要；参数说明:[sjsybh=》未注释；keywords=》未注释；]
+  },
 //权限控制器。根据方法设置token
   Auth : {
     Login: '/api/Auth/Login', //登录; 方式:POST; 是否需要token:不需要；参数说明:[data=》登录数据；]
