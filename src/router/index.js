@@ -40,6 +40,9 @@ import cueFieldAnalysis from  '../components/pages/dataAnalysis/cueFieldAnalysis
 import infoAnalysis from '../components/pages/dataAnalysis/infoAnalysis' //深圳信息分析
 import searchResult from '../components/pages/dataAnalysis/searchResult' //深圳行政处罚
 import search from '../components/pages/dataAnalysis/search' //深圳行政处罚
+import searchBlank from '../components/pages/dataAnalysis/searchBlank' //空白页
+
+
 
 //领导页面
 import waitApproval from '../components/pages/leaderPage/waitApproval'//待审批线索
@@ -205,6 +208,14 @@ let router =  new Router({
           component:searchResult,
           meta:{
             name: '全文搜索结果',
+          }
+        },
+        {
+          path:'searchBlank',
+          name:searchBlank,
+          component:searchBlank,
+          meta:{
+            name: '搜索空白页',
           }
         },
         {
