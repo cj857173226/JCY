@@ -28,7 +28,9 @@
           </div>
           <div id="result-wrap"  ref="resultWrap">
             <div class="no-data" v-show="header.length==0">
-              <div class="text">{{noDataTip}}</div>
+              <img v-show="noDataTip == 1" src="../../../assets/search/noData3.png" alt="">
+              <img v-show="noDataTip == 2" src="../../../assets/search/noData1.png" alt="">
+              <img v-show="noDataTip == 3" src="../../../assets/search/noData2.png" alt="">
             </div>
             <div class="cue-list" ref="cueList" >
               <el-table v-show="header.length>0"
@@ -93,7 +95,7 @@ export default {
       currPage:1, //当前页
       totalPages:0,//总页数
       isLoading:false,//是否在加载中
-      noDataTip:'查询中,请稍后',
+      noDataTip:1,
       tableLoad:false, //表格是否加载
       loadCount:0,// 加载计数器
       currId :'', //当前表格查询ID；
@@ -121,7 +123,7 @@ export default {
         //   type: 'warning'
         // });
         _this.currMenuOn = currMenu;
-        _this.noDataTip='此条数据正在加载中';
+        _this.noDataTip=3;
         _this.header = [];
         _this.oTable = [];
       }else {
@@ -145,7 +147,7 @@ export default {
               }
               _this.getTableData();
             }else {
-              _this.noDataTip='暂无相关数据';
+              _this.noDataTip=2;
               _this.header = [];
               _this.oTable = [];
             }
@@ -202,7 +204,7 @@ export default {
                 arr.push(obj)
               }
               _this.sideMenuList = arr;
-              for (let i in _this.sideMenuList){
+              for (let i =0;i<_this.sideMenuList.length;i++){
                 _this.keywordHit(_this.sideMenuList[i].numId)
               }
           }
@@ -303,7 +305,7 @@ export default {
 
 
           }else {
-            _this.noDataTip='暂无相关数据';
+            _this.noDataTip=2;
             _this.header =  header;
             _this.oTable = tbody;
           }
