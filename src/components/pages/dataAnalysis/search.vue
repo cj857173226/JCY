@@ -64,15 +64,14 @@ export default {
         height: 40px;
         width: 600px;
         margin: 0 auto;
-        border: 1px solid #E5E5E5;
         .search-ipt{
           float: left;
           width: 500px;
-          border: none;
           padding-left: 20px;
           height: 100%;
           font-size: 18px;
           color: #333333;
+          border: 1px solid #cccccc;
         }
         .search-btn{
           float: left;
