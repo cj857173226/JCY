@@ -40,10 +40,12 @@
                                   :label=item
                                   min-width="200">
                   <template slot-scope="scope" >
-                    <div class="td-content" :title="oTable[scope.$index][key]">
-                      <!--{{oTable[scope.$index][key]?oTable[scope.$index][key]:'无'}}-->
-                      {{oTable[scope.$index][key]}}
-                    </div>
+                    <el-popover trigger="click" placement="top" >
+                      <p style="text-indent: 2em;">{{ oTable[scope.$index][key]}}</p>
+                      <div slot="reference" class="td-content">
+                        {{oTable[scope.$index][key]}}
+                      </div>
+                    </el-popover>
                   </template>
                 </el-table-column>
                 <!--<el-table-column-->
@@ -98,6 +100,8 @@ export default {
       allDataReady:false,//索引表是否全部加载完毕
       currMenuIndex:0, //当前菜单选中索引
       hasHit:false,//是否有数据
+      isInit:true,//是否首次加载
+      source: null, // axios请求对象
     }
   },
   mounted(){
@@ -127,8 +131,18 @@ export default {
             _this.currMenuOn = currMenu;
             _this.totalPages = totalPage;
             if( _this.totalPages>0){
-              console.log(document.getElementById('sideMenu').clientHeight)
-
+              if(_this.isInit){
+                let id = _this.currId;
+                let outsideTop = document.getElementById('search-result').offsetTop; //整个组件偏移量
+                let headTop = document.getElementById('head').scrollHeight;  //头部高度
+                let sideMenuH = document.getElementById('sideMenu').clientHeight; //左边菜单容器高度
+                let currItemTop = document.getElementById(id).offsetTop; //当前选中数据相对于浏览器的偏移高度
+                let ItemOffsetTop = currItemTop-(outsideTop + headTop); //当前选中菜单 相对父元素的偏移高度
+                if(sideMenuH <ItemOffsetTop){
+                  document.getElementById('sideMenu').scrollTop = ItemOffsetTop;
+                }
+                _this.isInit = false;
+              }
               _this.getTableData();
             }else {
               _this.noDataTip='暂无相关数据';
@@ -148,13 +162,9 @@ export default {
     searchTo(){
       let _this = this;
       let _currKeyword = _this.$route.query.keyword;
+      _this.cancel();
       if(!_this.keyword ==''){
-        // _this.noDataTip='查询中,请稍后';
-        // _this.currMenuOn='';
-        // _this.loadCount=0;
-        // _this.sideMenuList=[];
-        // _this.header = [];
-        // _this.oTable = [];
+        document.getElementById('sideMenu').scrollTop =0;
         this.$router.push({
           path:'/home/searchBlank',
           query:{keyword:_this.keyword.trim()}
@@ -172,11 +182,13 @@ export default {
     search(){
       let _this = this;
       if(!_this.isLoading){
+        _this.isLoading= true;
         _this.loadCount = 0;
-        _this.isLoading = true;
+        _this.source = _this.axios.CancelToken.source();
         _this.axios({
           method:'GET',
           url:webApi.Host + webApi.WebData.GetAllTables,
+          cancelToken: _this.source.token,
         }).then((res)=>{
           _this.isLoading = false;
           if(res.data.code==0){
@@ -196,10 +208,17 @@ export default {
           }
         }).catch((err)=>{
           _this.isLoading = false;
-          alert(err)
+          if(err.message.trim()!= '中断请求'){
+            _this.$message({
+              message: '发生错误',
+              type: 'error'
+            });
+          }
         })
       }
     },
+
+
     //分页查询
     pageTo(page){
       let _this = this;
@@ -211,8 +230,10 @@ export default {
     keywordHit(id){
       let _this = this;
       let sjsybh = id;
+      _this.source = _this.axios.CancelToken.source();
       _this.axios({
         methods:'get',
+        cancelToken: _this.source.token,
         url:webApi.WebData.SearchIndex.format({sjsybh:sjsybh,keywords:_this.keyword}),
       }).then((res)=>{
         if(res.data.code == 0){
@@ -241,11 +262,13 @@ export default {
             }
           }
         }
-      }).catch(()=>{
-        _this.$message({
-          message: '发生错误',
-          type: 'error'
-        });
+      }).catch((err)=>{
+       if(err.message.trim()!= '中断请求'){
+         _this.$message({
+           message: '发生错误',
+           type: 'error'
+         });
+       }
       })
     },
 
@@ -253,8 +276,10 @@ export default {
     getTableData(){
       let _this = this;
       _this.tableLoad = true;
+      _this.source= _this.axios.CancelToken.source();
       _this.axios({
         method:'get',
+        cancelToken: this.source.token,
         url:webApi.WebData.SearchDetail.format({sjsybh:_this.currId,keywords:_this.keyword,p:_this.currPage,ps:_this.pageSize})
       }).then((res)=>{
         _this.tableLoad = false;
@@ -275,6 +300,8 @@ export default {
             }
             _this.header =  header;
             _this.oTable = tbody;
+
+
           }else {
             _this.noDataTip='暂无相关数据';
             _this.header =  header;
@@ -289,11 +316,19 @@ export default {
         }
       }).catch((err)=>{
         _this.tableLoad = false;
-        _this.$message({
-          message: '发生错误',
-          type: 'error'
-        });
+        if(err.message.trim()!='中断请求'){
+          _this.$message({
+            message: '发生错误',
+            type: 'error'
+          });
+        }
       })
+    },
+    //中断请求
+    cancel() {
+      if(this.source){
+        this.source.cancel('中断请求')
+      }
     },
 
     //表格高度自适应
@@ -309,9 +344,7 @@ export default {
       _this.tableH = _this.$refs.cueList.clientHeight;
     }
   },
-  cancel() {
-    this.source.cancel('')
-  },
+
   //实例销毁钩子
   destroyed(){
     window.removeEventListener('resize',this.resize)
