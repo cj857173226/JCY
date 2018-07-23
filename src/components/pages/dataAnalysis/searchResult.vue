@@ -17,7 +17,7 @@
         <div id="main-body" class="clearfix"   ref="mainBody" v-loading="tableLoad">
           <div id="sideMenu-wrap"  ref="sideMenuWrap" v-loading="isLoading">
             <ul class="side-menu">
-              <li class="menu-item" :class="{'menu-item-on':item.name == currMenuOn}" v-for="(item,index) in sideMenuList" @click.stop.prevent="checkResult(item.name,item.numId,item.hit)">
+              <li class="menu-item" :class="{'menu-item-on':item.name == currMenuOn}" v-for="(item,index) in sideMenuList" @click.stop.prevent="currMenuIndex == index;checkResult(item.name,item.numId,item.hit,item.isLoad);">
                 <div class="text" :title="item.name">{{item.name}}</div>
                 <div class="hit">
                   <i class="el-icon-loading" v-show="item.isLoad"></i>
@@ -95,6 +95,7 @@ export default {
       loadCount:0,// 加载计数器
       currId :'', //当前表格查询ID；
       allDataReady:false,//索引表是否全部加载完毕
+      currMenuIndex:0, //当前菜单选中索引
     }
   },
   mounted(){
@@ -104,13 +105,18 @@ export default {
   },
   methods:{
     //选择查询结果
-    checkResult(currMenu,id,totalPage){
+    checkResult(currMenu,id,totalPage,isLoad){
       let _this = this;
-      if(!_this.allDataReady){
-        _this.$message({
-          message: '别着急,正在为你加载中',
-          type: 'warning'
-        });
+      console.log(_this.currMenuIndex)
+      if(isLoad){
+        // _this.$message({
+        //   message: '别着急,正在为你加载中',
+        //   type: 'warning'
+        // });
+        _this.currMenuOn = currMenu;
+        _this.noDataTip='此条数据正在加载中';
+        _this.header = [];
+        _this.oTable = [];
       }else {
         _this.currPage = 1;
         _this.currId = id;
@@ -206,11 +212,8 @@ export default {
               _this.sideMenuList[j]['isLoad'] =false;
             }
           }
-          console.log(_this.loadCount)
-          if(_this.loadCount == _this.sideMenuList.length){
-
-            _this.allDataReady = true;
-            _this.checkResult(_this.sideMenuList[0].name,_this.sideMenuList[0].numId,_this.sideMenuList[0].hit)
+          if(_this.loadCount == _this.sideMenuList.length ){
+            _this.checkResult(_this.sideMenuList[0].name,_this.sideMenuList[0].numId,_this.sideMenuList[0].hit,_this.sideMenuList[0].isLoad)
           }
         }
       }).catch(()=>{
