@@ -165,7 +165,7 @@
         type:'', //线索类型
         page:1, //页码
         pageSize: 20,//每页条数
-        totalPages:1,//总条数
+        totalPages:0,//总条数
         order:'cjsj',//排序方式
         site:'',//来源站点
         isLoad:false,//数据是否在加载
