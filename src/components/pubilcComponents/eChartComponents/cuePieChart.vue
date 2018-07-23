@@ -31,6 +31,7 @@ export default {
             reportType: [], //互联网线索数据
             isLoad:false,
             isNav:1, //饼状图切换
+            myChart:null,
         }
     },
     mounted(){
@@ -66,11 +67,15 @@ export default {
             var height = document.getElementById('pie-chart').clientHeight;
             chart.style.width = width + 'px';
             chart.style.height = height + 'px';
-            var myChart = echarts.init(chart);
-            myChart.setOption(option);
+            this.myChart = echarts.init(chart);
+            this.myChart.setOption(option);
         },
         //切换导航
         changeNav(index){
+            console.log("屏幕大小变换");
+            if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
+              this.myChart.dispose();
+            }
             if(arguments[0].type != 'resize'){
                 this.isNav = index;
             }
@@ -112,7 +117,8 @@ export default {
                             obj.name = msg.data.internetCluesType[i].XSLB;
                             _this.internetType.push(obj);
                         }
-                    }else if(msg.data.reportCluesType.length > 0){
+                    }
+                    if(msg.data.reportCluesType.length > 0){
                         for(var i = 0;i<msg.data.reportCluesType.length;i++){
                             var obj = {
                                 value:'',
@@ -122,6 +128,7 @@ export default {
                             obj.name = msg.data.reportCluesType[i].XSLB;
                             _this.reportType.push(obj);
                         }
+                        console.log(_this.reportType);
                     }
                     var obj = {};
                     for(var i in msg.data){

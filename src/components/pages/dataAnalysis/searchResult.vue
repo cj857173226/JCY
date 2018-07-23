@@ -40,9 +40,15 @@
                                   :label=item
                                   min-width="200">
                   <template slot-scope="scope" >
-                    <div class="td-content" :title="oTable[scope.$index][key]">
+                    <!-- <div class="td-content" :title="oTable[scope.$index][key]">
                       {{oTable[scope.$index][key]}}
-                    </div>
+                    </div> -->
+                    <el-popover trigger="click" placement="top" >
+                      <p>{{oTable[scope.$index][key]}}</p>
+                      <div slot="reference" class="td-content">
+                        {{oTable[scope.$index][key]}}
+                      </div>
+                    </el-popover>
                   </template>
                 </el-table-column>
                 <!--<el-table-column-->

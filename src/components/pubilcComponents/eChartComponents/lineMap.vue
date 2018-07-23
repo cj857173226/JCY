@@ -15,6 +15,7 @@ export default {
         return{
             timeData:[], //时间线数据
             isLoad:false, //数据加载
+            myChart:null, //图标
             //图标参数配置
             option:{
                 tooltip: {
@@ -66,13 +67,16 @@ export default {
     },
     methods:{
         chartInit(){
+            if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
+              this.myChart.dispose();
+            }
             var chart = document.getElementById('lineChart');
             var width = document.getElementById('line-chart-box').clientWidth;
             var height = document.getElementById('line-chart-box').clientHeight;
             chart.style.width = width;
             chart.style.height = height;
-            var myChart = echarts.init(chart);
-            myChart.setOption(this.option);
+            this.myChart = echarts.init(chart);
+            this.myChart.setOption(this.option);
         },
         timeDataGet(){
             // this.isLoad = true;

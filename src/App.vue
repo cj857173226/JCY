@@ -159,4 +159,24 @@ button:active{
 
   }
 
+  /* 滚动条 */
+  /*滚动条整体部分,必须要设置*/
+  ::-webkit-scrollbar{
+      width: 8px;
+      height: 8px;
+      background-color: #333;
+  }
+  /*滚动条的轨道*/
+  ::-webkit-scrollbar-track{
+      background-color: rgb(207, 207, 207);
+  }
+  /*滚动条的滑块按钮*/
+  ::-webkit-scrollbar-thumb{
+      border-radius: 10px;
+      background-color: rgb(151, 151, 151);
+  }
+  /*滚动条的上下两端的按钮*/
+  ::-webkit-scrollbar-button{
+  }
+
 </style>

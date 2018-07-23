@@ -1,11 +1,15 @@
 <template>
     <div id="info">
-        <div id="tool-bar" >
+        <div id="tool-bar" :class="isHidden?'hidden-box':''">
           <div class="check-wrap">
             <el-checkbox class="check-all" :indeterminate="isIndeterminate" v-model="checkall" @change="handleCheckAllChange">全选</el-checkbox>
             <el-checkbox-group class="check-group" v-model="checkedTable" @change="handleCheckedCitiesChange">
               <el-checkbox class="check-item" v-for="table in allTableName" :label="table" :key="table">{{table}}</el-checkbox>
             </el-checkbox-group>
+            <div class="switch-btn" @click="hiddenBtn">
+              <i v-show="!isHidden" class="fa fa-angle-double-left"></i>
+              <i v-show="isHidden" class="fa fa-angle-double-right"></i>
+            </div>
           </div>
           <div class="list-wrap">
             <div class="list-check-wrap clearfix" v-show="checkedTable.length>0">
@@ -99,7 +103,7 @@ export default {
             // '危险废物产生企业信息':'1265508712'
           },
           currId:'',//当前表格编号
-          currIdArr:[],//所选表格ID集
+          currIdArr:['289569672'],//所选表格ID集
           page:1, //页码
           pageSize: 20,//每页条数
           totalPages:0, //总条数
@@ -107,6 +111,7 @@ export default {
           isLoad:false,//数据是否在加载
           currTableName:'重点排污单位环境信息',  //当前展示的表格名称
           listCheckShow:false,//是否显示表格选择框
+          isHidden:false, //是否显示左边操作框
         }
     },
   mounted(){
@@ -121,6 +126,10 @@ export default {
     }
   },
   methods:{
+    //是否显示左边操作框
+    hiddenBtn(){
+      this.isHidden = !this.isHidden;
+    },
     //移动地图
     moveToCenter(scope){
       console.log(scope);
@@ -162,8 +171,6 @@ export default {
       this.checkall = checkedCount === this.allTableName.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.allTableName.length;
       this.returnId();
-      console.log(value);
-      console.log(this.currTableName);
       var _this = this;
       var isTrue = false;
       if(value.length > 0){
@@ -181,23 +188,21 @@ export default {
           _this.getData();
         }
       }
-      console.log(this.currIdArr);
     },
 
     //返回当前所选表格编号
     returnId(){
-      console.log(2);
       let _this = this;
       let arr = [];
       if(_this.checkedTable.length>0){
         for(let index in _this.checkedTable){
-        arr.push(_this.allTableId[_this.checkedTable[index]]);
+          arr.push(_this.allTableId[_this.checkedTable[index]]);
         }
         _this.currIdArr = arr;
       }else if(_this.checkedTable.length == 0){
         _this.currIdArr =[];
       }
-        console.log(_this.currIdArr)
+      console.log(_this.currIdArr)
 
     },
     //获取当前表格数据
@@ -297,10 +302,19 @@ export default {
 #info{
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    position: relative;
+    .hidden-box{
+      left: -400px!important;
+    }
     #tool-bar{
-        width: 400px;
-        height: 100%;
-        float: left;
+      position: absolute;
+      width: 400px;
+      height: 100%;
+      top:0;
+      left: 0;
+      z-index: 161;
+      transition: all .3s;
       .head{
         height: 50px;
         width: 100%;
@@ -351,7 +365,25 @@ export default {
       .check-wrap{
         height: 200px;
         max-height: 200px;
-        padding: 10px;
+        padding: 10px;    
+        background: #fff;
+        position: relative;
+        .switch-btn{    
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          top: 0px;
+          right: -40px;
+          text-align: center;
+          line-height: 40px;
+          background: #f4f4f4;
+          color: #00a65a;
+          font-size: 25px;
+          cursor: pointer;
+          box-shadow: 2px 0px 10px #e0e0e0;
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
         .check-all{
           margin-bottom: 10px;
         }
@@ -384,6 +416,7 @@ export default {
       }
       .list-wrap{
         height:calc(100% - 200px);
+        background: #fff;
         .list-check-wrap{
           position: relative;
           height: 40px;
@@ -412,6 +445,7 @@ export default {
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            background: #fff;
           }
           .check-btn{
             height: 100%;
@@ -455,17 +489,14 @@ export default {
       }
     }
     #map-bar{
-        width: calc(100% - 400px);
+        width: 100%;
         height: 100%;
-        margin-left: 400px;
     }
 }
 
   @media (max-width: 1440px) {
     #info{
-
       #tool-bar{
-
         .head{
           height: 40px;
           .search-wrap{

@@ -52,9 +52,12 @@ export default {
   },
   mounted(){
     this.isLoad = true;
-    this.$root.Bus.$emit('changeMenu','5-1');
+    if(this.$route.query.knowType == 1){
+      this.$root.Bus.$emit('changeMenu','5-1');
+    }else if(this.$route.query.knowType == 2){
+      this.$root.Bus.$emit('changeMenu','5-2');
+    }
     this.knowledgeDataGet();
-    console.log(1);
   },
   methods: {
     //鼠标滚动加载

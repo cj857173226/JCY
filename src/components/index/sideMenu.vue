@@ -172,7 +172,7 @@
         <router-link to="/home/cueFieldAnalysis">
           <el-menu-item index="6-2" :class="isThisNav == '线索领域分析'?'is-actived':''" @click="switchNav('线索领域分析')">
             <i class="fa fa-window-restore"></i>
-            <span slot="title">线索领域分析</span>
+            <span slot="title">线索情况分析</span>
           </el-menu-item>
         </router-link>
 
@@ -205,10 +205,8 @@
       }
     },
     mounted(){
-      console.log(this.$route.meta.name);
       var _this = this;
       this.$root.Bus.$on('changeMenu',function(index){
-        console.log(index);
         if(index == '5-1'){
           _this.isThisNav = '理论研究';
         }else if(index == '5-2'){
