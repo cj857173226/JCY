@@ -166,23 +166,23 @@
 			if(_this.IdentityType =='1'){
 			  _this.getAdminDataCount(setDataCount)//获取管理员主页数据统计信息
 				}else {
-			  _this.dataCount = [//数据统计
-				{title: "线索总量", val: 0,icon:'fa-list'},
-				{title: "关注线索总量", val: 0,icon:'fa-heart-o'},
-				{title: "已办理线索", val: 0,icon:'fa-envelope-o'},
-				{title: "举报接收线索", val: 0,icon:'fa-check-circle'}
-			  ];
-			}
-		}
-		if(!_this.IdentityType){
-			_this.$root.Bus.$on('changeIdentity',function(data){
-				_this.IdentityType = data;
-				setDataCountFunc();
-			});
-		}else {
-			setDataCountFunc();
-		}	
-        
+          _this.dataCount = [//数据统计
+          {title: "线索总量", val: 0,icon:'fa-list'},
+          {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+          ];
+			  }
+		  }
+      if(!_this.IdentityType){
+        _this.$root.Bus.$on('changeIdentity',function(data){
+          _this.IdentityType = data;
+          setDataCountFunc();
+        });
+      }else {
+        setDataCountFunc();
+      }
+
       },
       getAdminDataCount(setDataCount){//获取管理员主页数据统计信息
         let _this = this;
@@ -194,7 +194,7 @@
         ];
         _this.axios({
           method: 'post',
-          url: webApi.Host + webApi.Stats.CountClues, 
+          url: webApi.Host + webApi.Stats.CountClues,
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
@@ -231,11 +231,11 @@
         _this.axios({
           method: 'get',
           url: (webApi.Clue.GetReportClues).format({
-			keyword:"",
-			type: "",
-			p: "1",
-			ps: "1"
-		  }),
+          keyword:"",
+          type: "",
+          p: "1",
+          ps: "1"
+          }),
           timeout: 10000
         }).then(function(res){
           if(res.data.code==0){
