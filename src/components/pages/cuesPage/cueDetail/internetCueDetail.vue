@@ -43,7 +43,7 @@
             <span class="item-title resource-box">图片内容</span>
             <span class="item-content resource-content">
                 <ul id="imgViewer">
-                    <li v-for="item in TP">
+                    <li class="resource-item" v-for="item in TP">
                         <img :src="item">
                     </li>
                 </ul>
@@ -76,7 +76,7 @@
                                 <span>回帖数:{{item.preNum}}</span>
                             </div>
                             <h4 class="tiemline-name">{{item.name}}</h4>
-                            <p>{{item.content}}</p>
+                            <pre>{{item.content}}</pre>
                             <div class="circle-icon2" v-show="item.lastReply">
                                 <i class="timeline-icon fa fa-circle-o"></i>
                                 <span>剩余回帖数:{{item.lastReply}}</span>
@@ -116,6 +116,22 @@ export default {
             console.log(_this.trackHead);
             console.log(_this.trackData);
         },
+        //获取图片
+        getImg(img){
+            var _this = this;
+            var imgs = img.split(',');
+            console.log(imgs);
+            for(var i = 0 ;i < imgs.length; i++){
+                if(imgs[i] != 'null'&&imgs[i] != ''){
+                    var src = webApi.WxClue.DownLoadFile.format({id:imgs[i]});
+                    _this.TP.push(src);
+                }
+            }
+            _this.$nextTick(()=>{
+                let viewer = new Viewer(document.getElementById('imgViewer'));
+            })
+            console.log(_this.TP);
+        },
         //获取数据
         dataGet(){
             var _this = this;
@@ -129,8 +145,9 @@ export default {
                   if(_this.cueData.SFSJGZ == 1 && _this.cueData.SJGZSJ != ''){
                       _this.getTrack(_this.cueData.SJGZSJ);
                   }
-                  _this.cueData.TP = [];
-                  _this.cueData.SP = [];
+                  if(_this.cueData.TPJH != null&&_this.cueData.TPJH != ''){
+                      _this.getImg(_this.cueData.TPJH);
+                  }
                   if(response.data.data[0].SFYD == 0){
                       _this.readed();
                   }
@@ -206,6 +223,20 @@ export default {
             line-height: 22px;
             padding: 15px;
             width: 100%;
+            ul{
+                padding: 0;
+                .resource-item{
+                    width: 24%;
+                    display: inline-block;
+                    padding: 10px;
+                    border: solid 2px #fff;
+                    cursor: pointer;
+                    vertical-align: top;
+                    img{
+                        width: 100%;
+                    }
+                }
+            }
             .text-title{
                 font-size: 18px;
                 font-weight: bold;
@@ -216,14 +247,6 @@ export default {
                 font-weight: bold;
                 margin-right: 10px;
                 vertical-align: top;
-            }
-            img{
-                width: 200px;
-                height: 300px;
-            }
-            video{
-                width: 300px;
-                height: 200px;
             }
         }
         .track-title{
@@ -275,6 +298,7 @@ export default {
                             }
                             span{
                                 margin-left: 10px;
+                                color: #ff7900;
                             }
                         }
                         .circle-icon2{
@@ -286,13 +310,18 @@ export default {
                             color: #333;
                             font-weight: 500;
                             position: absolute;
-                            left: -165px;
+                            left: -158px;
+                            font-size: 15px;
+                            top: 0px;
                         }
                         .tiemline-name{
                             color: #333;
                         }
-                        p{
-                            color: #555;
+                        pre{
+                            white-space: pre-wrap;
+                            color: #333;
+                            font-size: 13px;
+                            font-family: "微软雅黑";
                         }
                     }
                 }
