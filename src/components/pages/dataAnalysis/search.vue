@@ -10,7 +10,7 @@
         </div>
       </div>
       <div id="pie-chart">
-        <search-pie></search-pie>
+        <!-- <search-pie></search-pie> -->
       </div>
     </div>
 </template>
@@ -97,7 +97,7 @@ export default {
 
     }
     #pie-chart{
-      width: 500px;
+      width: 90%;
       height: 300px;
       margin:0 auto;
     }
