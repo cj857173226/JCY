@@ -6,10 +6,14 @@
           <i class="fa fa-search-plus"></i>
         </div>
         <div class="title">自行发现线索</div>
+
+      </div>
+      <div class="manage-icon">
+        <i @click="addClue"  class="el-icon-circle-plus-outline"></i>
       </div>
       <div class="search-wrap clearfix">
-        <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getHeartCueList">
-        <span class="search-btn" @click="getHeartCueList()">
+        <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getSelfCueList">
+        <span class="search-btn" @click="getSelfCueList()">
             <i class="iconfont icon-sousuo"></i>
           </span>
       </div>
@@ -62,7 +66,7 @@
       <div class="cue-list" ref="cueList" v-loading="isLoad">
         <el-table
           ref="oTable"
-          :data=" heartClueList"
+          :data=" selfCueList"
           :max-height="tableH"
           :height="tableH"
           style="width: 100%">
@@ -156,8 +160,8 @@
         //来源地址
         outerVisible:false,
         tableH:0, //表格高度
-        heartClueList: [
-        ], //热点线索
+        selfCueList: [
+        ], //自行发现线索
         siteList: [],//
         typeList: ["食药安全","英烈保护",
           "国有财产","国土资源","环境保护"],//线索门类
@@ -174,12 +178,20 @@
     mounted(){
       let _this = this;
       _this.tableResize();//表格高度自适应
-      _this.getHeartCueList(); //获取热点线索列表
+      _this.getSelfCueList(); //获取自行发现线索列表
       _this.getClueType(); //获取线索类型
     },
     methods:{
-      //获取热点线索列表
-      getHeartCueList(){
+      //添加自行发现线索
+      addClue() {
+        this.$message({
+          message: "该功能正在完善!",
+          showClose: true,
+          duration: 2000
+        })
+      },
+      //获取自行发现线索列表
+      getSelfCueList(){
 
       },
       //获取举报门类
@@ -253,6 +265,17 @@
       line-height: 50px;
       background: #EEEEEE;
       border-bottom: 1px solid #dcdcdc;
+      .manage-icon{
+        font-size: 25px;
+        float: right;
+        margin-right: 10px;
+        &:hover {
+          cursor: pointer;
+        }
+        i {
+          color: green;
+        }
+      }
       /*标题*/
       .title-wrap{
         float: left;
@@ -282,7 +305,7 @@
         background: #FFFFFF;
         height: 42px;
         width: 320px;
-        margin-right: 50px;
+        margin-right: 10px;
         margin-top: 4px;
         border: 1px solid #dcdcdc;
         -webkit-border-radius: 8px;

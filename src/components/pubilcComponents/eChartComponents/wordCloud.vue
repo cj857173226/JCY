@@ -23,7 +23,7 @@
             this.myChart = this.echarts.init(document.getElementById('wordCloud_main'));
             this.myChart.setOption({
               title:{
-                text:'活动关键词',
+                text:'活跃关键词',
                 top: 'top',
                 left:'center'
               },

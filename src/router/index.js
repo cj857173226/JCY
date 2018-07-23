@@ -38,7 +38,11 @@ import newsDetail from '../components/pages/newsPage/newsDetail'
 import newsAnalysis from  '../components/pages/dataAnalysis/newsAnalysis' //新闻热力分析
 import cueFieldAnalysis from  '../components/pages/dataAnalysis/cueFieldAnalysis' //线索领域分析
 import infoAnalysis from '../components/pages/dataAnalysis/infoAnalysis' //深圳信息分析
-import politicsPenalty from '../components/pages/dataAnalysis/politicsPenalty' //深圳行政处罚
+import searchResult from '../components/pages/dataAnalysis/searchResult' //深圳行政处罚
+import search from '../components/pages/dataAnalysis/search' //深圳行政处罚
+import searchBlank from '../components/pages/dataAnalysis/searchBlank' //空白页
+
+
 
 //领导页面
 import waitApproval from '../components/pages/leaderPage/waitApproval'//待审批线索
@@ -191,11 +195,27 @@ let router =  new Router({
           }
         },
         {
-          path:'politicsPenalty',
-          name:politicsPenalty,
-          component:politicsPenalty,
+          path:'search',
+          name:search,
+          component:search,
           meta:{
-            name: '行政处罚分析',
+            name: '全文搜索',
+          }
+        },
+        {
+          path:'searchResult',
+          name:searchResult,
+          component:searchResult,
+          meta:{
+            name: '全文搜索结果',
+          }
+        },
+        {
+          path:'searchBlank',
+          name:searchBlank,
+          component:searchBlank,
+          meta:{
+            name: '搜索空白页',
           }
         },
         {

@@ -13,7 +13,7 @@
             <span class="item-title">采集时间</span><span class="item-content">{{cueData.CJSJ}}</span>
         </div>
         <div class="detail-item">
-            <span class="item-title">数据地址</span><span class="item-content"><a class="link" :href="cueData.SJDZ" target="_blank">{{cueData.SJDZ}}</a></span>
+            <span class="item-title">数据地址</span><span style="overflow: hidden;" class="item-content"><a style="white-space: nowrap;" class="link" :href="cueData.SJDZ" target="_blank">{{cueData.SJDZ}}</a></span>
         </div>
         <div class="detail-item">
             <span class="item-title resource-box">采集内容</span>
@@ -38,24 +38,49 @@
                 <span v-html="cueData.JBNR"></span>
             </div>
         </div>
-        <div class="detail-item">
+        
+        <div class="detail-item" v-show="TP.length > 0">
+            <span class="item-title resource-box">图片内容</span>
+            <span class="item-content resource-content">
+                <ul id="imgViewer">
+                    <li class="resource-item" v-for="item in TP">
+                        <img :src="item">
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <div class="detail-item" v-show="SP.length > 0">
+            <span class="item-title resource-box">视频内容:</span>
+            <span class="item-content resource-content">
+                <video :src="item" controls="controls" v-for="item in SP"></video>
+            </span>
+        </div>
+
+        <div class="detail-item" v-show="cueData.SFSJGZ == 1">
             <span class="item-title track-title">事态跟踪:</span>
             <span class="item-content timeline-content">
                 <ul class="itemline-box">
                     <li class="timeline-item">
                         <i class="timeline-icon fa fa-circle-o"></i>
                         <div class="tiemline-text">
-                            <h3 class="timeline-time">2018年3月2日</h3>
-                            <h4 class="tiemline-name">陈吉</h4>
-                            <p>擦手册去啊的v啊v请问大师v啊</p>
+                            <h3 class="timeline-time">{{trackHead.time}}</h3>
+                            <p>{{trackHead.content}}</p>
                         </div>
                     </li>
-                    <li class="timeline-item">
+                    <li class="timeline-item" v-for="item in trackData">
                         <i class="timeline-icon fa fa-circle-o"></i>
                         <div class="tiemline-text">
-                            <h3 class="timeline-time">2018年3月2日</h3>
-                            <h4 class="tiemline-name">陈吉</h4>
-                            <p>擦手册去啊的v啊v请问大师v啊</p>
+                            <h3 class="timeline-time">{{item.time}}</h3>
+                            <div class="circle-icon1">
+                                <i class="timeline-icon fa fa-circle-o"></i>
+                                <span>回帖数:{{item.preNum}}</span>
+                            </div>
+                            <h4 class="tiemline-name">{{item.name}}</h4>
+                            <pre>{{item.content}}</pre>
+                            <div class="circle-icon2" v-show="item.lastReply">
+                                <i class="timeline-icon fa fa-circle-o"></i>
+                                <span>剩余回帖数:{{item.lastReply}}</span>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -71,13 +96,42 @@ export default {
     // },
     data(){
         return{
-          cueData:{}
+          cueData:{},
+          TP:[],
+          SP:[],
+          trackHead:{},
+          trackData:[]
         }
     },
     mounted(){
         this.dataGet();
     },
     methods:{
+        //获取事件跟踪数据
+        getTrack(track){
+            var _this = this;
+            track = JSON.parse(track);
+            _this.trackHead = track[0];
+            _this.trackData = track.slice(1,track.length);
+            console.log(_this.trackHead);
+            console.log(_this.trackData);
+        },
+        //获取图片
+        getImg(img){
+            var _this = this;
+            var imgs = img.split(',');
+            console.log(imgs);
+            for(var i = 0 ;i < imgs.length; i++){
+                if(imgs[i] != 'null'&&imgs[i] != ''){
+                    var src = webApi.WxClue.DownLoadFile.format({id:imgs[i]});
+                    _this.TP.push(src);
+                }
+            }
+            _this.$nextTick(()=>{
+                let viewer = new Viewer(document.getElementById('imgViewer'));
+            })
+            console.log(_this.TP);
+        },
         //获取数据
         dataGet(){
             var _this = this;
@@ -88,6 +142,12 @@ export default {
             }).then(function(response){
                 if(response.data.code == 0){
                   _this.cueData = response.data.data[0];
+                  if(_this.cueData.SFSJGZ == 1 && _this.cueData.SJGZSJ != ''){
+                      _this.getTrack(_this.cueData.SJGZSJ);
+                  }
+                  if(_this.cueData.TPJH != null&&_this.cueData.TPJH != ''){
+                      _this.getImg(_this.cueData.TPJH);
+                  }
                   if(response.data.data[0].SFYD == 0){
                       _this.readed();
                   }
@@ -163,6 +223,20 @@ export default {
             line-height: 22px;
             padding: 15px;
             width: 100%;
+            ul{
+                padding: 0;
+                .resource-item{
+                    width: 24%;
+                    display: inline-block;
+                    padding: 10px;
+                    border: solid 2px #fff;
+                    cursor: pointer;
+                    vertical-align: top;
+                    img{
+                        width: 100%;
+                    }
+                }
+            }
             .text-title{
                 font-size: 18px;
                 font-weight: bold;
@@ -174,14 +248,6 @@ export default {
                 margin-right: 10px;
                 vertical-align: top;
             }
-            img{
-                width: 200px;
-                height: 300px;
-            }
-            video{
-                width: 300px;
-                height: 200px;
-            }
         }
         .track-title{
             width: 80px;
@@ -191,11 +257,14 @@ export default {
         }
         .timeline-content{
             border: none;
+            width: 88%;
             .itemline-box{
                 padding: 0;
                 .timeline-item{
                     padding-bottom: 10px;
                     position: relative;
+                    margin-left: 155px;
+                    margin-top: 20px;
                     .timeline-icon{
                         position: absolute;
                         left: -5px;
@@ -208,38 +277,69 @@ export default {
                         color: #5FB878;
                         border-radius: 50%;
                         text-align: center;
-                        cursor: pointer;
                     }
                     .tiemline-text{
                         line-height: 22px;
                         display: inline-block;
                         padding-left: 30px;
+                        .circle-icon2,
+                        .circle-icon1{
+                            margin-top: -21px;
+                            margin-left: -35px;
+                            .timeline-icon{
+                                position: inherit;
+                                width: 20px;
+                                height: 20px;
+                                line-height: 20px;
+                                background-color: #fff;
+                                color: #5FB878;
+                                border-radius: 50%;
+                                text-align: center;
+                            }
+                            span{
+                                margin-left: 10px;
+                                color: #ff7900;
+                            }
+                        }
+                        .circle-icon2{
+                            margin-top: 0px;
+                        }
                         .timeline-time{
                             margin-bottom: 5px;
                             font-size: 16px;
                             color: #333;
                             font-weight: 500;
+                            position: absolute;
+                            left: -158px;
+                            font-size: 15px;
+                            top: 0px;
                         }
                         .tiemline-name{
                             color: #333;
                         }
-                        p{
-                            color: #555;
+                        pre{
+                            white-space: pre-wrap;
+                            color: #333;
+                            font-size: 13px;
+                            font-family: "微软雅黑";
                         }
                     }
+                }
+                .timeline-item:first-child{
+                    margin-top: 0;
                 }
                 .timeline-item:before{
                         content: '';
                         position: absolute;
                         left: 5px;
                         top: 0;
-                        z-index: 0;
+                        z-index: -1;
                         width: 1px;
                         height: 100%;
                         background-color: #e6e6e6;
                 }
                 .timeline-item:last-child:before{
-                    display: none;
+                    // display: none;
                 }
             }
         }
