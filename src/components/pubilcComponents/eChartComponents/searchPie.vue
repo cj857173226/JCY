@@ -19,19 +19,19 @@ export default {
         }
     },
     mounted(){
-
+        this.initChart();
     },
     methods:{
         initChart(){
             var _this = this;
-            option = {
+            var option = {
                 tooltip: {
                     trigger: 'item',
                     formatter: "{a} <br/>{b}: {c} ({d}%)"
                 },
                 legend: {
-                    orient: 'vertical',
-                    x: 'left',
+                    orient: 'horizontal',
+                    x: 'center',
                     y:'bottom',
                     data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
                 },
@@ -39,7 +39,7 @@ export default {
                     {
                         name:'访问来源',
                         type:'pie',
-                        radius: ['50%', '70%'],
+                        radius: ['60%', '80%'],
                         avoidLabelOverlap: false,
                         label: {
                             normal: {
@@ -77,6 +77,7 @@ export default {
 
 <style lang="scss" scoped>
 #search-pie{
-
+    width: 100%;
+    height: 100%;
 }
 </style>

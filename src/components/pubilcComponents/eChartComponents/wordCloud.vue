@@ -23,7 +23,7 @@
             this.myChart = this.echarts.init(document.getElementById('wordCloud_main'));
             this.myChart.setOption({
               title:{
-                text:'活动关键词',
+                text:'活跃关键词',
                 top: 'top',
                 left:'center'
               },
@@ -35,11 +35,15 @@
                 top:'center',
                 right: null,
                 bottom: null,
-                sizeRange:[20,40],
+                sizeRange:[15,30],
                 rotationRange:[-90,90],
                 rotationStep:45,
-                gridSize: 8,
-                drawOutOfBound:false,
+                gridSize: 1,
+                autoSize: {
+                  enable: true,
+                  minSize: 10
+                },
+                drawOutOfBound: false,
                 textStyle:{
                   normal: {
                     fontFamily: 'sans-serif',
@@ -79,6 +83,7 @@
                     data.push(item);
                   }
                   _this.cloudData = data;
+                  console.log(JSON.stringify(_this.cloudData));
                   _this.initCloud();
                 }
               }).catch(function(err) {

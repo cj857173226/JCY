@@ -57,14 +57,14 @@ export default {
                 'iconfont icon-ruhehupaiwukou', //重点排污单位环境信息
                 'iconfont icon-fenshaolei-default', //生活垃圾焚烧厂
                 'iconfont icon-jingxihuaxuepin', //危险化学品企业
-                'iconfont icon-jiandukaohe', //非国家重点监控企业污染源
+                'iconfont icon-yingyongjianceqi', //非国家重点监控企业污染源
                 'iconfont icon-changsuofenlei', //深圳自然灾害室内应急避难场所
                 'iconfont icon-gongsimingcheng', //深圳严控废物经营单位
                 'iconfont icon-jiandukaohejiankong', //国家重点监控企业污染源监督性结果
                 'iconfont icon-gongyuan', //湿地公园
                 'iconfont icon-ziranfengguang', //自然保护区
-                'iconfont icon-gongyuan1', //森林公园
-                'iconfont icon-jingxihuaxuepin', //危险废物产生企业
+                'iconfont icon-huwaixiuxi', //森林公园
+                'iconfont icon-huwaixiuxi', //危险废物产生企业
             ],
             isLoad:false,
             tableId2:[],
@@ -140,13 +140,13 @@ export default {
             let styleName = ''; //样式//获得图标
             if(index == 1){
                 iconName = _this.iconClass[0];
-                styleName = 'color: #1c222d;'
+                styleName = 'color: #4b65c7;'
             }else if(index == 2){
                 iconName = _this.iconClass[1];
                 styleName = 'color: #a11c08;'
             }else if(index == 3){
                 iconName = _this.iconClass[2];
-                styleName = 'color: #e1d908'
+                styleName = 'color: #fcf003'
             }else if(index == 4){
                 iconName = _this.iconClass[3];
                 styleName = 'color: #d3257a;'
@@ -158,16 +158,16 @@ export default {
                 styleName = 'color: #14227b;'
             }else if(index == 7){
                 iconName = _this.iconClass[6];
-                styleName = 'color: #d81f06;'
+                styleName = 'color: #f77008;'
             }else if(index == 8){
                 iconName = _this.iconClass[7];
                 styleName = 'color: #077d20;'
             }else if(index == 9){
                 iconName = _this.iconClass[8];
-                styleName = 'color: #26ac48;'
+                styleName = 'color: #01c993;'
             }else if(index == 10){
                 iconName = _this.iconClass[9];
-                styleName = 'color: #1a8635;'
+                styleName = 'color: #01c907;'
             }
             for(var i = 0;i<data.length;i++){
                     let position = '';

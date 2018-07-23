@@ -9,12 +9,17 @@
           </span>
         </div>
       </div>
+      <div id="pie-chart">
+        <search-pie></search-pie>
+      </div>
     </div>
 </template>
 
 <script>
+import searchPie from '../../pubilcComponents/eChartComponents/searchPie';
 export default {
   name:'searchAll',
+  components:{searchPie},
   data(){
     return{
       keyword:'',
@@ -47,10 +52,10 @@ export default {
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;    
+    flex-direction: column;
     .main-box{
       width: 100%;
-      margin-bottom: 200px;
       .title{
         font-size: 40px;
         font-weight: 800;
@@ -64,15 +69,14 @@ export default {
         height: 40px;
         width: 600px;
         margin: 0 auto;
-        border: 1px solid #E5E5E5;
         .search-ipt{
           float: left;
           width: 500px;
-          border: none;
           padding-left: 20px;
           height: 100%;
           font-size: 18px;
           color: #333333;
+          border: 1px solid #cccccc;
         }
         .search-btn{
           float: left;
@@ -91,6 +95,11 @@ export default {
         }
       }
 
+    }
+    #pie-chart{
+      width: 500px;
+      height: 300px;
+      margin:0 auto;
     }
   }
 </style>

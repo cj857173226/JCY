@@ -16,11 +16,11 @@
         </div>
         <div id="main-body" class="clearfix"   ref="mainBody" v-loading="tableLoad">
           <div id="sideMenu-wrap"  ref="sideMenuWrap" v-loading="isLoading">
-            <ul class="side-menu">
-              <li class="menu-item" :class="{'menu-item-on':item.name == currMenuOn}" v-for="(item,index) in sideMenuList" @click.stop.prevent="checkResult(item.name,item.numId,item.hit)">
+            <ul class="side-menu" id="sideMenu">
+              <li class="menu-item" :class="{'menu-item-on':item.name == currMenuOn}" v-for="(item,index) in sideMenuList" :id="item.numId" @click.stop.prevent="currMenuIndex == index;checkResult(item.name,item.numId,item.hit,item.isLoad,index)">
                 <div class="text" :title="item.name">{{item.name}}</div>
                 <div class="hit">
-                  <i class="el-icon-loading" v-show="item.isLoad"></i>
+                  <i class="el-icon-loading" style="color: #333333" v-show="item.isLoad" ></i>
                   <span v-show="!item.isLoad">({{item.hit>9999? '9999+':item.hit}})</span>
                 </div>
               </li>
@@ -40,7 +40,8 @@
                                   :label=item
                                   min-width="200">
                   <template slot-scope="scope" >
-                    <!-- <div class="td-content" :title="oTable[scope.$index][key]">
+                    <div class="td-content" :title="oTable[scope.$index][key]">
+                      <!--{{oTable[scope.$index][key]?oTable[scope.$index][key]:'无'}}-->
                       {{oTable[scope.$index][key]}}
                     </div> -->
                     <el-popover trigger="click" placement="top" >
@@ -101,6 +102,8 @@ export default {
       loadCount:0,// 加载计数器
       currId :'', //当前表格查询ID；
       allDataReady:false,//索引表是否全部加载完毕
+      currMenuIndex:0, //当前菜单选中索引
+      hasHit:false,//是否有数据
     }
   },
   mounted(){
@@ -110,27 +113,42 @@ export default {
   },
   methods:{
     //选择查询结果
-    checkResult(currMenu,id,totalPage){
-      let _this = this;
-      if(!_this.allDataReady){
-        _this.$message({
-          message: '别着急,正在为你加载中',
-          type: 'warning'
-        });
-      }else {
-        _this.currPage = 1;
-        _this.currId = id;
-        _this.currMenuOn = currMenu;
-        _this.totalPages = totalPage;
-        if( _this.totalPages>0){
-          _this.getTableData();
-        }else {
-          _this.noDataTip='暂无相关数据';
-          _this.header = [];
-          _this.oTable = [];
-        }
-      }
+    checkResult(currMenu,id,totalPage,isLoad,index,flag){
 
+      let _this = this;
+      _this.currMenuIndex = index;
+      if(isLoad){
+        // _this.$message({
+        //   message: '别着急,正在为你加载中',
+        //   type: 'warning'
+        // });
+        _this.currMenuOn = currMenu;
+        _this.noDataTip='此条数据正在加载中';
+        _this.header = [];
+        _this.oTable = [];
+      }else {
+          if(flag === undefined){
+            _this.currPage = 1;
+            _this.currId = id;
+            _this.currMenuOn = currMenu;
+            _this.totalPages = totalPage;
+            if( _this.totalPages>0){
+              console.log(document.getElementById('sideMenu').clientHeight)
+
+              _this.getTableData();
+            }else {
+              _this.noDataTip='暂无相关数据';
+              _this.header = [];
+              _this.oTable = [];
+            }
+          }else {
+            if(totalPage != 0){
+              _this.hasHit = true
+            }else {
+              _this.hasHit = false;
+            }
+          }
+        }
     },
     //当前页搜索
     searchTo(){
@@ -212,11 +230,21 @@ export default {
               _this.sideMenuList[j]['isLoad'] =false;
             }
           }
-          console.log(_this.loadCount)
-          if(_this.loadCount == _this.sideMenuList.length){
+          if(_this.loadCount == _this.sideMenuList.length ){
 
-            _this.allDataReady = true;
-            _this.checkResult(_this.sideMenuList[0].name,_this.sideMenuList[0].numId,_this.sideMenuList[0].hit)
+            if(_this.currMenuOn !=''){
+              _this.checkResult(_this.sideMenuList[ _this.currMenuIndex].name,_this.sideMenuList[ _this.currMenuIndex].numId,_this.sideMenuList[ _this.currMenuIndex].hit,_this.sideMenuList[ _this.currMenuIndex].isLoad, _this.currMenuIndex)
+            }else {
+              for(let i =0;i<_this.sideMenuList.length;i++){
+                _this.checkResult(_this.sideMenuList[i].name,_this.sideMenuList[i].numId,_this.sideMenuList[i].hit,_this.sideMenuList[i].isLoad, i,'1');
+                if(_this.hasHit){
+                  _this.checkResult(_this.sideMenuList[i].name,_this.sideMenuList[i].numId,_this.sideMenuList[i].hit,_this.sideMenuList[i].isLoad, i);
+                  break
+                }else if((_this.sideMenuList.length - 1)== i && _this.hasHit ==0 ){
+                  _this.checkResult(_this.sideMenuList[0].name,_this.sideMenuList[0].numId,_this.sideMenuList[0].hit,_this.sideMenuList[0].isLoad, 0);
+                }
+              }
+            }
           }
         }
       }).catch(()=>{
