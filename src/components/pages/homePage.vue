@@ -237,10 +237,12 @@
           }
         };
 		let setDataCountFunc = function(){
-			if(_this.IdentityType =='1'|| _this.IdentityType=="3"){
+			if(_this.IdentityType =='1'){
 			  _this.getAdminDataCount(setDataCount);//获取管理员主页数据统计信息
       }else if(_this.IdentityType == "5") {
 			  _this.getSubDataCount(setDataCount);//获取下级院主页统计信息
+      }else if(_this.IdentityType=="3"){
+        _this.getLeaderDataCount(setDataCount); //获取领导信息
       }
       // else {
       //   _this.dataCount = [//数据统计
@@ -266,6 +268,67 @@
         _this.dataCount = [//数据统计
           {title: "线索总量", val: 0,icon:'fa-list'},
           {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+        ];
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountClues,
+          timeout: 10000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[0],{title: '线索总量', val: res.data.data.Total,icon:'fa-list'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountFollowClues,
+          timeout: 10000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[1],{title: '关注线索总量', val: res.data.data,icon:'fa-heart-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountAllHandled,
+          timeout: 10000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'get',
+          url: (webApi.Clue.GetReportClues).format({
+          keyword:"",
+          type: "",
+          p: "1",
+          ps: "1"
+          }),
+          timeout: 10000
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data.total,icon:'fa-check-circle'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+      },
+      getLeaderDataCount(setDataCount){//获取管理员主页数据统计信息
+        let _this = this;
+        _this.dataCount = [//数据统计
+          {title: "线索总量", val: 0,icon:'fa-list'},
+          {title: "在办线索总量", val: 0,icon:'fa-heart-o'},
           {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
           {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
         ];
@@ -396,8 +459,8 @@
           background-color: #0E9E33;
         }
         .hover-box-show{
-          background:#baa356;
-          border: 8px solid rgba(0,0,0,0.3);
+          background:#616161e0;
+          // border: 8px solid rgba(0,0,0,0.3);
           padding: 6px 0;
           width: 100%;
           height: 100%;
@@ -490,7 +553,7 @@
           .right{
             float: right;
             margin-right: 10px;
-            color: #c85660;
+            color: #ffffff;
           }
         }
       }

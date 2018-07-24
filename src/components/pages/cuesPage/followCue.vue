@@ -187,8 +187,9 @@
       getDefaultDate() {//设置默认日期
         let _this = this;
         let endDate = new Date();
-        let beginDate = new Date(endDate.getTime() - 3600 * 1000 * 24 * 30);
-        _this.timeSearch = [_this.timeFormat(beginDate),_this.timeFormat(endDate)];
+        // let beginDate = new Date(endDate.getTime() - 3600 * 1000 * 24 * 30);
+        // _this.timeSearch = [_this.timeFormat(beginDate),_this.timeFormat(endDate)];
+        _this.timeSearch = ['2017-01-01',_this.timeFormat(endDate)];
       },
       timeFormat(date) {
         if(date) {

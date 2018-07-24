@@ -14,6 +14,48 @@
             </div> -->
 
         </div>
+        
+        <div class="follow_filter">
+            <el-form class="follow_form" :inline="true" >
+            <el-form-item label="所属领域 :">
+                <el-select class="follow_select" v-model="xslb">
+                <el-option label="全部" value="" ></el-option>
+                <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="线索来源 :">
+                <el-select class="follow_select" v-model="xssjbly">
+                <el-option label="全部" value=""></el-option>
+                <el-option label="举报线索" value="1"></el-option>
+                <el-option label="互联网线索" value="2"></el-option>
+                <el-option label="公益组织线索" value="3"></el-option>
+                <el-option label="热点线索" value="4"></el-option>
+                <el-option label="自行发现线索" value="5"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="线索发布时间 :">
+            <el-date-picker
+                v-model="timeSearch"
+                type="daterange"
+                align="right"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                range-separator="-"
+                unlink-panels
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+            </el-date-picker>
+            </el-form-item>
+            <el-form-item label="关键词 :" >
+                <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
+                </el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="getFollowList">搜索 <i class="iconfont icon-sousuo"></i></el-button>
+            </el-form-item>
+            </el-form>
+        </div>
         <div id="content">
             <div class="table-list" ref="cueList">
                 <el-table
@@ -116,6 +158,7 @@ export default {
 
             tableH:0, //表格高度
             keyword:'', //关键字
+            
         }
     },
     mounted(){
@@ -124,7 +167,10 @@ export default {
     methods:{
         //搜索
         getInternetCueList(){
-
+            this.axios({
+                method:'get',
+                url:webApi.ClueManager.GetApprovalClues.format({type:1,keyword:this.keyword})
+            })
         },
         //跳转分页
         pageTo(){
@@ -230,6 +276,28 @@ export default {
             background: #dcdcdc;
             }
         }
+    }
+    /*筛选*/
+    .follow_filter {
+    background-color: #eeeeee;
+    color: #333333;
+    padding-left: 15px;
+    padding-top: 10px;
+    .follow_form {
+        .el-form-item {
+        margin-bottom: 10px;
+        }
+        .follow_select {
+        width: 130px;
+        }
+        .follow_date {
+        width: 130px;
+        min-width: 135px;
+        }
+        .follow_input {
+        width: 180px;
+        }
+    }
     }
     #content{
         height: calc(100% - 40px);
