@@ -18,7 +18,11 @@
         </div>
       </div>
       <div id="pie-chart">
+<<<<<<< HEAD
         <search-pie></search-pie>
+=======
+         <search-pie></search-pie>
+>>>>>>> c62cfe3c89f659d36b39b33f852208f0356a3c7f
       </div>
     </div>
 </template>

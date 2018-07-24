@@ -43,21 +43,21 @@
                                   min-width="200">
                   <template slot-scope="scope" >
                     <el-popover trigger="click" placement="top" >
-                      <p style="text-indent: 2em;">{{ oTable[scope.$index][key]}}</p>
+                      <p>{{ oTable[scope.$index][key]}}</p>
                       <div slot="reference" class="td-content">
                         {{oTable[scope.$index][key]}}
                       </div>
                     </el-popover>
                   </template>
                 </el-table-column>
-                <!--<el-table-column-->
-                  <!--fixed="right"-->
-                  <!--label="操作"-->
-                  <!--width="60">-->
-                  <!--<template slot-scope="scope">-->
-                    <!--<el-button type="text" size="medium"><i class="fa fa-location-arrow"></i></el-button>-->
-                  <!--</template>-->
-                <!--</el-table-column>-->
+                <el-table-column
+                  fixed="right"
+                  label="操作"
+                  width="60">
+                  <template slot-scope="scope">
+                    <el-button type="text" size="medium"><i class="fa fa-file-text"></i></el-button>
+                  </template>
+                </el-table-column>
               </el-table>
             </div>
             <div class="page-wrap" v-show="header.length>0">
