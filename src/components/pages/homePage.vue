@@ -2,7 +2,7 @@
   <div id="homePage">
     <!--数据分析-->
     <el-row :gutter="10" class="dataAnalysis">
-      <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="(item,index) in dataCount" :key="index">
+      <el-col :lg="6" :sm="12"  class="analysisBox_wrap" v-for="(item,index) in dataCount" :key="index">
         <div class="analysisBox">
           <div class="analysisBox_top">
             <span v-text="item.val"></span>

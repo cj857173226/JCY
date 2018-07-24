@@ -126,7 +126,7 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button title="详情" @click="details(scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
+              <el-button title="详情" @click="details(scope.$index,scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
               <el-button title="取消关注" @click="cancelFollowClue(scope.row.XSBH,scope.row.XSSJBLY)" type="text" size="small" style="color: #F66"><i class="fa fa-trash-o"></i></el-button>
             </template>
           </el-table-column>
@@ -163,6 +163,14 @@
       }
     },
     mounted() {
+      localStorage.removeItem('cueList');
+      localStorage.removeItem('cueIndex');
+      localStorage.removeItem('pageNum');
+      localStorage.removeItem('cueType');
+      localStorage.removeItem('keyword');
+      localStorage.removeItem('cueFrom');
+      localStorage.removeItem('beginDate');
+      localStorage.removeItem('endDate');
       this.tableResize();
       this.getDefaultDate();
       this.getFollowList();//获取关注线索列表
@@ -231,7 +239,8 @@
         this.pageNum = val;
         this.getFollowList();
       },
-      details(text,id,gzid) {
+      details(index,text,id,gzid) {
+        var _this = this;
         var type2 = 0;
         if(text == '举报线索'){
          type2 = 1
@@ -242,6 +251,14 @@
         }else if(text == '热点线索'){
          type2 = 4
         }
+        localStorage.setItem('cueList',JSON.stringify(_this.followList));
+        localStorage.setItem('cueIndex',index);
+        localStorage.setItem('pageNum',_this.pageNum);
+        localStorage.setItem('cueType',_this.xslb);
+        localStorage.setItem('keyword',_this.keyword);
+        localStorage.setItem('cueFrom',_this.xssjbly);
+        localStorage.setItem('beginDate',_this.timeSearch[0]);
+        localStorage.setItem('endDate',_this.timeSearch[1]);
         this.$router.push({
           path:'/home/cueDetail',
           query:{type:5,type2:type2,id:id,gzid:gzid}

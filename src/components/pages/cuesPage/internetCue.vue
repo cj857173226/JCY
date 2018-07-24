@@ -185,9 +185,16 @@
       },
     mounted(){
       let _this = this;
-     _this.tableResize();//表格高度自适应
-     _this.getInternetCueList(); //获取互联网线索列表
-     _this.getClueSites(); //获取来源网站
+      localStorage.removeItem('cueList');
+      localStorage.removeItem('cueIndex');
+      localStorage.removeItem('pageNum');
+      localStorage.removeItem('cueType');
+      localStorage.removeItem('site');
+      localStorage.removeItem('order');
+      localStorage.removeItem('keyword');
+      _this.tableResize();//表格高度自适应
+      _this.getInternetCueList(); //获取互联网线索列表
+      _this.getClueSites(); //获取来源网站
       _this.getClueType(); //获取线索类型
       window.onclick=function(){
         _this.siteCheckShow=false;
@@ -195,7 +202,6 @@
     },
 
     methods:{
-
         //获取互联网线索列表
       getInternetCueList(){
         let _this = this;
@@ -307,6 +313,13 @@
       // 查看详情
       details(index,id,SFYD,xssjbly){
         let _this = this;
+        localStorage.setItem('cueList',JSON.stringify(_this.internetCueList));
+        localStorage.setItem('cueIndex',index);
+        localStorage.setItem('pageNum',_this.page);
+        localStorage.setItem('cueType',_this.type);
+        localStorage.setItem('site',_this.site);
+        localStorage.setItem('order',_this.order);
+        localStorage.setItem('keyword',_this.keyword);
         if(SFYD != 0){
           this.$router.push({
             path:'/home/cueDetail',

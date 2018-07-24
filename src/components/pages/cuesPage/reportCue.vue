@@ -107,7 +107,7 @@
               label="操作"
               width="100">
               <template slot-scope="scope">
-                <el-button @click="details(scope.row.XSBH ,scope.row.SFYD,'1')" type="text" size="small">查看</el-button>
+                <el-button @click="details(scope.$index,scope.row.XSBH ,scope.row.SFYD,'1')" type="text" size="small">查看</el-button>
                 <el-button v-show="scope.row.SFGZ =='0'" title="未关注(关注)" @click="followClue(scope.row.XSBH ,'1')" style="color: #F66" type="text" size="small"><i class="fa fa-heart-o"></i></el-button>
                 <el-button v-show="scope.row.SFGZ =='1'" title="已关注(取消关注)" @click="cancelFollowClue(scope.row.XSBH ,'1')" style="color: #F66" type="text" size="small"><i class="fa fa-heart"></i></el-button>
               </template>
@@ -144,12 +144,16 @@
     },
     mounted(){
       let _this = this;
+      localStorage.removeItem('cueList');
+      localStorage.removeItem('cueIndex');
+      localStorage.removeItem('pageNum');
+      localStorage.removeItem('cueType');
+      localStorage.removeItem('keyword');
       _this.tableResize(); //表格高度自适应
       _this.getReportCue(); //获取举报线索列表
       _this.getClueType(); //获取举报门类
     },
     methods:{
-
       //获取举报线索列表
       getReportCue:function(){
         let _this = this;
@@ -216,8 +220,13 @@
       },
 
       // 查看详情
-      details(id,SFYD,xssjbly){
+      details(index,id,SFYD,xssjbly){
         let _this = this;
+        localStorage.setItem('cueList',JSON.stringify(_this.reportCueList));
+        localStorage.setItem('cueIndex',index);
+        localStorage.setItem('pageNum',_this.page);
+        localStorage.setItem('cueType',_this.type);
+        localStorage.setItem('keyword',_this.keyword);
         if(SFYD != 0){
           this.$router.push({
             path:'/home/cueDetail',

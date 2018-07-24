@@ -1,5 +1,5 @@
 <template>
-    <div id="main">
+    <div id="main" v-loading="isLoad">
         <div class="detail-item">
             <span class="item-title">举报门类</span><span class="item-content">{{cueData.XSLB}}</span>
         </div>
@@ -46,7 +46,8 @@ export default {
                 SP:[]
             },
             TP:[],
-            SP:[]
+            SP:[],
+            isLoad:false,
         }
     },
     mounted(){
@@ -56,11 +57,13 @@ export default {
         //获取数据
         dataGet(){
             var _this = this;
+            _this.isLoad = true;
             this.axios({
                 method:'get',
                 url:webApi.Clue.GetReportClueData.format({id:this.$route.query.id}),
                 timeout: 10000
             }).then(function(response){
+                _this.isLoad = false;
                 if(response.data.code == 0){
                     _this.cueData = response.data.data[0];
                     if(response.data.data[0].SFYD == 0){
@@ -76,7 +79,7 @@ export default {
 
                 }
             }).catch(function(response){
-
+                _this.isLoad = false;
             })
         },
         //获取图片视频

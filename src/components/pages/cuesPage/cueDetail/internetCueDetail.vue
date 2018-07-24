@@ -1,5 +1,5 @@
 <template>
-    <div id="main">
+    <div id="main" v-loading="isLoad">
         <div class="detail-item">
             <span class="item-title">数据来源</span><span class="item-content">{{cueData.XSLY}}</span>
         </div>
@@ -96,14 +96,17 @@ export default {
     // },
     data(){
         return{
-          cueData:{},
-          TP:[],
-          SP:[],
-          trackHead:{},
-          trackData:[]
+          cueData:{}, //线索信息
+          TP:[], //图片信息
+          SP:[], //视频信息
+          trackHead:{}, //事件跟踪头部
+          trackData:[], //事件跟着内容
+          isLoad:false, //数据加载 
         }
     },
     mounted(){
+        this.TP = [];
+        this.SP = [];
         this.dataGet();
     },
     methods:{
@@ -113,14 +116,11 @@ export default {
             track = JSON.parse(track);
             _this.trackHead = track[0];
             _this.trackData = track.slice(1,track.length);
-            console.log(_this.trackHead);
-            console.log(_this.trackData);
         },
         //获取图片
         getImg(img){
             var _this = this;
             var imgs = img.split(',');
-            console.log(imgs);
             for(var i = 0 ;i < imgs.length; i++){
                 if(imgs[i] != 'null'&&imgs[i] != ''){
                     var src = webApi.WxClue.DownLoadFile.format({id:imgs[i]});
@@ -130,16 +130,17 @@ export default {
             _this.$nextTick(()=>{
                 let viewer = new Viewer(document.getElementById('imgViewer'));
             })
-            console.log(_this.TP);
         },
         //获取数据
         dataGet(){
             var _this = this;
+            this.isLoad = true;
             this.axios({
                 method: 'get',
                 url:webApi.Clue.GetWebClueData.format({id:this.$route.query.id}),
                 timeout: 10000
             }).then(function(response){
+                _this.isLoad = false;
                 if(response.data.code == 0){
                   _this.cueData = response.data.data[0];
                   if(_this.cueData.SFSJGZ == 1 && _this.cueData.SJGZSJ != ''){
@@ -156,6 +157,7 @@ export default {
 
                 }
             }).catch(function(error){
+                _this.isLoad = false;
                 console.log(error);
             })
         },
@@ -179,8 +181,14 @@ export default {
 
             })
         }
-
-    }
+    },
+    // watch:{
+    //     '$route.fullPath':function(){
+    //         this.TP = [];
+    //         this.SP = [];
+    //         this.dataGet();
+    //     }
+    // }
 }
 </script>
 
@@ -232,9 +240,10 @@ export default {
                     border: solid 2px #fff;
                     cursor: pointer;
                     vertical-align: top;
+                    height: 300px;
                     img{
                         width: 100%;
-                        height: 300px;
+                        height: 100%;
                     }
                 }
                 .resource-item:hover{
