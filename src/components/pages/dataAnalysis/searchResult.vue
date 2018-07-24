@@ -77,6 +77,7 @@
 <script>
 export default {
   name:'searchResult',
+  inject:['reload'],
   data(){
     return {
       tableH:0, //表格高度
@@ -167,10 +168,16 @@ export default {
       _this.cancel();
       if(!_this.keyword ==''){
         document.getElementById('sideMenu').scrollTop =0;
+        // this.$router.push({
+        //   path:'/home/searchBlank',
+        //   query:{keyword:_this.keyword.trim()}
+        // });
+        
         this.$router.push({
-          path:'/home/searchBlank',
+          path:'/home/searchResult',
           query:{keyword:_this.keyword.trim()}
         });
+        _this.reload();
       }else{
         _this.$message({
           message: '查询条件不能为空！',

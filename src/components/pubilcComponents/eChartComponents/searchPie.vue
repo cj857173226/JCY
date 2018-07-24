@@ -1834,8 +1834,8 @@ export default {
                 calculable : true,
                 grid: {
                     top: '12%',
-                    left: '1%',
-                    right: '10%',
+                    left: '5%',
+                    right: '5%',
                     containLabel: true
                 },
                 xAxis: [
@@ -1847,7 +1847,7 @@ export default {
                 yAxis: [
                     {
                         type : 'value',
-                        name : 'Budget (million USD)',
+                        name : '总条数(*1000)',
                         axisLabel: {
                             formatter: function (a) {
                                 a = +a;
@@ -1872,7 +1872,7 @@ export default {
                 ],
                 series : [
                     {
-                        name: 'Budget 2011',
+                        name: '数据量',
                         type: 'bar',
                         data: _this.data
                     }
