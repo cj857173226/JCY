@@ -36,6 +36,7 @@
                     </span>
                 </li>
             </ul>
+            <span class="tip-info" v-show="!followPage">关注后进行后续操作</span>
         </div>
         <div id="content">
             <div class="switch-btn prev-btn" @click="switchCue(1)">
@@ -103,8 +104,6 @@ export default {
         this.cueList = JSON.parse(localStorage.getItem('cueList')); //获取线索列表
         this.cueIndex = parseInt(localStorage.getItem('cueIndex')); //获取线索索引
         this.pageNum = parseInt(localStorage.getItem('pageNum')); //获取线索索引
-        console.log(this.cueList.length);
-        console.log(this.cueIndex);
 
         //获取身份权限信息
         this.identity = localStorage.IdentityType;
@@ -182,8 +181,10 @@ export default {
             var _this = this;
             if(index == 0){
                 _this.isFollow = false;
+                _this.followPage = _this.isFollow;
             }else if(index == 1){
                 _this.isFollow = true;
+                _this.followPage = _this.isFollow;
             }
         },
         //切换线索
@@ -421,6 +422,7 @@ export default {
                         _this.isLoad = false;
                         if(response.data.code == 0){
                             _this.isFollow = false;
+                            _this.followPage = _this.isFollow;
                         }else{
 
                         }
@@ -439,6 +441,7 @@ export default {
                         _this.isLoad = false;
                         if(response.data.code == 0){
                             _this.isFollow = true;
+                            _this.followPage = _this.isFollow;
                             _this.gzId = response.data.data;
                         }else{
 
@@ -543,6 +546,14 @@ export default {
     #nav{
         border-bottom: solid 1px #ddd;
         height: 80px;
+        position: relative;
+        .tip-info{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            color: #8ec795;
+        }
         ul{
             height: 100%;
             padding-left: 39px;

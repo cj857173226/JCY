@@ -1813,11 +1813,24 @@ export default {
     },
     mounted(){
         this.getData();
+        window.addEventListener('resize',this.initChart);
     },
     methods:{
         initChart(){
+            if(this.myChart != null){
+                this.myChart.dispose();
+            }
             var _this = this;
             var option = {
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        label: {
+                            show: true
+                        }
+                    }
+                },
                 calculable : true,
                 grid: {
                     top: '12%',
@@ -1848,7 +1861,7 @@ export default {
                 dataZoom: [
                     {
                         show: true,
-                        start: 94,
+                        start: 0,
                         end: 100
                     },
                     {
@@ -1867,7 +1880,6 @@ export default {
             };
 
             var chart = document.getElementById('bar-chart');
-            console.log(chart);
             var width = document.getElementById('search-pie').clientWidth;
             var height = document.getElementById('search-pie').clientHeight;
             chart.style.width = width + 'px';
@@ -1891,6 +1903,9 @@ export default {
 
             // })
         }
+    },
+    destroyed(){
+        window.removeEventListener('resize',this.initChart);
     }
 }
 </script>
