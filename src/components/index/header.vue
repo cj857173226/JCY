@@ -73,6 +73,11 @@
          }).then(function(res){
             if(res.data.code == 0){
               let data = res.data.data;
+              if(data.IdentityType == 4) {//下级院
+                data.IdentityType = 5;
+              }else if(data.IdentityType == 2) {//领导
+                data.IdentityType = 3;
+              }
               localStorage.setItem('IdentityType', data.IdentityType);
               data.ExpireTime = data.ExpireTime.split(' ')[0];
               _this.userInfo = data;

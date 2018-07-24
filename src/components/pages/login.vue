@@ -51,6 +51,7 @@
     },
     mounted() {
       let _this = this;
+      localStorage.setItem('IdentityType',"");//清空权限值
 			let  pwdState = localStorage.getItem("pwdState");
 			if(Boolean(pwdState)){
 				pwdState = JSON.parse(pwdState);

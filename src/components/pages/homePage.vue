@@ -90,10 +90,10 @@
         newsData: [],//新闻动态信息
         knowledgeData: [],//知识库信息
         dataCount: [//数据统计
-          {title: "线索总量", val: 0,icon:'fa-list'},
-          {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
-          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
-          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+          // {title: "线索总量", val: 0,icon:'fa-list'},
+          // {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+          // {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+          // {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
         ]
       }
     },
@@ -163,16 +163,19 @@
           }
         };
 		let setDataCountFunc = function(){
-			if(_this.IdentityType =='1'){
-			  _this.getAdminDataCount(setDataCount)//获取管理员主页数据统计信息
-				}else {
-          _this.dataCount = [//数据统计
-          {title: "线索总量", val: 0,icon:'fa-list'},
-          {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
-          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
-          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
-          ];
-			  }
+			if(_this.IdentityType =='1'|| _this.IdentityType=="3"){
+			  _this.getAdminDataCount(setDataCount);//获取管理员主页数据统计信息
+      }else if(_this.IdentityType == "5") {
+			  _this.getSubDataCount(setDataCount);//获取下级院主页统计信息
+      }
+      // else {
+      //   _this.dataCount = [//数据统计
+      //   {title: "线索总量", val: 0,icon:'fa-list'},
+      //   {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+      //   {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+      //   {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+      //   ];
+      //  }
 		  }
       if(!_this.IdentityType){
         _this.$root.Bus.$on('changeIdentity',function(data){
@@ -240,6 +243,62 @@
         }).then(function(res){
           if(res.data.code==0){
             setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data.total,icon:'fa-check-circle'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+      },
+      getSubDataCount(setDataCount){//获取下级院主页数据统计信息
+        let _this = this;
+        _this.dataCount = [//数据统计
+          {title: "线索总量", val: 0,icon:'fa-list'},
+          {title: "待接收线索", val: 0,icon:'fa-heart-o'},
+          {title: "已接收线索", val: 0,icon:'fa-envelope-o'},
+          {title: "已办理线索", val: 0,icon:'fa-check-circle'}
+        ];
+        // _this.axios({
+        //   method: 'post',
+        //   url: webApi.Host + webApi.Stats.CountClues,
+        //   timeout: 10000,
+        // }).then(function(res){
+        //   if(res.data.code==0){
+        //     setDataCount(_this.dataCount[0],{title: '线索总量', val: res.data.data.Total,icon:'fa-list'});
+        //   }
+        // }).catch(function(err){
+        //   console.log(err)
+        // })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountUnConfirmClues,
+          timeout: 10000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[1],{title: '待接收线索', val: res.data.data,icon:'fa-heart-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountSubReciveClues,
+          timeout: 10000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[2],{title: '已接收线索', val: res.data.data,icon:'fa-envelope-o'});
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountSubHandled,
+          timeout: 10000,
+        }).then(function(res){
+          if(res.data.code==0){
+            setDataCount(_this.dataCount[3],{title: '已办理线索', val: res.data.data,icon:'fa-check-circle'});
           }
         }).catch(function(err){
           console.log(err)
