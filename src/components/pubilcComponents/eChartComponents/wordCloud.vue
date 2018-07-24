@@ -83,7 +83,6 @@
                     data.push(item);
                   }
                   _this.cloudData = data;
-                  // console.log(JSON.stringify(_this.cloudData));
                   _this.initCloud();
                 }
               }).catch(function(err) {

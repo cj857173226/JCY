@@ -1,7 +1,15 @@
 <template>
     <div id="searchAll">
       <div class="main-box">
-        <div class="title">大数据检索</div>
+        <div></div>
+        <div class="title">
+          <div class="cloud-icon">
+            <img src="@/assets/search/icon.png" />
+          </div>
+          <div class="font-icon">
+            <img src="@/assets/search/font.png" />
+          </div>
+        </div>
         <div class="search-wrap">
           <input class="search-ipt"  type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="search()">
           <span class="search-btn" @click="search()">
@@ -10,7 +18,7 @@
         </div>
       </div>
       <div id="pie-chart">
-        <search-pie></search-pie>
+         <search-pie></search-pie>
       </div>
     </div>
 </template>
@@ -60,10 +68,18 @@ export default {
         font-size: 40px;
         font-weight: 800;
         color: #666666;
-        height: 100px;
-        line-height: 100px;
-        width: 200px;
-        margin: 0 auto;
+        text-align: center;
+        line-height: 0;
+        .cloud-icon{
+          img{
+            width: 35px;
+          }
+        }
+        .font-icon{
+          margin-bottom: 10px;
+          img{
+          }
+        }
       }
       .search-wrap{
         height: 40px;
@@ -72,11 +88,11 @@ export default {
         .search-ipt{
           float: left;
           width: 500px;
-          padding-left: 20px;
+          padding-left: 10px;
           height: 100%;
-          font-size: 18px;
+          font-size: 16px;
           color: #333333;
-          border: 1px solid #cccccc;
+          border: 1px solid #11a967;
         }
         .search-btn{
           float: left;
@@ -90,14 +106,18 @@ export default {
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
-          background: #00a65a;
           color: #FFFFFF;
+
+          background: -webkit-linear-gradient(#1cd37d, #018d50); /* Safari 5.1 - 6.0 */
+          background: -o-linear-gradient(#1cd37d, #018d50); /* Opera 11.1 - 12.0 */
+          background: -moz-linear-gradient(#1cd37d, #018d50); /* Firefox 3.6 - 15 */
+          background: linear-gradient(#1cd37d, #018d50); /* 标准的语法 */
         }
       }
 
     }
     #pie-chart{
-      width: 500px;
+      width: 100%;
       height: 300px;
       margin:0 auto;
     }

@@ -58,7 +58,7 @@ export default {
                 'iconfont icon-fenshaolei-default', //生活垃圾焚烧厂
                 'iconfont icon-jingxihuaxuepin', //危险化学品企业
                 'iconfont icon-yingyongjianceqi', //非国家重点监控企业污染源
-                'iconfont icon-changsuofenlei', //深圳自然灾害室内应急避难场所
+                'iconfont icon-gongsimingcheng', //深圳自然灾害室内应急避难场所
                 'iconfont icon-gongsimingcheng', //深圳严控废物经营单位
                 'iconfont icon-jiandukaohejiankong', //国家重点监控企业污染源监督性结果
                 'iconfont icon-gongyuan', //湿地公园
@@ -152,7 +152,7 @@ export default {
                 styleName = 'color: #d3257a;'
             }else if(index == 5){
                 iconName = _this.iconClass[4];
-                styleName = 'color: #d81f06;'
+                styleName = 'color: #15c7c4;'
             }else if(index == 6){
                 iconName = _this.iconClass[5];
                 styleName = 'color: #14227b;'

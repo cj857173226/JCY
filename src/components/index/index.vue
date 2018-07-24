@@ -7,7 +7,7 @@
       </div>
       <div id="main-area">
         <!--<keep-alive include="cue-list,news-page">-->
-          <router-view/>
+          <router-view v-if="isRouterAlive"/>
         <!--</keep-alive>-->
       </div>
     </div>
@@ -17,20 +17,31 @@
 
 <script>
 
-	import oHead from './header.vue'
-  import oFooter from './footer.vue'
-  import sideMenu from './sideMenu'
+import oHead from './header.vue'
+import oFooter from './footer.vue'
+import sideMenu from './sideMenu'
 
-	 export default {
-	 	components: {oHead,oFooter,sideMenu},
-	 	data(){
-	 		return {
-	 		}
-     },
-     update() {
-
-     }
-	 }
+export default {
+  components: {oHead,oFooter,sideMenu},
+  data(){
+    return {
+      isRouterAlive:true
+    }
+  },
+  provide(){
+    return{
+      reload: this.reload
+    }
+  },
+  methods:{
+    reload(){
+      this.isRouterAlive = false;
+      this.$nextTick(function(){
+        this.isRouterAlive = true;
+      })
+    }
+  }
+}
 
 </script>
 
