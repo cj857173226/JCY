@@ -10,7 +10,7 @@
         </div>
       </div>
       <div id="pie-chart">
-        <!-- <search-pie></search-pie> -->
+         <search-pie></search-pie>
       </div>
     </div>
 </template>

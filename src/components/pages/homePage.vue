@@ -2,14 +2,25 @@
   <div id="homePage">
     <!--数据分析-->
     <el-row :gutter="10" class="dataAnalysis">
-      <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="(item,index) in dataCount" :key="index">
-        <div class="analysisBox">
+      <el-col :lg="6" :sm="12" class="analysisBox_wrap" v-for="(item,index) in dataCount" :key="index" >
+        <div class="analysisBox" @click="linkTo(item)">
           <div class="analysisBox_top">
             <span v-text="item.val"></span>
             <i class="fa  fa-3x" :class="item.icon"></i>
           </div>
           <div class="analysis_more" v-text="item.title"></div>
+          <div v-if='IdentityType==1' class="hover-box" :class="{'hover-box-show':hoverBoxShow}">
+            <div class="hover-item clearfix">
+              <div class="left"> <i class="iconfont icon-biaoqian1"></i>举报线索数量</div>
+              <div class="right">{{reportClueTotal}}</div>
+            </div>
+            <div class="hover-item clearfix">
+              <div class="left"><i class="iconfont icon-changyonglogo46"></i>互联网线索数量</div>
+              <div class="right">{{internetClueTotal}}</div>
+            </div>
+          </div>
         </div>
+
       </el-col>
     </el-row>
     <el-row>
@@ -90,14 +101,59 @@
         newsData: [],//新闻动态信息
         knowledgeData: [],//知识库信息
         dataCount: [//数据统计
-          {title: "线索总量", val: 0,icon:'fa-list'},
-          {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
-          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
-          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
-        ]
+          // {title: "线索总量", val: 0,icon:'fa-list'},
+          // {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
+          // {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
+          // {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+        ],
+        hoverBoxShow:false,//线索总数框显示
+        internetClueTotal:0,//互联网线索总数
+        reportClueTotal:0,//举报线索总数
       }
     },
+    mounted() {
+      this.IdentityType =localStorage.getItem('IdentityType');
+      this.getDataCount();//数据统计信息
+      this.getNewsData();//新闻和知识库信息
+      this.getReportClueTotal();//获取举报线索总数
+      this.getInterClueTotal();//获取互联网线索总数
+    },
     methods: {
+      //获取互联网线索总数
+      getInterClueTotal(){
+        let _this = this;
+        let url = webApi.Clue.GetWebClues.format({keyword:'',type:'',site:'',order:'cjsj',p:1,ps:20})
+        _this.axios({
+          method:'get',
+          url:url
+        }).then(function(res){
+          console.log(res.data)
+          if(res.data.code == 0){
+            _this.internetClueTotal = res.data.data.total
+          }else {
+            _this.$message.error(res.data.errorMessage);
+          }
+        }).catch(function(err){
+
+        })
+      },
+      //获取举报线索总数
+      getReportClueTotal(){
+        let _this = this;
+        let url = webApi.Clue.GetReportClues.format({keyword:'',type:'',p:1,ps:20})
+        _this.axios({
+          method:'get',
+          url:url
+        }).then(function(res){
+          if(res.data.code == 0){
+            _this.reportClueTotal = res.data.data.total;
+          }else {
+            _this.$message.error(res.data.errorMessage);
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+      },
       //点击更多,跳转(新闻,知识库)
       clickMore(path) {
         this.$router.push({path:path});
@@ -114,6 +170,23 @@
           path: path,
           query: {id: id,type:SSLB}
         })
+      },
+      linkTo(item){
+        if(item.title == '线索总量'){
+            this.hoverBoxShow = !this.hoverBoxShow;
+        }else if(item.title=='关注线索总量'){
+          this.$router.push({
+            path: '/home/followCue'
+          });
+        }else if(item.title=='已办理线索'){
+          this.$router.push({
+            path: '/home/followCue?status=1'
+          });
+        }else if(item.title=='举报接收线索'){
+          this.$router.push({
+            path: '/home/reportCue'
+          });
+        }
       },
       getNewsData() {//获取新闻动态信息、知识库信息
         let _this = this;
@@ -246,10 +319,7 @@
         })
       }
     },
-    mounted() {
-      this.getDataCount();//数据统计信息
-      this.getNewsData();//新闻和知识库信息
-    }
+
   }
 </script>
 
@@ -264,6 +334,13 @@
       &:nth-child(1) {
         .analysisBox {
           background-color: #0E9E33;
+        }
+        .hover-box-show{
+          background:#baa356;
+          border: 8px solid rgba(0,0,0,0.3);
+          padding: 6px 0;
+          width: 100%;
+          height: 100%;
         }
       }
       &:nth-child(2) {
@@ -282,13 +359,24 @@
         }
       }
       .analysisBox {
+        position: relative;
         text-align: left;
         color: #fff;
         font-size: 16px;
         margin-bottom: 16px;
+        cursor:pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
         .analysisBox_top {
           padding: 30px 32px 22px 32px;
           overflow: hidden;
+          cursor:pointer;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
           &>span {
             font-size: 38px;
             float: left;
@@ -309,6 +397,44 @@
           text-align: center;
         }
       }
+
+      .hover-box{
+        position: absolute;
+        width: 0;
+        height: 0;
+        background: rgba(255,255,255,0.1);
+        color: #333333;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        overflow: hidden;
+        -webkit-transition: all 0.2s;
+        -moz-transition: all 0.2s;
+        -ms-transition: all 0.2s;
+        -o-transition: all 0.2s;
+        transition: all 0.2s;
+        .hover-item{
+          width: 100%;
+          min-width: 100%;
+          font-size: 14px;
+          .left{
+            float: left;
+            margin-left: 10px;
+            color: rgba(255,255,255,0.8);
+            .iconfont{
+              font-size: 14px;
+              margin-right: 4px;
+              font-weight: 100;
+            }
+          }
+          .right{
+            float: right;
+            margin-right: 10px;
+            color: #c85660;
+          }
+        }
+      }
+
     }
   }
   /*文本内容(新闻和知识库内容)*/
