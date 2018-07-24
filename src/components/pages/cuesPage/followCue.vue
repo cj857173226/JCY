@@ -14,8 +14,6 @@
             <el-select class="follow_select" v-model="xslb">
               <el-option label="全部" value="" ></el-option>
               <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
-              <!--<el-option label="全部" value="shanghai" selected></el-option>-->
-              <!--<el-option label="区域二" value="beijing"></el-option>-->
             </el-select>
           </el-form-item>
           <el-form-item label="线索来源 :">
@@ -41,15 +39,8 @@
             end-placeholder="结束日期">
           </el-date-picker>
          </el-form-item>
-          <!--<el-form-item label="线索发布开始时间 :">-->
-            <!--<el-date-picker class="follow_date" :default-time="beginDate" type="date" placeholder="选择日期" v-model="beginDate"></el-date-picker>-->
-          <!--</el-form-item>-->
-          <!--<el-form-item label="线索发布结束时间 :">-->
-            <!--<el-date-picker class="follow_date" type="date" placeholder="选择日期" v-model="endDate"></el-date-picker>-->
-          <!--</el-form-item>-->
           <el-form-item label="关键词 :" >
             <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
-              <!--<i @click="clickIcon" slot="suffix" class="keyword_icon iconfont icon-sousuo"></i>-->
             </el-input>
           </el-form-item>
 
@@ -65,6 +56,7 @@
           :data=" followList"
           :max-height="tableH"
           :height="tableH"
+          empty-text = "请从线索资源库中关注线索"
           style="width: 100%">
           <el-table-column
             prop="SFYD"
