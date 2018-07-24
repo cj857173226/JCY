@@ -56,6 +56,7 @@
           :data=" followList"
           :max-height="tableH"
           :height="tableH"
+          empty-text = "请从线索资源库中关注线索"
           style="width: 100%">
           <el-table-column
             prop="SFYD"
