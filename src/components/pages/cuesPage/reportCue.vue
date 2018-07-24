@@ -267,12 +267,12 @@
         }
       },
       //取消关注线索
-      cancelFollowClue(clueId){
+      cancelFollowClue(clueId,clueType){
         let _this = this;
         if(_this.isLoad ==false){
           _this.axios({
             method:'post',
-            url:webApi.ClueManager.UnFollowClue.format({xsid:clueId})
+            url:webApi.ClueManager.UnFollowClue.format({xsid:clueId,xssjbly:clueType})
           }).then(function(res){
             if(res.data.code == 0){
               _this.getReportCue()
