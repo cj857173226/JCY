@@ -234,7 +234,11 @@ export default {
                     vertical-align: top;
                     img{
                         width: 100%;
+                        height: 300px;
                     }
+                }
+                .resource-item:hover{
+                    border: solid 2px #00a65a
                 }
             }
             .text-title{

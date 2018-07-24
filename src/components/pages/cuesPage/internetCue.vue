@@ -133,7 +133,7 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="details(scope.row.XSBH ,scope.row.SFYD,'2')" title="详情" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
+              <el-button @click="details(scope.$index,scope.row.XSBH ,scope.row.SFYD,'2')" title="详情" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
               <el-button v-show="scope.row.SFGZ =='0'" title="未关注(关注)" @click="followClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart-o"></i></el-button>
               <el-button v-show="scope.row.SFGZ =='1'" title="已关注(取消关注)" @click="cancelFollowClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart"></i></el-button>
             </template>
@@ -305,7 +305,7 @@
         _this.getInternetCueList();
       },
       // 查看详情
-      details(id,SFYD,xssjbly){
+      details(index,id,SFYD,xssjbly){
         let _this = this;
         if(SFYD != 0){
           this.$router.push({

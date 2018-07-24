@@ -164,6 +164,7 @@ export default {
                     vertical-align: top;
                     img{
                         width: 100%;
+                        height: 300px;
                     }
                 }
                 li:hover{
