@@ -108,7 +108,11 @@
             }
           }).catch(function(err){
             that.isLogin = false;
-              console.log((err))
+            that.$message({
+              showClose: false,
+              message: '发生错误,请联系管理员',
+              type: 'error',
+            });
           })
         }
 
