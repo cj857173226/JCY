@@ -20,66 +20,133 @@
         </el-date-picker>
         <span @click="confirm" class="confirm">确定</span>
       </template>
-
+      <div class="search-wrap">
+        <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getTheme">
+        <span class="search-btn" @click="getTheme()">
+            <i class="iconfont icon-sousuo"></i>
+          </span>
+      </div>
     </div>
-    <!--图片-->
-    <div class="UAV_img">
-      <!--图片-->
-      <ul class="imgShow" id="imgViewer">
-        <!--<li style="padding-top:100px;color:darkgray;font-size:14px;width:100%;text-align: center">暂无数据</li>-->
-          <li class="img-list">
-            <img src="../../../assets/UAV/UAV1.jpg">
-            <p class="img-list-time">2018-06-18</p>
+    <!--内容-->
+    <div class="UAV_body">
+      <!--编辑主题-->
+      <div class="UAV_theme">
+        <!--添加主题-->
+        <div class="add_theme_wrap">
+          <div class="add_theme">
+            <i class="fa fa-plus-square-o"></i>
+            添加主题
+          </div>
+        </div>
+        <!--主题列表-->
+        <ul class="theme_list">
+          <li>
+            <span class="theme_name">气体污染</span>
+            <span class="theme_time">2018-07-25</span>
           </li>
-          <li class="img-list">
-            <img src="../../../assets/UAV/UAV2.jpg">
-            <p class="img-list-time">2018-06-18</p>
-          </li>
-      </ul>
-      <!--分页-->
-      <div class="page-wrap">
-        <el-pagination
-          :page-size="pageSize"
-          layout="total, prev, pager, next, jumper"
-          :total="total"
-          @current-change="currentChange"
-          @size-change="">
-        </el-pagination>
+        </ul>
+      </div>
+      <!--主题图片内容-->
+      <div class="UAV_img">
+        <!--上传图片-->
+        <div class="add_img">
+          <label for="img-input">
+            <i class="fa fa-camera"></i>
+            上传照片
+          </label>
+          <input @change="changeImg" style="display:none;" id="img-input" type="file">
+        </div>
+        <div class="img_content">
+          <ul class="img_list" id="imgViewer">
+            <!--<li v-for="(item,index) in imgList" :key="index">-->
+            <!--<img :src="item">-->
+            <!--</li>-->
+            <li>
+              <img src="../../../assets/UAV/UAV1.jpg" alt="">
+            </li>
+            <li>
+              <img src="../../../assets/UAV/UAV2.jpg" alt="">
+            </li>
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
+            <!--</li>-->
+          </ul>
+          <!--分页-->
+          <div class="page-wrap" style="clear: both;">
+            <el-pagination
+              :page-size="pageSize"
+              layout="total, prev, pager, next, jumper"
+              :total="total"
+              @current-change="currentChange"
+              @size-change="">
+            </el-pagination>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-    export default {
-      data() {
-        return {
-          timeSearch: '',//时间范围
-          pageSize: 20,//每页数量
-          total: 2,//总数量
-        }
-      },
-      methods: {
-        currentChange(val) {//页码改变
-          console.log(val)
-        },
-        confirm() {
-          this.$message({
-            message: "暂无更多内容"
-          })
-        }
-      },
-      mounted() {
-        let viewer = new Viewer(document.getElementById('imgViewer'));
+  export default {
+    data() {
+      return {
+        keyword: "",//关键字
+        timeSearch: '',//时间范围
+        pageSize: 20,//每页数量
+        total: 2,//总数量
+        imgList: [//图片数据
+          '../../../assets/UAV/UAV1.jpg',
+          '@/assets/UAV/UAV1.jpg',
+          '@/assets/UAV/UAV1.jpg',
+          '@/assets/UAV/UAV1.jpg',
+          '@/assets/UAV/UAV1.jpg',
+        ],
       }
+    },
+    methods: {
+      getTheme(){//搜索主题
+
+      },
+      changeImg(){//上传图片
+        // console.log(document.getElementById("img-input").value);
+      },
+      currentChange(val) {//页码改变
+        console.log(val)
+      },
+      confirm() {
+        this.$message({
+          message: "暂无更多内容"
+        })
+      }
+    },
+    mounted() {
+      let viewer = new Viewer(document.getElementById('imgViewer'));
     }
+  }
 </script>
 
 <style lang="scss" scoped>
   #UAV {
     height: 100%;
     font-size: 16px;
-  /*头部*/
+    overflow: hidden;
+    /*头部*/
     .UAV_header {
       height: 50px;
       background-color: #eeeeee;
@@ -105,52 +172,150 @@
           color: #00a0e9;
         }
       }
-    }
-    /*图片*/
-    .UAV_img {
-      padding: 10px 60px;
-      margin-top: 3px;
-      background-color: #f7f8fa;
-      overflow-y: auto;
-      overflow-x: hidden;
-      .imgShow {
-        display: flex;
-        flex-wrap: wrap;
-        padding-left: 0;
-        .img-list {
+      .search-wrap{
+        float: right;
+        background: #FFFFFF;
+        height: 42px;
+        width: 320px;
+        margin-right: 10px;
+        margin-top: -4px;
+        border: 1px solid #dcdcdc;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        .search-ipt{
+          width: 270px;
+          float: left;
+          font-size: 16px;
+          height: 100%;
+          border: none;
+          padding-left: 10px;
+          color: #999999;
+          background: transparent;
+        }
+        .search-btn{
+          float: left;
           position: relative;
-          margin: 4px;
-          background-color: #eeeeee;
-          max-width: 300px;
-          padding-bottom: 34px;
-          width: 300px;
-          height: 300px;
-          overflow: hidden;
-          .img-list-time {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            padding: 10px 15px 5px 15px;
-            color: darkgrey;
-            font-size: 14px;
-            margin-bottom: 0;
-          }
-          img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            /*height: auto;*/
+          height: 100%;
+          line-height: 40px;
+          width: 48px;
+          color: #999999;
+          text-align: center;
+          cursor: pointer;
+        }
+        .search-btn:after{
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 10px;
+          width: 2px;
+          height: 20px;
+          background: #dcdcdc;
+        }
+      }
+    }
+    /*内容*/
+    .UAV_body {
+      height: calc( 100% - 102px);
+      /*主题*/
+      .UAV_theme {
+        float: left;
+        width: 370px;
+        font-size: 18px;
+        background-color: rgba(245,243,244,0.83);
+        height: 100%;
+        /*添加主题*/
+        .add_theme_wrap {
+          background-color: rgba(238,238,238,0.83);
+          .add_theme {
+            width: 150px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background-color:  rgba(0,166,90,0.83);
+            color: #fff;
             &:hover {
-              cursor:pointer;
-              transform: scale(1.2);
+              cursor: pointer;
             }
           }
         }
-        min-height: 200px;
+        /*主题列表*/
+        .theme_list {
+          padding: 0 25px 5px 25px;
+          overflow-y: auto;
+          height: calc( 100% - 40px);
+          li {
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            margin-top: 20px;
+            border-bottom: 1px solid rgba(219,217,218,0.83);
+            font-size: 16px;
+            &:hover {
+              cursor: pointer;
+            }
+            .theme_name {
+              float: left;
+            }
+            .theme_time {
+              float: right;
+              font-size: 12px;
+              color: rgba(172,170,171,0.83);
+            }
+          }
+        }
       }
-      .page-wrap {
-        margin-top: 24px;
-        height: 40px;
+    }
+    /*图片内容*/
+    .UAV_img {
+      float: left;
+      width: calc(100% - 370px);
+      height:  100%;
+      padding-left:  18px;
+      /*添加照片*/
+      .add_img {
+        background-color: rgba(238,238,238,0.83);
+        label {
+          display: inline-block;
+          background-color: rgba(0,166,90,0.83);
+          color: #fff;
+          width: 150px;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+      .img_content {
+        height: calc( 100% - 50px);
+        background-color: rgba(245,243,244,0.83);
+        .img_list {
+          height: calc( 100% - 50px);
+          overflow-y: auto;
+          padding-left: 10px;
+          padding-top: 30px;
+          li {
+            float: left;
+            width: calc(20% - 10px);
+            height: 300px;
+            margin-right: 10px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            img {
+              width: 100%;
+              height: 100%;
+              &:hover {
+                transform: scale(1.2);
+                cursor: pointer;
+              }
+            }
+          }
+        }
+        .page-wrap {
+          margin-top: 9px;
+        }
       }
     }
   }
@@ -164,6 +329,39 @@
           width: 40px;
           height: 40px;
           line-height: 40px;
+        }
+      }
+      .UAV_filter {
+        /*搜索框*/
+        /*.search-wrap{*/
+          /*height: 32px;*/
+          /*width: 300px;*/
+          /*.search-ipt{*/
+            /*width: 260px;*/
+            /*font-size: 14px;*/
+          /*}*/
+          /*.search-btn{*/
+            /*line-height: 32px;*/
+            /*width: 38px;*/
+          /*}*/
+          /*.search-btn:after{*/
+            /*content: '';*/
+            /*left: 0;*/
+            /*top: 8px;*/
+            /*width: 2px;*/
+            /*height: 14px;*/
+          /*}*/
+        /*}*/
+      }
+      .UAV_body {
+        height: calc( 100% - 92px);
+        /*图片内容*/
+        .UAV_img {
+          .img_list {
+            li {
+              width: calc(33% - 10px);
+            }
+          }
         }
       }
     }
