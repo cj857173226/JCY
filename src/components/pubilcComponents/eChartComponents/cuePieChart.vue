@@ -98,9 +98,22 @@ export default {
         pieDataGet(){
             var _this = this;
             this.isLoad = true;
+            var date = new Date().getTime();
+            var start = date - 24*3600*1000*30; 
+            var begin = new Date(start);
+            var end = new Date(date);
+            var beginTime = begin.getFullYear() + '-' + addZero(begin.getMonth() + 1) + '-' + addZero(begin.getDate());
+            var endTime = end.getFullYear() + '-' + addZero(end.getMonth() + 1) + '-' + addZero(end.getDate());
+            function addZero(obj){
+                if(obj < 10){
+                    return '0'+obj;
+                }else{
+                    return obj
+                }
+            }
             this.axios({
                 method: 'post',
-                url: webApi.Host + webApi.Stats.CountMonthCluesType,
+                url: webApi.Stats.CountMonthCluesType.format({beginDate:beginTime,endDate:endTime}),
                 timeout:10000,
             }).then(function(response){
                 var msg = response.data;

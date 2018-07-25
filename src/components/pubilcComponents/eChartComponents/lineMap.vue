@@ -16,14 +16,30 @@ export default {
             timeData:[], //时间线数据
             isLoad:false, //数据加载
             myChart:null, //图标
-            //图标参数配置
-            option:{
+            cueTotal:[], //线索总量
+            followCueTotal:[], //关注线索总量
+            timeTotal:[], //时间总量
+           
+        }
+    },
+    mounted(){
+        var _this = this;
+        window.addEventListener('resize',_this.chartInit);
+        this.oneMonthTime();
+    },
+    methods:{
+        chartInit(){
+            var _this = this;
+            if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
+              this.myChart.dispose();
+            } 
+            var option = {
                 tooltip: {
                     trigger: 'axis'
                 },
                 legend: {
                     x:'left',
-                    data:['线索总量','关注线索量']
+                    data:['新增线索总量','关注线索量']
                 },
                 toolbox: {
                     x:'right',
@@ -37,38 +53,25 @@ export default {
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: [1,5,10,15,20,25,30]
+                    data: _this.timeTotal
                 },
                 yAxis:{
                     type: 'value'
                 },
                 series: [
                     {
-                        name:'线索总量',
+                        name:'新增线索总量',
                         type: 'line',
                         stack:'总量',
-                        data:[220, 182, 191, 234, 290, 330, 310],
+                        data:_this.cueTotal,
                     },
                     {
                         name:'关注线索量',
                         type: 'line',
                         stack:'总量',
-                        data:[120, 82, 151, 224, 120, 130, 230],
+                        data:_this.followCueTotal,
                     }
                 ]
-            }
-        }
-    },
-    mounted(){
-        var _this = this;
-        window.addEventListener('resize',_this.chartInit);
-        this.chartInit();
-        this.timeDataGet();
-    },
-    methods:{
-        chartInit(){
-            if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
-              this.myChart.dispose();
             }
             var chart = document.getElementById('lineChart');
             var width = document.getElementById('line-chart-box').clientWidth;
@@ -76,12 +79,58 @@ export default {
             chart.style.width = width;
             chart.style.height = height;
             this.myChart = echarts.init(chart);
-            this.myChart.setOption(this.option);
+            this.myChart.setOption(option);
         },
-        timeDataGet(){
-            // this.isLoad = true;
+        //计算一个月的毫秒数
+        oneMonthTime(){
             var _this = this;
-            
+            var date = new Date().getTime();
+            var start = date - 24*3600*1000*30;
+            let cueTotal = []; //暂存线索总量
+            let followCueTotal = []; //暂存关注线索总量
+            for(let i = 0;i < 30;i++){
+                var begin = new Date(start);
+                var end = new Date(start + 3600*24*1000);
+                start = start + 3600*24*1000;
+                var beginTime = begin.getFullYear() + '-' + addZero(begin.getMonth() + 1) + '-' + addZero(begin.getDate());
+                var endTime = end.getFullYear() + '-' + addZero(end.getMonth() + 1) + '-' + addZero(end.getDate());
+                _this.timeTotal.push(beginTime);
+                _this.axios({
+                    method:'post',
+                    url:webApi.Stats.CountMonthClues.format({beginDate:beginTime,endDate:endTime}),
+                    timeout:10000
+                }).then(function(response){
+                    if(response.data.code == 0){
+                        cueTotal[i] = response.data.data.Total;
+                        if(_this.cueTotal.length == 30){
+                            _this.chartInit();
+                        }
+                    }
+                }).catch(function(error){
+
+                })
+                _this.axios({
+                    method:'post',
+                    url:webApi.Stats.CountMonthFollowClues.format({beginDate:beginTime,endDate:endTime}),
+                    timeout:10000
+                }).then(function(response){
+                    if(response.data.code == 0){
+                        followCueTotal[i] = response.data.data;
+                    }
+                }).catch(function(error){
+
+                })
+            };
+            this.cueTotal = cueTotal;
+            this.followCueTotal = followCueTotal;
+
+            function addZero(obj){
+                if(obj < 10){
+                    return '0'+obj;
+                }else{
+                    return obj
+                }
+            }
         },
         lineChart(){
 
