@@ -19,7 +19,6 @@ export default {
             cueTotal:[], //线索总量
             followCueTotal:[], //关注线索总量
             timeTotal:[], //时间总量
-           
         }
     },
     mounted(){
@@ -39,7 +38,7 @@ export default {
                 },
                 legend: {
                     x:'left',
-                    data:['新增线索总量','关注线索量']
+                    data:['线索量','关注线索量']
                 },
                 toolbox: {
                     x:'right',
@@ -60,7 +59,7 @@ export default {
                 },
                 series: [
                     {
-                        name:'新增线索总量',
+                        name:'线索量',
                         type: 'line',
                         stack:'总量',
                         data:_this.cueTotal,
@@ -88,6 +87,7 @@ export default {
             var start = date - 24*3600*1000*30;
             let cueTotal = []; //暂存线索总量
             let followCueTotal = []; //暂存关注线索总量
+            this.isLoad = true;
             for(let i = 0;i < 30;i++){
                 var begin = new Date(start);
                 var end = new Date(start + 3600*24*1000);
@@ -104,6 +104,7 @@ export default {
                         cueTotal[i] = response.data.data.Total;
                         if(_this.cueTotal.length == 30){
                             _this.chartInit();
+                            _this.isLoad = false;
                         }
                     }
                 }).catch(function(error){

@@ -11,6 +11,7 @@
                     <li :class="['cue-type',isNav == 3?'active':'']" @click="changeNav(3)">互联网线索</li>
                     <li :class="['cue-type',isNav == 4?'active':'']" @click="changeNav(4)">公益诉讼线索</li>
                     <li :class="['cue-type',isNav == 5?'active':'']" @click="changeNav(5)">热点线索</li>
+                    <li :class="['cue-type',isNav == 6?'active':'']" @click="changeNav(6)">自行发现线索</li>
                 </ul>
             </div>
             <div id="pie-chart" v-loading.lock="isLoad">
@@ -29,6 +30,7 @@ export default {
             allType: [], //全部类型数据
             internetType: [], //举报线索数据
             reportType: [], //互联网线索数据
+            findType:[], //自行发现线索
             isLoad:false,
             isNav:1, //饼状图切换
             myChart:null,
@@ -208,8 +210,8 @@ export default {
                 ul{
                     padding: 0;
                     .cue-type{
-                        height: 50px;
-                        line-height: 50px;
+                        height: 41.66px;
+                        line-height: 41.66px;
                         cursor: pointer;
                         text-align: center;
                     }

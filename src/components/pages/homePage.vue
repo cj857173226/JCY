@@ -193,6 +193,7 @@
         })
       },
       linkTo(item){
+        this.$root.Bus.$emit('boxMenu',item.title);
         if(item.title == '线索总量'){
            return
         }else if(item.title=='关注线索总量'){

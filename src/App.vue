@@ -170,11 +170,12 @@ button:active{
   ::-webkit-scrollbar{
       width: 8px;
       height: 8px;
-      background-color: #333;
+      background-color: #fff;
   }
   /*滚动条的轨道*/
   ::-webkit-scrollbar-track{
       background-color: rgb(207, 207, 207);
+      border-radius: 10px;
   }
   /*滚动条的滑块按钮*/
   ::-webkit-scrollbar-thumb{

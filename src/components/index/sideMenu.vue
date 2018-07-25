@@ -206,6 +206,7 @@
     },
     mounted(){
       var _this = this;
+      console.log(this.$route.meta.name);
       this.$root.Bus.$on('changeMenu',function(index){
         if(index == '5-1'){
           _this.isThisNav = '理论研究';
@@ -214,6 +215,17 @@
         }else if(index == 'news'){
           _this.isThisNav = _this.$route.meta.name;
         }
+      })
+      this.$root.Bus.$on('boxMenu',function(item){
+        console.log(item);
+        if(item=='关注线索总量'){
+          _this.isThisNav = '关注线索';
+        }else if(item=='已办理线索'){
+          _this.isThisNav = '关注线索';
+        }else if(item=='举报接收线索'){
+          _this.isThisNav = '举报线索';
+        }
+        console.log(_this.isThisNav);
       })
       if(this.$route.query.type){
         if(this.$route.query.type == 1){
