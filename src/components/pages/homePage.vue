@@ -124,7 +124,6 @@
           method:'get',
           url:url
         }).then(function(res){
-          console.log(res.data)
           if(res.data.code == 0){
             _this.internetClueTotal = res.data.data.total
           }else {
@@ -232,23 +231,23 @@
             _this.$set(obj, i, newObj[i]);
           }
         };
-		let setDataCountFunc = function(){
-        if(_this.IdentityType =='1'){
-          _this.getAdminDataCount(setDataCount);//获取管理员主页数据统计信息
-        }else if(_this.IdentityType == "5") {
-          _this.getSubDataCount(setDataCount);//获取下级院主页统计信息
-        }else if(_this.IdentityType=="3"){
-          _this.getLeaderDataCount(setDataCount); //获取领导信息
-        }
-		  };
-      if(!_this.IdentityType){
-        _this.$root.Bus.$on('changeIdentity',function(data){
-          _this.IdentityType = data;
+        let setDataCountFunc = function(){
+            if(_this.IdentityType =='1'){
+              _this.getAdminDataCount(setDataCount);//获取管理员主页数据统计信息
+            }else if(_this.IdentityType == "5") {
+              _this.getSubDataCount(setDataCount);//获取下级院主页统计信息
+            }else if(_this.IdentityType=="3"){
+              _this.getLeaderDataCount(setDataCount); //获取领导信息
+            }
+        };
+        if(!_this.IdentityType){
+          _this.$root.Bus.$on('changeIdentity',function(data){
+            _this.IdentityType = data;
+            setDataCountFunc();
+          });
+        }else {
           setDataCountFunc();
-        });
-      }else {
-        setDataCountFunc();
-      }
+        }
 
       },
       getAdminDataCount(setDataCount){//获取管理员主页数据统计信息
@@ -256,8 +255,8 @@
         _this.dataCount = [//数据统计
           {title: "线索总量", val: 0,icon:'fa-list'},
           {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
-          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
-          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+          {title: "已办理线索", val: 0,icon:'fa-check-circle'},
+          {title: "举报接收线索", val: 0,icon:'fa-envelope-o'}
         ];
         _this.axios({
           method: 'post',
@@ -289,7 +288,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
+            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-check-circle'});
           }
         }).catch(function(err){
           console.log(err)
@@ -306,7 +305,7 @@
           timeout: 10000
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data.total,icon:'fa-check-circle'});
+            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data.total,icon:'fa-envelope-o'});
           }
         }).catch(function(err){
           console.log(err)
@@ -316,9 +315,9 @@
         let _this = this;
         _this.dataCount = [//数据统计
           {title: "线索总量", val: 0,icon:'fa-list'},
-          {title: "在办线索总量", val: 0,icon:'fa-heart-o'},
-          {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
-          {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
+          {title: "在办线索总量", val: 0,icon:'fa-indent'},
+          {title: "已办理线索", val: 0,icon:'fa-check-circle'},
+          {title: "举报接收线索", val: 0,icon:'fa-envelope-o'}
         ];
         _this.axios({
           method: 'post',
@@ -338,7 +337,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[1],{title: '在办线索总量', val: res.data.data,icon:'fa-heart-o'});
+            setDataCount(_this.dataCount[1],{title: '在办线索总量', val: res.data.data,icon:'fa-indent'});
           }
         }).catch(function(err){
           console.log(err)
@@ -350,7 +349,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-envelope-o'});
+            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-check-circle'});
           }
         }).catch(function(err){
           console.log(err)
@@ -367,7 +366,7 @@
           timeout: 10000
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data.total,icon:'fa-check-circle'});
+            setDataCount(_this.dataCount[3],{title: '举报接收线索', val: res.data.data.total,icon:'fa-envelope-o'});
           }
         }).catch(function(err){
           console.log(err)
@@ -377,8 +376,8 @@
         let _this = this;
         _this.dataCount = [//数据统计
           {title: "线索总量", val: 0,icon:'fa-list'},
-          {title: "待接收线索", val: 0,icon:'fa-heart-o'},
-          {title: "已接收线索", val: 0,icon:'fa-envelope-o'},
+          {title: "待接收线索", val: 0,icon:'fa-indent'},
+          {title: "已接收线索", val: 0,icon:'fa-check-square'},
           {title: "已办理线索", val: 0,icon:'fa-check-circle'}
         ];
         // _this.axios({
@@ -399,7 +398,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[1],{title: '待接收线索', val: res.data.data,icon:'fa-heart-o'});
+            setDataCount(_this.dataCount[1],{title: '待接收线索', val: res.data.data,icon:'fa-indent'});
           }
         }).catch(function(err){
           console.log(err)
@@ -411,7 +410,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[2],{title: '已接收线索', val: res.data.data,icon:'fa-envelope-o'});
+            setDataCount(_this.dataCount[2],{title: '已接收线索', val: res.data.data,icon:'fa-check-square'});
           }
         }).catch(function(err){
           console.log(err)

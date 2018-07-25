@@ -52,6 +52,7 @@ var webApi = {
     CountUnConfirmClues: '/api/Stats/CountUnConfirmClues', //计算待确认线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountReciveClues: '/api/Stats/CountReciveClues', //计算接收线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountSubReviceCluesType: '/api/Stats/CountSubReviceCluesType', //按类型计算接收线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
+    CountHanddingClues: '/api/Stats/CountHanddingClues', //计算处理中的线索总量; 方式:GET; 是否需要token:需要；参数说明:[]
   },
 //业务处理控制器。根据方法设置token
   ClueManager : {
@@ -62,12 +63,12 @@ var webApi = {
     SaveClueOpinion: '/api/ClueManager/SaveClueOpinion', //提交线索初核意见; 方式:POST; 是否需要token:需要；参数说明:[data=》包含线索编号(xsbh)、线索初核意见(xschyj)；]
     GetApprovalClues: '/api/ClueManager/GetApprovalClues?type={type}&keyword={keyword}&beginDate={beginDate}&endDate={endDate}&pageNum={pageNum}&pageSize={pageSize}', //获取领导审批线索列表; 方式:GET; 是否需要token:需要；参数说明:[type=》type:0-待审批;1-已审批;2-全部；keyword=》查找关键词；beginDate=》查询起始日期；endDate=》查询结束日期；pageNum=》未注释；pageSize=》未注释；]
     Approval: '/api/ClueManager/Approval', //领导审批; 方式:POST; 是否需要token:需要；参数说明:[data=》传入审批编号，以及审批意见。；]
+    GetApprovalResult: '/api/ClueManager/GetApprovalResult?gzbh={gzbh}', //; 方式:GET; 是否需要token:需要；参数说明:[gzbh=》未注释；]
     DispatchClue: '/api/ClueManager/DispatchClue/{id}?cbdwbh={cbdwbh}&cbdwmc={cbdwmc}', //分发线索; 方式:POST; 是否需要token:需要；参数说明:[id=》关注线索编号；cbdwbh=》承办人单位编号；cbdwmc=》未注释；]
     GetSubClues: '/api/ClueManager/GetSubClues?type={type}&beginDate={beginDate}&endDate={endDate}&pageNum={pageNum}&pageSize={pageSize}&order={order}', //获取线索列表; 方式:GET; 是否需要token:需要；参数说明:[type=》type=0:待确认接收；1：正在办理；2：已反馈结果;3：全部；beginDate=》未注释；endDate=》未注释；pageNum=》未注释；pageSize=》未注释；order=》未注释；]
     RecvClues: '/api/ClueManager/RecvClues/{id}', //确认接收线索; 方式:POST; 是否需要token:需要；参数说明:[id=》关注编号；]
     ReportResult: '/api/ClueManager/ReportResult/{id}?bljgjs={bljgjs}', //填写办理结果简述; 方式:POST; 是否需要token:需要；参数说明:[id=》关注编号；bljgjs=》办理结果简述；]
     GetResult: '/api/ClueManager/GetResult?gzbh={gzbh}', //获取办理结果; 方式:GET; 是否需要token:需要；参数说明:[gzbh=》关注编号；]
-    CountHanddingClues: '/api/ClueManager/CountHanddingClues', //计算处理中的线索总量; 方式:GET; 是否需要token:需要；参数说明:[]
   },
 //新闻。根据方法设置token
   News : {
