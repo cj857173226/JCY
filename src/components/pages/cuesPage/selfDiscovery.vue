@@ -185,7 +185,7 @@
       //添加自行发现线索
       addClue() {
         this.$message({
-          message: "功能完善中!",
+          message: "暂未开放此功能",
           showClose: true,
           duration: 2000
         })
