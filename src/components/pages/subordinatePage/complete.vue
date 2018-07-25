@@ -182,6 +182,12 @@
       }
     },
     mounted(){
+      localStorage.removeItem('cueList');
+      localStorage.removeItem('beginDate');
+      localStorage.removeItem('endDate');
+      localStorage.removeItem('cueIndex');
+      localStorage.removeItem('pageNum');
+      localStorage.removeItem('order');
       this.getClueList();//获取数据列表
       this.tableResize();
     },
@@ -256,6 +262,12 @@
       //审批
       detail(text,id){
         var type = 0;
+        localStorage.setItem('cueList',JSON.stringify(this.clueList));
+        localStorage.setItem('beginDate',this.timeSearch[0]);
+        localStorage.setItem('endDate',this.timeSearch[1]);
+        localStorage.setItem('cueIndex',index);
+        localStorage.setItem('pageNum',this.pageNum);
+        localStorage.setItem('order',this.order);
         if(text == '举报线索'){
           type = 1
         }else if(text == '互联网线索'){

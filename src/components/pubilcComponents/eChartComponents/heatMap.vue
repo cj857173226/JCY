@@ -50,6 +50,11 @@
             }
           }).catch(function(err) {
           _this.isLoading = false;
+          if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1){
+            //超时处理
+            _this.$message.error('请求超时,重新请求中');
+            _this.getChinaData();
+          }
           console.log(err)
         })
       },
