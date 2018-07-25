@@ -9,12 +9,12 @@
             <i class="fa  fa-3x" :class="item.icon"></i>
           </div>
           <div class="analysis_more" v-text="item.title"></div>
-          <div v-if='IdentityType==1' class="hover-box" :class="{'hover-box-show':hoverBoxShow}">
-            <div class="hover-item clearfix">
+          <div class="hover-box" >
+            <div class="hover-item clearfix" v-show='IdentityType==1' >
               <div class="left"> <i class="iconfont icon-biaoqian1"></i>举报线索数量</div>
               <div class="right">{{reportClueTotal}}</div>
             </div>
-            <div class="hover-item clearfix">
+            <div class="hover-item clearfix" v-show='IdentityType==1'>
               <div class="left"><i class="iconfont icon-changyonglogo46"></i>互联网线索数量</div>
               <div class="right">{{internetClueTotal}}</div>
             </div>
@@ -95,27 +95,53 @@
     components: {heatmap,wordCloud,pieChart},
     data() {
       return {
-        IdentityType: localStorage.getItem('IdentityType'),//身份信息
+        IdentityType: '',//身份信息
         knowLoading: false,
         newsLoading: false,
         newsData: [],//新闻动态信息
         knowledgeData: [],//知识库信息
         dataCount: [//数据统计
         ],
-        hoverBoxShow:false,//线索总数框显示
+        // hoverBoxShow:false,//线索总数框显示
         internetClueTotal:0,//互联网线索总数
         reportClueTotal:0,//举报线索总数
 
       }
     },
     mounted() {
-      this.IdentityType =localStorage.getItem('IdentityType');
+      this.getUerInfo();//获取用户权限
       this.getDataCount();//数据统计信息
       this.getNewsData();//新闻和知识库信息
-      this.getReportClueTotal();//获取举报线索总数
-      this.getInterClueTotal();//获取互联网线索总数
+
     },
     methods: {
+      //   获取用户信息
+      getUerInfo(){
+        let _this = this ;
+        _this.axios({
+          method:'get',
+          url:webApi.Host + webApi.User.GetUser
+        }).then(function(res){
+          if(res.data.code == 0){
+            let data = res.data.data;
+             if(data.IdentityType == 4) {//下级院
+              data.IdentityType = 5;
+            }else if(data.IdentityType == 2) {//领导
+              data.IdentityType = 3;
+            }
+            _this.IdentityType = data.IdentityType;
+            if(_this.IdentityType == 1){ //管理员
+              _this.getReportClueTotal();//获取举报线索总数
+              _this.getInterClueTotal();//获取互联网线索总数
+            }else if(_this.IdentityType == 3) {//领导
+
+            }else if(_this.IdentityType== 5) {//下级院
+            }
+          }
+        }).catch(function(err){
+
+        })
+      },
       //获取互联网线索总数
       getInterClueTotal(){
         let _this = this;
@@ -170,7 +196,7 @@
       },
       linkTo(item){
         if(item.title == '线索总量'){
-            this.hoverBoxShow = !this.hoverBoxShow;
+           return
         }else if(item.title=='关注线索总量'){
           this.$router.push({
             path: '/home/followCue'
@@ -446,9 +472,14 @@
         .analysisBox {
           background-color: #0E9E33;
         }
-        .hover-box-show{
+        /*.hover-box-show{*/
+          /*// border: 8px solid rgba(0,0,0,0.3);*/
+          /*padding: 6px 0;*/
+          /*width: 100%;*/
+          /*height: 100%;*/
+        /*}*/
+        .analysisBox:hover .hover-box{
           background:#616161e0;
-          // border: 8px solid rgba(0,0,0,0.3);
           padding: 6px 0;
           width: 100%;
           height: 100%;
