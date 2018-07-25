@@ -166,6 +166,8 @@ export default {
           if(this.$route.query.type2){
             this.cueType = this.$route.query.type2;
           }
+        }else if(this.cueType == 12){
+          this.cueFrom = '自行发现线索';
         }
         if(this.$route.query.gzid){
             this.gzId = this.$route.query.gzid;
