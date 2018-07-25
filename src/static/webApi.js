@@ -36,11 +36,12 @@ var webApi = {
   },
 //统计。根据方法设置token
   Stats : {
-    CountMonthClues: '/api/Stats/CountMonthClues', //计算本月线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
+    CountMonthClues: '/api/Stats/CountMonthClues?beginDate={beginDate}&endDate={endDate}', //计算本月线索数量; 方式:POST; 是否需要token:需要；参数说明:[beginDate=》统计开始时间；endDate=》统计结束时间；]
     CountClues: '/api/Stats/CountClues', //计算线索总数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountFollowClues: '/api/Stats/CountFollowClues', //计算关注线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
+    CountMonthFollowClues: '/api/Stats/CountMonthFollowClues?beginDate={beginDate}&endDate={endDate}', //计算关注线索数量 统计开始时间统计结束时间; 方式:POST; 是否需要token:需要；参数说明:[beginDate=》未注释；endDate=》未注释；]
     CountUnReciveClues: '/api/Stats/CountUnReciveClues', //计算未接收线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
-    CountMonthCluesType: '/api/Stats/CountMonthCluesType', //按类型计算本月线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
+    CountMonthCluesType: '/api/Stats/CountMonthCluesType?beginDate={beginDate}&endDate={endDate}', //按类型计算本月线索数量; 方式:POST; 是否需要token:需要；参数说明:[beginDate=》统计开始时间；endDate=》统计结束时间；]
     CountCluesType: '/api/Stats/CountCluesType', //按类型计算总线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountMonthSubHandled: '/api/Stats/CountMonthSubHandled', //计算本月下级院已办线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountSubHandled: '/api/Stats/CountSubHandled', //计算下级院已办总线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
@@ -66,6 +67,7 @@ var webApi = {
     RecvClues: '/api/ClueManager/RecvClues/{id}', //确认接收线索; 方式:POST; 是否需要token:需要；参数说明:[id=》关注编号；]
     ReportResult: '/api/ClueManager/ReportResult/{id}?bljgjs={bljgjs}', //填写办理结果简述; 方式:POST; 是否需要token:需要；参数说明:[id=》关注编号；bljgjs=》办理结果简述；]
     GetResult: '/api/ClueManager/GetResult?gzbh={gzbh}', //获取办理结果; 方式:GET; 是否需要token:需要；参数说明:[gzbh=》关注编号；]
+    CountHanddingClues: '/api/ClueManager/CountHanddingClues', //计算处理中的线索总量; 方式:GET; 是否需要token:需要；参数说明:[]
   },
 //新闻。根据方法设置token
   News : {

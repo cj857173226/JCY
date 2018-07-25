@@ -101,10 +101,6 @@
         newsData: [],//新闻动态信息
         knowledgeData: [],//知识库信息
         dataCount: [//数据统计
-          // {title: "线索总量", val: 0,icon:'fa-list'},
-          // {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
-          // {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
-          // {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
         ],
         hoverBoxShow:false,//线索总数框显示
         internetClueTotal:0,//互联网线索总数
@@ -237,22 +233,14 @@
           }
         };
 		let setDataCountFunc = function(){
-			if(_this.IdentityType =='1'){
-			  _this.getAdminDataCount(setDataCount);//获取管理员主页数据统计信息
-      }else if(_this.IdentityType == "5") {
-			  _this.getSubDataCount(setDataCount);//获取下级院主页统计信息
-      }else if(_this.IdentityType=="3"){
-        _this.getLeaderDataCount(setDataCount); //获取领导信息
-      }
-      // else {
-      //   _this.dataCount = [//数据统计
-      //   {title: "线索总量", val: 0,icon:'fa-list'},
-      //   {title: "关注线索总量", val: 0,icon:'fa-heart-o'},
-      //   {title: "已办理线索", val: 0,icon:'fa-envelope-o'},
-      //   {title: "举报接收线索", val: 0,icon:'fa-check-circle'}
-      //   ];
-      //  }
-		  }
+        if(_this.IdentityType =='1'){
+          _this.getAdminDataCount(setDataCount);//获取管理员主页数据统计信息
+        }else if(_this.IdentityType == "5") {
+          _this.getSubDataCount(setDataCount);//获取下级院主页统计信息
+        }else if(_this.IdentityType=="3"){
+          _this.getLeaderDataCount(setDataCount); //获取领导信息
+        }
+		  };
       if(!_this.IdentityType){
         _this.$root.Bus.$on('changeIdentity',function(data){
           _this.IdentityType = data;
@@ -324,7 +312,7 @@
           console.log(err)
         })
       },
-      getLeaderDataCount(setDataCount){//获取管理员主页数据统计信息
+      getLeaderDataCount(setDataCount){//获取领导主页数据统计信息
         let _this = this;
         _this.dataCount = [//数据统计
           {title: "线索总量", val: 0,icon:'fa-list'},
@@ -345,12 +333,12 @@
         })
 
         _this.axios({
-          method: 'post',
-          url: webApi.Host + webApi.Stats.CountFollowClues,
+          method: 'get',
+          url: webApi.Host + webApi.Stats.CountHanddingClues,
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[1],{title: '关注线索总量', val: res.data.data,icon:'fa-heart-o'});
+            setDataCount(_this.dataCount[1],{title: '在办线索总量', val: res.data.data,icon:'fa-heart-o'});
           }
         }).catch(function(err){
           console.log(err)
