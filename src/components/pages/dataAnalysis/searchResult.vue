@@ -21,7 +21,7 @@
                 <div class="text" :title="item.name">{{item.name}}</div>
                 <div class="hit">
                   <i class="el-icon-loading" style="color: #333333" v-show="item.isLoad" ></i>
-                  <span v-show="!item.isLoad">({{item.hit>9999? '9999+':item.hit}})</span>
+                  <span v-show="!item.isLoad">({{item.hit>999? '999+':item.hit}})</span>
                 </div>
               </li>
             </ul>

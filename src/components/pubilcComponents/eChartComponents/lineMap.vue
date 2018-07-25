@@ -103,8 +103,9 @@ export default {
                     if(response.data.code == 0){
                         cueTotal[i] = response.data.data.Total;
                         if(_this.cueTotal.length == 30){
-                            _this.chartInit();
+                            console.log(_this.timeTotal);
                             _this.isLoad = false;
+                            _this.chartInit();
                         }
                     }
                 }).catch(function(error){
