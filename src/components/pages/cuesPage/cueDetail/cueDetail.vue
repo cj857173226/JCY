@@ -36,7 +36,7 @@
                     </span>
                 </li>
             </ul>
-            <span class="tip-info" v-show="!followPage">关注后进行后续操作</span>
+            <span class="tip-info" v-show="!followPage&&identity == 1">关注后进行后续操作</span>
         </div>
         <div id="content">
             <div class="switch-btn prev-btn" @click="switchCue(1)">
@@ -107,7 +107,9 @@ export default {
 
         //获取身份权限信息
         this.identity = localStorage.IdentityType;
-
+        if(this.identity == 3){
+            this.followPage = true;
+        }
         //如果没有type值或id值则返回上一页
         if(!this.$route.query.type || !this.$route.query.id){
             this.$router.go(-1);
