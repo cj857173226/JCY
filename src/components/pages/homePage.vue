@@ -95,7 +95,7 @@
     components: {heatmap,wordCloud,pieChart},
     data() {
       return {
-        IdentityType: '',//身份信息
+        IdentityType: localStorage.getItem("IdentityType"),//身份信息
         knowLoading: false,
         newsLoading: false,
         newsData: [],//新闻动态信息
@@ -109,10 +109,9 @@
       }
     },
     mounted() {
-      this.getUerInfo();//获取用户权限
+      // this.getUerInfo();//获取用户权限
       this.getDataCount();//数据统计信息
       this.getNewsData();//新闻和知识库信息
-
     },
     methods: {
       //   获取用户信息
@@ -260,10 +259,12 @@
         let setDataCountFunc = function(){
             if(_this.IdentityType =='1'){
               _this.getAdminDataCount(setDataCount);//获取管理员主页数据统计信息
+              _this.getReportClueTotal();//获取举报线索总数
+              _this.getInterClueTotal();//获取互联网线索总数
             }else if(_this.IdentityType == "5") {
               _this.getSubDataCount(setDataCount);//获取下级院主页统计信息
             }else if(_this.IdentityType=="3"){
-              _this.getLeaderDataCount(setDataCount); //获取领导信息
+              _this.getLeaderDataCount(setDataCount); //获取领导统计信息
             }
         };
         if(!_this.IdentityType){
