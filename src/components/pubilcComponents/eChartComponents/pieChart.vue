@@ -10,9 +10,30 @@
         optionData: "",
         isLoading: false,
         myChart: "",
+        beginDate: this.timeFormat(new Date((new Date()).getTime() - 3600 * 1000 * 24 * 30)),
+        endDate: this.timeFormat(new Date()),
       }
     },
     methods : {
+      timeFormat(date) {
+        if(date) {
+          let time = date;
+          let year = time.getFullYear();
+          let month = time.getMonth() + 1;
+          let day = time.getDate();
+          if(month < 10) {
+            month =  '0' + month;
+          }
+          if(day < 10 ) {
+            day =  '0' + day;
+          }
+          time = year + '-' + month + '-' + day;
+          return time;
+        }else {
+          return date;
+        }
+
+      },
       //图表初始化
       initChart() {
         if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
@@ -26,7 +47,10 @@
           _this.isLoading = true;
           _this.axios({
             method: 'post',
-            url: webApi.Host + webApi.Stats.CountMonthCluesType,
+            url: (webApi.Stats.CountMonthCluesType).format({
+              beginDate: _this.beginDate,
+              endDate: _this.endDate
+            }),
             timeout: 15000,
           })
             .then(function(res){
@@ -71,7 +95,7 @@
         let option = {
           backgroundColor: '#fff',
           title: {
-            text: '线索领域占比图',
+            text: '近一月线索领域占比图',
             x: 'center'
           },
           tooltip : {

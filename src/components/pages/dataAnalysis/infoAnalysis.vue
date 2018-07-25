@@ -2,7 +2,7 @@
     <div id="info">
         <div id="tool-bar" :class="isHidden?'hidden-box':''">
           <div class="check-wrap">
-            <el-checkbox class="check-all" :indeterminate="isIndeterminate" v-model="checkall" @change="handleCheckAllChange">全选</el-checkbox>
+            <!-- <el-checkbox class="check-all" :indeterminate="isIndeterminate" v-model="checkall" @change="handleCheckAllChange">全选</el-checkbox> -->
             <el-checkbox-group class="check-group" v-model="checkedTable" @change="handleCheckedCitiesChange">
               <el-checkbox class="check-item" v-for="table in allTableName" :label="table" :key="table">{{table}}</el-checkbox>
             </el-checkbox-group>
@@ -390,8 +390,7 @@ export default {
         .check-group{
           padding-top: 4px;
           width: 100%;
-          height: 130px;
-          max-height: 130px;
+          height: 100%;
           overflow-y: auto;
           overflow-x: hidden;
           .check-item{

@@ -1,16 +1,16 @@
 <template>
     <div class="amap-page-container" v-loading="isLoad">
         <el-amap ref="map" vid="amap" :center="center" :zoom="zoom" class="amap-demo">
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers1" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers2" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers3" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers4" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers5" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers6" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers7" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers8" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers9" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers10" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers1" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers2" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers3" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers4" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers5" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers6" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers7" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers8" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers9" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers10" :position="item.position" :template="item.template"></el-amap-marker>
             <el-amap-info-window
                 :position="currentWindow.position"
                 :visible = "currentWindow.visible"
@@ -146,13 +146,13 @@ export default {
                 styleName = 'color: #a11c08;'
             }else if(index == 3){
                 iconName = _this.iconClass[2];
-                styleName = 'color: #fcf003'
+                styleName = 'color: #03a6fc'
             }else if(index == 4){
                 iconName = _this.iconClass[3];
                 styleName = 'color: #d3257a;'
             }else if(index == 5){
                 iconName = _this.iconClass[4];
-                styleName = 'color: #15c7c4;'
+                styleName = 'color: #dd51f5;'
             }else if(index == 6){
                 iconName = _this.iconClass[5];
                 styleName = 'color: #14227b;'
@@ -161,13 +161,13 @@ export default {
                 styleName = 'color: #f77008;'
             }else if(index == 8){
                 iconName = _this.iconClass[7];
-                styleName = 'color: #077d20;'
+                styleName = 'color: #38e858;'
             }else if(index == 9){
                 iconName = _this.iconClass[8];
-                styleName = 'color: #01c993;'
+                styleName = 'color: #0eadac;'
             }else if(index == 10){
                 iconName = _this.iconClass[9];
-                styleName = 'color: #01c907;'
+                styleName = 'color: #029e07;'
             }
             for(var i = 0;i<data.length;i++){
                     let position = '';
@@ -184,7 +184,7 @@ export default {
                         marker.push(
                         {
                             position:position,
-                            template:'<i class="' + iconName + '" style="font-size: 30px;' + styleName + '"></i>',
+                            template:'<i class="' + iconName + '" style="font-size: 30px;font-weight: bold;' + styleName + '"></i>',
                             events:{
                                 click:(o)=>{
                                     // _this.showInfo = true;

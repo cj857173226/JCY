@@ -16,7 +16,7 @@
                     审批信息
                 </li><li v-show="followPage&&IdentityType == 1" :class="isThisNav == 3?'active':''" @click="chooseNav(3)" v-if="IdentityType==1?true:false">
                     <i class="fa fa-sitemap"></i>
-                    分流下级院
+                    线索分流
                 </li><li v-show="followPage" :class="isThisNav == 4?'active':''" @click="chooseNav(4)">
                     <i class="fa fa-random"></i>
                     结果反馈
@@ -290,6 +290,81 @@ export default {
                         }).catch(function(error){
                             _this.isLoad = false;
                         })
+                    }else if(this.cueFrom == '待接收'){
+                        //下级院 待接收
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetSubClues.format({pageNum:_this.pageNum - 1,pageSize:20,beginDate:beginDate,endDate:endDate,type:0,order:order}),
+                            timeout: 10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+
+                        }).catch(function(error){
+                            _this.isLoad = false;
+                        })
+                    }else if(this.cueFrom == '待反馈'){
+                        //下级院 待反馈
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetSubClues.format({pageNum:_this.pageNum - 1,pageSize:20,beginDate:beginDate,endDate:endDate,type:1,order:order}),
+                            timeout: 10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+
+                        }).catch(function(error){
+                            _this.isLoad = false;
+                        })
+                    }else if(this.cueFrom == '已反馈'){
+                        //下级院 已反馈
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetSubClues.format({pageNum:_this.pageNum - 1,pageSize:20,beginDate:beginDate,endDate:endDate,type:2,order:order}),
+                            timeout: 10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+
+                        }).catch(function(error){
+                            _this.isLoad = false;
+                        })
+                    }else if(this.cueFrom == '待审批'){
+                        //领导 待审批
+                    }else if(this.cueFrom == '已审批'){
+                        //领导 已审批
+                    }else if(this.cueFrom == '结果反馈'){
+                        //领导 结果反馈
                     }
                 }else{
                     localStorage.setItem('cueIndex',this.cueIndex - 1);//修改线索索引
@@ -392,6 +467,81 @@ export default {
                         }).catch(function(error){
                             _this.isLoad = false;
                         })
+                    }else if(this.cueFrom == '待接收'){
+                        //下级院 待接收
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetSubClues.format({pageNum:_this.pageNum + 1,pageSize:20,beginDate:beginDate,endDate:endDate,type:0,order:order}),
+                            timeout: 10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+
+                        }).catch(function(error){
+                            _this.isLoad = false;
+                        })
+                    }else if(this.cueFrom == '待反馈'){
+                        //下级院 待反馈
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetSubClues.format({pageNum:_this.pageNum + 1,pageSize:20,beginDate:beginDate,endDate:endDate,type:1,order:order}),
+                            timeout: 10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+
+                        }).catch(function(error){
+                            _this.isLoad = false;
+                        })
+                    }else if(this.cueFrom == '已反馈'){
+                        //下级院 已反馈
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetSubClues.format({pageNum:_this.pageNum + 1,pageSize:20,beginDate:beginDate,endDate:endDate,type:2,order:order}),
+                            timeout: 10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+
+                        }).catch(function(error){
+                            _this.isLoad = false;
+                        })
+                    }else if(this.cueFrom == '待审批'){
+                        //领导 待审批
+                    }else if(this.cueFrom == '已审批'){
+                        //领导 已审批
+                    }else if(this.cueFrom == '结果反馈'){
+                        //领导 结果反馈
                     }
                 }else{
                     localStorage.setItem('cueIndex',this.cueIndex + 1); //修改线索索引

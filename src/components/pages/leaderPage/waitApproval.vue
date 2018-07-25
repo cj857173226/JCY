@@ -14,6 +14,32 @@
             </div> -->
 
         </div>
+
+        <div class="follow_filter">
+            <el-form class="follow_form" :inline="true" >
+            <el-form-item label="线索发布时间 :">
+            <el-date-picker
+                v-model="timeSearch"
+                type="daterange"
+                align="right"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                range-separator="-"
+                unlink-panels
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+            </el-date-picker>
+            </el-form-item>
+            <el-form-item label="关键词 :" >
+                <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
+                </el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="search">搜索 <i class="iconfont icon-sousuo"></i></el-button>
+            </el-form-item>
+            </el-form>
+        </div>
         <div id="content">
             <div class="table-list" ref="cueList">
                 <el-table
@@ -115,15 +141,53 @@ export default {
 
             tableH:0, //表格高度
             keyword:'', //关键字
+            timeSearch:'', //时间搜索
         }
     },
     mounted(){
+        this.initTime();
         this.tableResize();
+        this.getData();
     },
     methods:{
-        //搜索
-        getInternetCueList(){
+        //默认时间
+        initTime(){
+            var time = new Date();
+            var begin = '2017-01-01';
+            var end = time.getFullYear() + '-' + addZero(time.getMonth() + 1) + '-' + addZero(time.getDate());
+            this.timeSearch = [begin,end];
 
+            function addZero(obj){
+                if(obj < 10){
+                    return '0' + obj;
+                }else{
+                    return obj
+                }
+            }
+        },
+        search(){
+            this.pageNum = 1;
+            this.getData();
+        },
+        //获取数据
+        getData(){
+            var _this = this;
+            var begin = this.timeSearch[0];
+            var end = this.timeSearch[1];
+            this.isLoad = true;
+            this.axios({
+                method:'get',
+                url:webApi.ClueManager.GetApprovalClues.format({type:0,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize}),
+                timeout:10000
+            }).then(function(response){
+                if(response.data.code == 0){
+                    _this.isLoad = false;
+
+                }
+            }).catch(function(error){
+                _this.isLoad = false;
+
+            });
         },
         //跳转分页
         pageTo(){
@@ -230,8 +294,33 @@ export default {
             }
         }
     }
+    /*筛选*/
+    .follow_filter {
+        background-color: #eeeeee;
+        color: #333333;
+        padding-left: 15px;
+        padding-top: 5px;
+        margin: 15px 20px 0;
+        height: 50px;
+        .follow_form {
+            .el-form-item {
+            margin-bottom: 10px;
+            }
+            .follow_select {
+            width: 130px;
+            }
+            .follow_date {
+            width: 130px;
+            min-width: 135px;
+            }
+            .follow_input {
+            width: 180px;
+            }
+        }
+    }
     #content{
-        height: calc(100% - 40px);
+        height: calc(100% - 40px - 65px);
+        margin: 0 20px 0;
         .table-list{
             padding-top: 10px;
             height: calc(100% - 70px);

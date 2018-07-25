@@ -60,6 +60,17 @@ export default {
         this.identity = localStorage.IdentityType;
     },
     methods:{
+        //获取初核意见
+        getFirstText(){
+            var _this = this;
+            this.axios({
+                
+            })
+        },
+        //获取审批意见
+        getLeaderTetx(){
+
+        },
         //提交审批
         submitBtn(){
             var _this = this;

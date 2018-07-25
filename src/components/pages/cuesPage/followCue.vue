@@ -45,7 +45,7 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="getFollowList">搜索 <i class="iconfont icon-sousuo"></i></el-button>
+            <el-button style="border: 1px solid #dcdfe6;margin-top:-1px;" class="follow_btn"  @click="getFollowList">搜索 <i class="iconfont icon-sousuo"></i></el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -273,7 +273,7 @@
           'beginDate': _this.timeSearch[0],
           'endDate': _this.timeSearch[1],
           "xslb": _this.xslb,
-          "order": "fbsj",
+          "order": "",
           "xssjbly": _this.xssjbly
         };
         _this.isLoading = true;
@@ -354,7 +354,6 @@
               method:'post',
               url:webApi.ClueManager.UnFollowClue.format({xsid:clueId,xssjbly:clueTypeNum})
             }).then(function(res){
-              console.log(res)
               if(res.data.code == 0){
                 _this.getFollowList()
               }else {
@@ -493,11 +492,11 @@
             .follow_input {
               width: 180px;
             }
-            .follow_btn {
-              height: 32px;
-              line-height: 6px;
-              margin-top: 4px;
-            }
+            /*.follow_btn {*/
+              /*height: 32px;*/
+              /*line-height: 6px;*/
+              /*margin-top: 4px;*/
+            /*}*/
           }
         }
         .follow_list {
