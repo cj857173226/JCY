@@ -85,10 +85,11 @@
             >
             <template slot-scope="scope">
               <el-popover trigger="click" placement="top" >
-                <p style="text-indent: 2em;">{{ scope.row.ZY }}</p>
+                <!-- <p style="text-indent: 2em;">{{ scope.row.ZY }}</p> -->
                 <div slot="reference" class="td-content">
                   {{ scope.row.ZY}}
                 </div>
+                <div style="width:300px; max-height: 200px; overflow: auto;" v-html="scope.row.ZY"></div>
               </el-popover>
             </template>
           </el-table-column>

@@ -72,10 +72,10 @@
             min-width="300">
             <template slot-scope="scope">
               <el-popover trigger="click" placement="top" max-width="200">
-                <p style="text-indent: 2em;">{{ scope.row.JBNR }}</p>
                 <div slot="reference" class="td-content">
                   {{ scope.row.JBNR}}
                 </div>
+                 <div style="width:300px; max-height: 200px; overflow: auto;" v-html="scope.row.JBNR2"></div>
               </el-popover>
             </template>
           </el-table-column>
@@ -290,6 +290,7 @@
                 for (let j = 0; j < str.length; j++) {
                   ZYstr += str[j];
                 }
+                data[i].JBNR2 = data[i].JBNR;
                 data[i].JBNR =  ZYstr;
                 data[i].JBNR = data[i].JBNR.replace(/<\/br>/gm,"");
                 if(data[i].XSSJBLY=="1") {

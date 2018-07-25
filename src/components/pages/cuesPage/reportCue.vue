@@ -57,11 +57,12 @@
               min-width="300">
               <template slot-scope="scope">
                 <el-popover trigger="click" placement="top" max-width="400">
-                  <p style="text-indent: 2em;">{{ scope.row.JBNR }}</p>
+                  <!-- <p style="text-indent: 2em;">{{ scope.row.JBNR }}</p> -->
                   <div slot="reference" class="td-content" >
                     {{ scope.row.JBNR}}
                   </div>
-                </el-popover>
+                  <div style="width:300px; max-height: 200px; overflow: auto;" v-html="scope.row.JBNR"></div>
+              </el-popover>
               </template>
             </el-table-column>
             <el-table-column
