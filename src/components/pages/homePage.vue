@@ -494,24 +494,13 @@
       },
       getSubDataCount(setDataCount){//获取下级院主页数据统计信息
         let _this = this;
+        let subTotal = 0;//线索总量
         _this.dataCount = [//数据统计
           {title: "线索总量", val: 0,icon:'fa-list'},
-          {title: "待接收线索", val: 0,icon:'fa-indent'},
+          {title: "待确认接收线索", val: 0,icon:'fa-indent'},
           {title: "已接收线索", val: 0,icon:'fa-check-square'},
           {title: "已办理线索", val: 0,icon:'fa-check-circle'}
         ];
-        // _this.axios({
-        //   method: 'post',
-        //   url: webApi.Host + webApi.Stats.CountClues,
-        //   timeout: 10000,
-        // }).then(function(res){
-        //   if(res.data.code==0){
-        //     setDataCount(_this.dataCount[0],{title: '线索总量', val: res.data.data.Total,icon:'fa-list'});
-        //   }
-        // }).catch(function(err){
-        //   console.log(err)
-        // })
-
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountUnConfirmClues,
@@ -519,7 +508,20 @@
         }).then(function(res){
           if(res.data.code==0){
             _this.waitReceive = res.data.data;
-            setDataCount(_this.dataCount[1],{title: '待接收线索', val: res.data.data,icon:'fa-indent'});
+            setDataCount(_this.dataCount[1],{title: '待确认接收线索', val: res.data.data,icon:'fa-indent'});
+            subTotal+=res.data.data;
+            _this.axios({
+              method: 'post',
+              url: webApi.Host + webApi.Stats.CountSubReciveClues,
+              timeout: 10000,
+            }).then(function(res){
+              if(res.data.code==0){
+                subTotal+=res.data.data;
+                setDataCount(_this.dataCount[0],{title: '线索总量', val: subTotal,icon:'fa-list'});
+              }
+            }).catch(function(err){
+              console.log(err)
+            })
           }
         }).catch(function(err){
           console.log(err)
