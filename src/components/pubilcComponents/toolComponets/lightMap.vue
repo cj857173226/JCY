@@ -100,7 +100,7 @@ export default {
                 _this.axios({
                     method:'get',
                     url:webApi.WebData.GetData.format({sjsybh:id,p:1,ps:10000}),
-                    timeout: 10000
+                    timeout: 15000
                 }).then(function(response){
                     if(response.data.code == 0){
                         _this.isLoad = false;
