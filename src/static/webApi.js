@@ -86,7 +86,7 @@ var webApi = {
 //。根据方法设置token
   WebData : {
     CountData: '/api/WebData/CountData?sjsybh={sjsybh}', //; 方式:GET; 是否需要token:需要；参数说明:[sjsybh=》未注释；]
-    GetData: '/api/WebData/GetData?sjsybh={sjsybh}&p={p}&ps={ps}', //; 方式:GET; 是否需要token:不需要；参数说明:[sjsybh=》未注释；p=》未注释；ps=》未注释；]
+    GetData: '/api/WebData/GetData?sjsybh={sjsybh}&p={p}&ps={ps}', //; 方式:GET; 是否需要token:需要；参数说明:[sjsybh=》未注释；p=》未注释；ps=》未注释；]
     GetAllTables: '/api/WebData/GetAllTables', //; 方式:GET; 是否需要token:需要；参数说明:[]
     SearchDetail: '/api/WebData/SearchDetail?sjsybh={sjsybh}&keywords={keywords}&p={p}&ps={ps}', //; 方式:GET; 是否需要token:需要；参数说明:[sjsybh=》未注释；keywords=》未注释；p=》未注释；ps=》未注释；]
     SearchIndex: '/api/WebData/SearchIndex?sjsybh={sjsybh}&keywords={keywords}', //; 方式:GET; 是否需要token:需要；参数说明:[sjsybh=》未注释；keywords=》未注释；]
@@ -97,6 +97,7 @@ var webApi = {
     Logout: '/api/Auth/Logout', //注销; 方式:POST; 是否需要token:需要；参数说明:[]
     ChangePwd: '/api/Auth/ChangePwd', //修改密码; 方式:POST; 是否需要token:需要；参数说明:[newPwd=》新密码；]
     LoginWxApp: '/api/Auth/LoginWxApp?code={code}', //微信小程序登录接口; 方式:GET; 是否需要token:不需要；参数说明:[code=》微信小程序内调用wx.login获取的code；]
+    LoginWxZxApp: '/api/Auth/LoginWxZxApp?code={code}', //; 方式:GET; 是否需要token:不需要；参数说明:[code=》未注释；]
   },
 }
 
