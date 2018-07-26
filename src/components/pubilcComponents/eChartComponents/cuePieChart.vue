@@ -11,6 +11,7 @@
                     <li :class="['cue-type',isNav == 3?'active':'']" @click="changeNav(3)">互联网线索</li>
                     <li :class="['cue-type',isNav == 4?'active':'']" @click="changeNav(4)">公益诉讼线索</li>
                     <li :class="['cue-type',isNav == 5?'active':'']" @click="changeNav(5)">热点线索</li>
+                    <li :class="['cue-type',isNav == 6?'active':'']" @click="changeNav(6)">自行发现线索</li>
                 </ul>
             </div>
             <div id="pie-chart" v-loading.lock="isLoad">
@@ -29,6 +30,7 @@ export default {
             allType: [], //全部类型数据
             internetType: [], //举报线索数据
             reportType: [], //互联网线索数据
+            findType:[], //自行发现线索
             isLoad:false,
             isNav:1, //饼状图切换
             myChart:null,
@@ -98,9 +100,22 @@ export default {
         pieDataGet(){
             var _this = this;
             this.isLoad = true;
+            var date = new Date().getTime();
+            var start = date - 24*3600*1000*30; 
+            var begin = new Date(start);
+            var end = new Date(date);
+            var beginTime = begin.getFullYear() + '-' + addZero(begin.getMonth() + 1) + '-' + addZero(begin.getDate());
+            var endTime = end.getFullYear() + '-' + addZero(end.getMonth() + 1) + '-' + addZero(end.getDate());
+            function addZero(obj){
+                if(obj < 10){
+                    return '0'+obj;
+                }else{
+                    return obj
+                }
+            }
             this.axios({
                 method: 'post',
-                url: webApi.Host + webApi.Stats.CountMonthCluesType,
+                url: webApi.Stats.CountMonthCluesType.format({beginDate:beginTime,endDate:endTime}),
                 timeout:10000,
             }).then(function(response){
                 var msg = response.data;
@@ -195,8 +210,8 @@ export default {
                 ul{
                     padding: 0;
                     .cue-type{
-                        height: 50px;
-                        line-height: 50px;
+                        height: 41.66px;
+                        line-height: 41.66px;
                         cursor: pointer;
                         text-align: center;
                     }

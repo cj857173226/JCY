@@ -18,6 +18,18 @@
               <div class="left"><i class="iconfont icon-changyonglogo46"></i>互联网线索数量</div>
               <div class="right">{{internetClueTotal}}</div>
             </div>
+            <div class="hover-item clearfix" v-show='IdentityType==1'>
+              <div class="left"><i class="iconfont icon-ai62"></i>公益组织线索数量</div>
+              <div class="right">0</div>
+            </div>
+            <div class="hover-item clearfix" v-show='IdentityType==1'>
+              <div class="left"><i class="iconfont icon-remen"></i>热点线索数量</div>
+              <div class="right">0</div>
+            </div>
+            <div class="hover-item clearfix" v-show='IdentityType==1'>
+              <div class="left"><i class="fa fa-search-plus"></i>自行发现线索数量</div>
+              <div class="right">0</div>
+            </div>
           </div>
         </div>
 
@@ -152,7 +164,7 @@
           if(res.data.code == 0){
             _this.internetClueTotal = res.data.data.total
           }else {
-            _this.$message.error(res.data.errorMessage);
+            console.log(res.data.errorMessage);
           }
         }).catch(function(err){
 
@@ -169,7 +181,7 @@
           if(res.data.code == 0){
             _this.reportClueTotal = res.data.data.total;
           }else {
-            _this.$message.error(res.data.errorMessage);
+            console.log(res.data.errorMessage);
           }
         }).catch(function(err){
           console.log(err)
@@ -193,6 +205,7 @@
         })
       },
       linkTo(item){
+        this.$root.Bus.$emit('boxMenu',item.title);
         if(item.title == '线索总量'){
            return
         }else if(item.title=='关注线索总量'){

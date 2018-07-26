@@ -21,7 +21,7 @@
                 <div class="text" :title="item.name">{{item.name}}</div>
                 <div class="hit">
                   <i class="el-icon-loading" style="color: #333333" v-show="item.isLoad" ></i>
-                  <span v-show="!item.isLoad">({{item.hit>9999? '9999+':item.hit}})</span>
+                  <span v-show="!item.isLoad">({{item.hit>999? '999+':item.hit}})</span>
                 </div>
               </li>
             </ul>
@@ -43,7 +43,7 @@
                                   min-width="200">
                   <template slot-scope="scope" >
                     <el-popover trigger="click" placement="top" >
-                      <p>{{ oTable[scope.$index][key]}}</p>
+                      <p style="width:350px; max-height: 250px; overflow: auto;">{{ oTable[scope.$index][key]}}</p>
                       <div slot="reference" class="td-content">
                         {{oTable[scope.$index][key]}}
                       </div>
@@ -52,10 +52,10 @@
                 </el-table-column>
                 <el-table-column
                   fixed="right"
-                  label="操作"
+                  label="详情"
                   width="60">
                   <template slot-scope="scope">
-                    <el-button type="text" size="medium"><i class="fa fa-file-text"></i></el-button>
+                    <el-button @click="showDetail(scope.row)" type="text" size="medium"><i class="fa fa-file-text"></i></el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -71,6 +71,40 @@
             </div>
           </div>
         </div>
+
+      <!-- <el-dialog
+        title="详情"
+        :visible.sync="isShowBox"
+        width="70%"
+        top="10px">
+        <div class="dialog-content">
+          <table>
+            <tr class="dialog-item" v-for="item in dialogData">
+              <td class="item-box">{{item.name}}</td>
+              <td class="item-box">{{item.value}}</td>
+            </tr>
+          </table>
+        </div>
+      </el-dialog> -->
+      <transition name="fade">
+        <div id="float-box" v-show="isShowBox" >
+          <div class="dialog-content">
+            <div class="dialog-header">
+              <span class="dialog-title">详情</span>
+              <span class="dialog-close" @click.stop.prevent="closeDialog"><i class="fa fa-times"></i></span>
+            </div>
+            <div class="dialog-table">
+              <table>
+                <tr class="dialog-item" v-for="item in dialogData">
+                  <td class="item-box">{{item.name}}</td>
+                  <td class="item-box">{{item.value}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </transition>
+
     </div>
 </template>
 
@@ -105,6 +139,8 @@ export default {
       hasHit:false,//是否有数据
       isInit:true,//是否首次加载
       source: null, // axios请求对象
+      isShowBox:false,
+      dialogData:[]
     }
   },
   mounted(){
@@ -113,6 +149,25 @@ export default {
     _this.search()
   },
   methods:{
+    //关闭弹层
+    closeDialog(){
+      this.isShowBox = false;
+      this.dialogData = [];
+    },
+    //弹层显示具体内容
+    showDetail(item){
+      console.log(item);
+      var _this = this;
+      var content = [];
+      for(var i = 0;i<item.length;i++){
+        var obj = {};
+        obj['name'] = _this.header[i];
+        obj['value'] = item[i];
+        content.push(obj);
+      }
+      this.dialogData = content;
+      this.isShowBox = true;
+    },
     //选择查询结果
     checkResult(currMenu,id,totalPage,isLoad,index,flag){
 
@@ -371,6 +426,72 @@ export default {
 <style lang="scss" scoped>
   #search-result{
     height: 100%;
+    .fade-enter-active, .fade-leave-active{
+      opacity: 1;
+      transition: opacity .3s;
+    }
+    .fade-enter, .fade-leave-active{
+      opacity: 0;
+    }
+    #float-box{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,.3);
+      z-index: 200;
+      .dialog-content{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        background: #fff;
+        width: 80%;
+        height: 80%;
+        border-radius: 5px;
+        min-width: 970px;
+        .dialog-header{
+          height: 50px;
+          line-height: 50px;
+          width: 100%;
+          .dialog-title{
+            font-size: 16px;
+            margin-left: 20px;
+          }
+          .dialog-close{
+            float: right;
+            margin-right: 20px;
+            color: #84d1db;
+            cursor: pointer;
+          }
+        }
+        .dialog-table{
+          height: calc(100% - 50px);
+          overflow: auto;
+          table{
+            border:solid 1px #ddd;
+            width: 100%;
+            .dialog-item{
+              width: 100%;
+              height: 30px;
+              line-height: 30px;
+              text-align: center;
+              .item-box{
+                display: inline-block;
+                width: calc(50% - 0.5px);
+              }
+              .item-box:last-child{
+                border-left: solid 1px #ddd;
+              }
+            }
+            .dialog-item:nth-child(even){
+              background: #ebebeb;
+            }
+          }
+        }
+      }
+    }
     #head{
       height: 50px;
       width: 100%;
