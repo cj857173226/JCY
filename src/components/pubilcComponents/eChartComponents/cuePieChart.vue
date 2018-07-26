@@ -74,7 +74,6 @@ export default {
         },
         //切换导航
         changeNav(index){
-            console.log("屏幕大小变换");
             if (this.myChart != null && this.myChart != "" && this.myChart != undefined) {
               this.myChart.dispose();
             }

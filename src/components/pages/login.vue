@@ -119,7 +119,6 @@
       },
       inputFoucs: function() {
         var _this = this;
-        console.log(_this.username.trim().length)
         if(_this.password.trim() == ''&& _this.username.trim() !='') {
           _this.$refs.password.focus()
         } else if(_this.password.trim() != '' && _this.username.trim() != '') {

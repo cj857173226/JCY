@@ -170,7 +170,6 @@ export default {
                 timeout:10000
             }).then(function(response){
                 if(response.data.code == 0){
-                    console.log('已读');
                 }else{
                     _this.$message({
                         message:'已读出现错误,请联系维护人员',

@@ -131,7 +131,6 @@ export default {
     },
     //移动地图
     moveToCenter(scope){
-      console.log(scope);
       var data = scope.row;
       var name = scope.store.states.columns;
       var position = '';
@@ -201,7 +200,6 @@ export default {
       }else if(_this.checkedTable.length == 0){
         _this.currIdArr =[];
       }
-      console.log(_this.currIdArr)
 
     },
     //获取当前表格数据

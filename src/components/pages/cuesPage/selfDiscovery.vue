@@ -8,14 +8,11 @@
         <div class="title">自行发现线索</div>
 
       </div>
-      <div class="manage-icon">
-        <i @click="addClue"  class="el-icon-circle-plus-outline"></i>
-      </div>
       <div class="search-wrap clearfix">
         <input class="search-ipt" type="text" v-model="keyword" placeholder="请输入内容" @keyup.13="getSelfCueList">
         <span class="search-btn" @click="getSelfCueList()">
-            <i class="iconfont icon-sousuo"></i>
-          </span>
+          <i class="iconfont icon-sousuo"></i>
+        </span>
       </div>
     </div>
     <div class="main-body">
@@ -38,6 +35,10 @@
               {{item}}
             </div>
           </div>
+        </div>
+        
+        <div class="manage-icon">
+          <i @click="addClue"  class="el-icon-circle-plus-outline"></i>
         </div>
       </div>
       <div class="cue-filter-wrap">
@@ -265,17 +266,6 @@
       line-height: 50px;
       background: #EEEEEE;
       border-bottom: 1px solid #dcdcdc;
-      .manage-icon{
-        font-size: 25px;
-        float: right;
-        margin-right: 10px;
-        &:hover {
-          cursor: pointer;
-        }
-        i {
-          color: green;
-        }
-      }
       /*标题*/
       .title-wrap{
         float: left;
@@ -350,6 +340,20 @@
       padding: 0 50px;
       .cue-types-wrap{
         border: 1px solid #dcdcdc;
+        position: relative;
+        .manage-icon{
+          font-size: 30px;    
+          margin-right: 20px;
+          position: absolute;
+          right: 0;
+          top: 50%;
+          &:hover {
+            cursor: pointer;
+          }
+          i {
+            color: green;
+          }
+        }
         .title-wrap{
           background: #EEEEEE;
           padding-left: 20px;

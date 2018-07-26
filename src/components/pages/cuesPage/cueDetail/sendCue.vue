@@ -16,9 +16,7 @@ export default {
         }
     },
     mounted(){
-        if(this.$route.query.type == 5){
-            this.XJYget();
-        }
+        this.XJYget();
     },
     methods:{
         //获取下级院
@@ -40,7 +38,6 @@ export default {
         },
         //确认分流
         confirmBtn(){
-            console.log(this.text);
             var _this = this;
             this.axios({
                 method:'post',

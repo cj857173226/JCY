@@ -47,6 +47,7 @@ export default {
         this.identity = localStorage.IdentityType;
     },
     methods:{
+        //获取办理结果
         //提交按钮
         submitBtn(){
             var _this = this;
@@ -60,7 +61,6 @@ export default {
                     url:webApi.ClueManager.ReportResult.format({id:this.$route.query.id,bljgjs:this.textData}),
                     timeout: 10000
                 }).then(function(response){
-                    console.log(response);
                     _this.isLoad = false;
                     if(response.data.code == 0){
                         this.textData = '';

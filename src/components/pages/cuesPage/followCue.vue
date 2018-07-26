@@ -212,7 +212,6 @@
       },
       remove(id) {//移除关注
         let url = (webApi.ClueManager.UnFollowClue).format({id: id});
-        console.log(url);
         this.axios({
           method: 'post',
           url: url,
@@ -279,7 +278,7 @@
         _this.isLoading = true;
         _this.axios({
           url: (webApi.ClueManager.GetFollowClues).format(data),
-          timeout: 4000
+          timeout: 10000
         }).then(function(res){
           if(res.data.code==0){
             let data = res.data.data.data;
@@ -314,11 +313,6 @@
           }
         }).catch(function(err){
           _this.isLoading = false;
-          _this.$message({
-            showClose: true,
-            message: err.data.errorMessage,
-            duration:2000
-          })
         })
       },
       //取消关注线索

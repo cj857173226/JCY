@@ -218,12 +218,30 @@
       })
       this.$root.Bus.$on('boxMenu',function(item){
         console.log(item);
-        if(item=='关注线索总量'){
-          _this.isThisNav = '关注线索';
-        }else if(item=='已办理线索'){
-          _this.isThisNav = '关注线索';
-        }else if(item=='举报接收线索'){
-          _this.isThisNav = '举报线索';
+        if(_this.IdentityType == 1){ //管理员
+          if(item=='关注线索总量'){
+            _this.isThisNav = '关注线索';
+          }else if(item=='已办理线索'){
+            _this.isThisNav = '关注线索';
+          }else if(item=='举报接收线索'){
+            _this.isThisNav = '举报线索';
+          }
+        }else if(_this.IdentityType == 3){ //领导
+          if(item=='在办线索总量'){
+            _this.isThisNav = '待审批';
+          }else if(item=='已办理线索'){
+            _this.isThisNav = '已审批';
+          }else if(item=='举报接收线索'){
+            _this.isThisNav = '待审批';
+          }
+        }else if(_this.IdentityType == 5){ //下级院
+          if(item=='待接收线索'){
+            _this.isThisNav = '待接收';
+          }else if(item=='已接收线索'){
+            _this.isThisNav = '待反馈';
+          }else if(item=='已办理线索'){
+            _this.isThisNav = '已反馈';
+          }
         }
         console.log(_this.isThisNav);
       })

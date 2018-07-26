@@ -133,7 +133,7 @@
             width="100">
             <template slot-scope="scope">
               <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
-              <el-button  type="text" size="small">接收</el-button>
+              <el-button @click="comfirmReceive()" type="text" size="small">接收</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -193,6 +193,11 @@
       this.tableResize();
     },
     methods:{
+      //确认接受
+      comfirmReceive(){
+
+      },
+      //时间初始化
       timeFormat(date) {
         if(date) {
           let time = date;

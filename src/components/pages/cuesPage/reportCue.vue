@@ -169,7 +169,6 @@
             if(res.data.code == 0){
               let data = res.data.data.data;
               _this.reportCueList = data;
-              console.log(data)
               _this.totalPages = res.data.data.total;
             }else {
               _this.$message.error(res.data.errorMessage);
