@@ -71,24 +71,24 @@
             <li>
               <img src="../../../assets/UAV/UAV2.jpg" alt="">
             </li>
-            <li>
-              <img src="../../../assets/UAV/UAV1.jpg" alt="">
-            </li>
-            <li>
-              <img src="../../../assets/UAV/UAV2.jpg" alt="">
-            </li>
-            <li>
-              <img src="../../../assets/UAV/UAV1.jpg" alt="">
-            </li>
-            <li>
-              <img src="../../../assets/UAV/UAV2.jpg" alt="">
-            </li>
-            <li>
-              <img src="../../../assets/UAV/UAV1.jpg" alt="">
-            </li>
-            <li>
-              <img src="../../../assets/UAV/UAV2.jpg" alt="">
-            </li>
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
+            <!--</li>-->
+            <!--<li>-->
+              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
+            <!--</li>-->
           </ul>
           <!--分页-->
           <div class="page-wrap" style="clear: both;">
@@ -143,7 +143,7 @@
         addThemeDialogVisible: false,//添加主题对话框显示
         addThemeName:"",//添加主题名称
         addThemeTime: "",//添加主题时间
-        themeList: [{name:'adf',time:'2018-08-22'}],//主题列表
+        themeList: [{name:'空气污染',time:'2018-08-22'}],//主题列表
         selectThemeIndex: 0,//选中主题索引
         keyword: "",//关键字
         timeSearch: '',//时间范围
