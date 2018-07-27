@@ -67,6 +67,11 @@
         this.noChrome = true;
       }
 
+      window.onkeyup=function(e){
+       if(e.keyCode ==13){
+         _this. loginClick()
+       }
+      }
 
     },
     methods: {
