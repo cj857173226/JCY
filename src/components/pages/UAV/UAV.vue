@@ -33,17 +33,21 @@
       <div class="UAV_theme">
         <!--添加主题-->
         <div class="add_theme_wrap">
-          <div class="add_theme">
+          <div class="add_theme" @click="toggleAddTheme">
             <i class="fa fa-plus-square-o"></i>
             添加主题
           </div>
         </div>
         <!--主题列表-->
         <ul class="theme_list">
-          <li>
-            <span class="theme_name">气体污染</span>
-            <span class="theme_time">2018-07-25</span>
+          <li  @click="selectTheme(index)" :class="index==selectThemeIndex?'selectTheme':''" v-for="(item,index) in themeList" :key="index">
+            <span class="theme_name" v-text="item.name">{{index}}</span>
+            <span class="theme_time" v-text="item.time"></span>
           </li>
+          <!--<li>-->
+            <!--<span class="theme_name">气体污染</span>-->
+            <!--<span class="theme_time">2018-07-25</span>-->
+          <!--</li>-->
         </ul>
       </div>
       <!--主题图片内容-->
@@ -99,6 +103,36 @@
         </div>
       </div>
     </div>
+    <!--添加主题对话框-->
+    <transition name="toggleShow">
+      <div class="UAV_dialog_wrap" v-show="addThemeDialogVisible">
+        <div class="UAV_dialog">
+          <div class="UAV_dialog_header">
+            <span>添加主题</span>
+            <i class="fa fa-times-circle-o" @click="toggleAddTheme"></i>
+          </div>
+          <el-form class="UAV_form"  label-width="80px">
+            <el-form-item label="主题名称">
+              <el-input style="max-width:220px;" v-model="addThemeName"></el-input>
+            </el-form-item>
+            <el-form-item label="选择时间">
+              <el-date-picker
+                v-model="addThemeTime"
+                type="date"
+                placeholder="选择日期"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+              >
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item>
+              <el-button class="confirmBtn" @click="confirmAddTheme">确定</el-button>
+              <el-button @click="toggleAddTheme">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -106,6 +140,11 @@
   export default {
     data() {
       return {
+        addThemeDialogVisible: false,//添加主题对话框显示
+        addThemeName:"",//添加主题名称
+        addThemeTime: "",//添加主题时间
+        themeList: [{name:'空气污染',time:'2018-08-22'}],//主题列表
+        selectThemeIndex: 0,//选中主题索引
         keyword: "",//关键字
         timeSearch: '',//时间范围
         pageSize: 20,//每页数量
@@ -120,6 +159,37 @@
       }
     },
     methods: {
+      selectTheme(index){//选择主题
+        this.selectThemeIndex = index;
+      },
+      confirmAddTheme() {//确认添加主题
+        if(!this.addThemeName) {
+          this.$message({
+            message: "请填写主题名称",
+            showClose: true,
+            duration: 2000,
+            type: "error"
+          });
+          return;
+        }
+        if(!this.addThemeTime) {
+          this.$message({
+            message: "请选择时间",
+            showClose: true,
+            duration: 2000,
+            type: "error"
+          });
+          return;
+        }
+        this.themeList.push({name:this.addThemeName,time:this.addThemeTime});
+        this.toggleAddTheme();
+        // console.log(`名称:${this.addThemeName},时间:${this.addThemeTime}`)
+      },
+      toggleAddTheme() {//切换显示添加主题
+        this.addThemeDialogVisible = !this.addThemeDialogVisible;
+        this.addThemeName = "";
+        this.addThemeTime = "";
+      },
       getTheme(){//搜索主题
 
       },
@@ -146,6 +216,70 @@
     height: 100%;
     font-size: 16px;
     overflow: hidden;
+    .UAV_dialog_wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background-color: rgba(0,0,0,.4);
+      &.toggleShow-enter-active,
+      &.toggleShow-leave-active {
+        transition: opacity .5s;
+      }
+      &.toggleShow-enter,
+      &.toggleShow-leave-to {
+        opacity: 0;
+      }
+      .UAV_dialog {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: 490px;
+        height: 320px;
+        border-radius: 8px;
+        background-color: rgba(0,166,90,1);
+        padding: 0 5px 5px 5px;
+        .UAV_dialog_header {
+          position: relative;
+          height: 60px;
+          text-align: center;
+          line-height: 60px;
+          font-size: 20px;
+          font-weight: bold;
+          color: #fff;
+          i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translate(0,-50%);
+            color: #fff;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+        .UAV_form {
+          width: 100%;
+          height: calc( 100% - 60px);
+          background-color: #fff;
+          border-radius: 0 0 5px 5px;
+          padding-left: 75px;
+          padding-top: 38px;
+          font-size: 18px;
+          font-weight: bold;
+          .confirmBtn {
+            background-color:rgba(0,166,90,1);
+            color:#fff;
+            &:hover {
+              background-color: rgba(52, 177, 120, 0.83);
+            }
+          }
+        }
+      }
+    }
     /*头部*/
     .UAV_header {
       height: 50px;
@@ -236,6 +370,7 @@
             color: #fff;
             &:hover {
               cursor: pointer;
+              background-color: rgba(52, 177, 120, 0.83);
             }
           }
         }
@@ -253,6 +388,7 @@
             font-size: 16px;
             &:hover {
               cursor: pointer;
+              border-bottom: 2px solid rgba(142, 140, 141, 0.83);
             }
             .theme_name {
               float: left;
@@ -261,6 +397,12 @@
               float: right;
               font-size: 12px;
               color: rgba(172,170,171,0.83);
+            }
+          }
+          .selectTheme {
+            border-bottom: 2px solid rgba(0,166,90,0.83);
+            &:hover {
+              border-bottom: 2px solid rgba(0,166,90,0.83);
             }
           }
         }
@@ -285,6 +427,7 @@
           text-align: center;
           &:hover {
             cursor: pointer;
+            background-color: rgba(52, 177, 120, 0.83);
           }
         }
       }
@@ -300,6 +443,7 @@
             float: left;
             width: calc(20% - 10px);
             height: 300px;
+            min-width: 250px;
             margin-right: 10px;
             margin-bottom: 40px;
             overflow: hidden;

@@ -40,10 +40,9 @@ axios.interceptors.response.use(response=>{
   return response;
 },err => {
   if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1){
-    console.log(1);
-    console.log(Element);
     //超时处理
-    ElementUI.message.error('请求超时,请重新请求');
+    console.log(ElementUI);
+    alert('请求超时,请重新请求');
   }
   if(err.response){
     if(err.response.status == 403){

@@ -11,11 +11,17 @@
       <div class="follow_filter">
         <el-form class="follow_form" :inline="true" >
           <el-form-item label="所属领域 :">
-            <el-select class="follow_select" v-model="xslb">
-              <el-option label="全部" value="" ></el-option>
-              <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
-            </el-select>
-          </el-form-item>
+          <el-select class="follow_select" v-model="xslb">
+            <el-option label="全部" value="" ></el-option>
+            <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="是否审批 :">
+          <el-select style="width: 70px;" v-model="sfsp">
+            <el-option label="是" value="true"></el-option>
+            <el-option label="否" value="false"></el-option>
+          </el-select>
+        </el-form-item>
           <el-form-item label="线索来源 :">
             <el-select class="follow_select" v-model="xssjbly">
               <el-option label="全部" value=""></el-option>
@@ -152,6 +158,7 @@
         total: 0,//总条数
         timeSearch:[],
         xssjbly: "",//线索数据来源
+        sfsp: "true",//是否审批
       }
     },
     mounted() {
@@ -212,7 +219,6 @@
       },
       remove(id) {//移除关注
         let url = (webApi.ClueManager.UnFollowClue).format({id: id});
-        console.log(url);
         this.axios({
           method: 'post',
           url: url,
@@ -274,12 +280,13 @@
           'endDate': _this.timeSearch[1],
           "xslb": _this.xslb,
           "order": "",
-          "xssjbly": _this.xssjbly
+          "xssjbly": _this.xssjbly,
+          // "sfsp": _this.sfsp
         };
         _this.isLoading = true;
         _this.axios({
           url: (webApi.ClueManager.GetFollowClues).format(data),
-          timeout: 4000
+          timeout: 10000
         }).then(function(res){
           if(res.data.code==0){
             let data = res.data.data.data;
@@ -314,11 +321,6 @@
           }
         }).catch(function(err){
           _this.isLoading = false;
-          _this.$message({
-            showClose: true,
-            message: err.data.errorMessage,
-            duration:2000
-          })
         })
       },
       //取消关注线索

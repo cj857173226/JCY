@@ -1,7 +1,7 @@
 <template>
     <div class="amap-page-container" v-loading="isLoad">
         <el-amap ref="map" vid="amap" :center="center" :zoom="zoom" class="amap-demo">
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers1" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events" v-for="(item,index) in markers1" :position="item.position" :template="item.template"></el-amap-marker>
             <el-amap-marker :events="item.events"  v-for="(item,index) in markers2" :position="item.position" :template="item.template"></el-amap-marker>
             <el-amap-marker :events="item.events"  v-for="(item,index) in markers3" :position="item.position" :template="item.template"></el-amap-marker>
             <el-amap-marker :events="item.events"  v-for="(item,index) in markers4" :position="item.position" :template="item.template"></el-amap-marker>

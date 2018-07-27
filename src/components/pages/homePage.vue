@@ -9,26 +9,59 @@
             <i class="fa  fa-3x" :class="item.icon"></i>
           </div>
           <div class="analysis_more" v-text="item.title"></div>
-          <div class="hover-box" >
-            <div class="hover-item clearfix" v-show='IdentityType==1' >
+          <!-- 管理员 -->
+          <div class="hover-box" v-show='IdentityType==1'>
+            <div class="hover-item clearfix"  >
               <div class="left"> <i class="iconfont icon-biaoqian1"></i>举报线索数量</div>
               <div class="right">{{reportClueTotal}}</div>
             </div>
-            <div class="hover-item clearfix" v-show='IdentityType==1'>
+            <div class="hover-item clearfix">
               <div class="left"><i class="iconfont icon-changyonglogo46"></i>互联网线索数量</div>
               <div class="right">{{internetClueTotal}}</div>
             </div>
-            <div class="hover-item clearfix" v-show='IdentityType==1'>
+            <div class="hover-item clearfix">
               <div class="left"><i class="iconfont icon-ai62"></i>公益组织线索数量</div>
-              <div class="right">0</div>
+              <div class="right">{{welfareCueTotal}}</div>
             </div>
-            <div class="hover-item clearfix" v-show='IdentityType==1'>
+            <div class="hover-item clearfix">
               <div class="left"><i class="iconfont icon-remen"></i>热点线索数量</div>
-              <div class="right">0</div>
+              <div class="right">{{heartCueTotal}}</div>
             </div>
-            <div class="hover-item clearfix" v-show='IdentityType==1'>
+            <div class="hover-item clearfix">
               <div class="left"><i class="fa fa-search-plus"></i>自行发现线索数量</div>
-              <div class="right">0</div>
+              <div class="right">{{selfCueTotal}}</div>
+            </div>
+          </div>
+
+          <!-- 领导 -->
+          <div class="hover-box" v-show='IdentityType==3'>
+            <div class="hover-item clearfix"  >
+              <div class="left"> <i class="iconfont icon-biaoqian1"></i>待审批线索数量</div>
+              <div class="right">{{waitApproval}}</div>
+            </div>
+            <div class="hover-item clearfix">
+              <div class="left"><i class="iconfont icon-changyonglogo46"></i>已审批线索数量</div>
+              <div class="right">{{alreadyApproval}}</div>
+            </div>
+            <div class="hover-item clearfix">
+              <div class="left"><i class="iconfont icon-ai62"></i>已反馈线索数量</div>
+              <div class="right">{{alreadyFeedback}}</div>
+            </div>
+          </div>
+
+          <!-- 下级院 -->
+          <div class="hover-box" v-show='IdentityType==5'>
+            <div class="hover-item clearfix"  >
+              <div class="left"> <i class="iconfont icon-biaoqian1"></i>待接收线索数量</div>
+              <div class="right">{{waitReceive}}</div>
+            </div>
+            <div class="hover-item clearfix">
+              <div class="left"><i class="iconfont icon-changyonglogo46"></i>待反馈线索数量</div>
+              <div class="right">{{alreadyReceive}}</div>
+            </div>
+            <div class="hover-item clearfix">
+              <div class="left"><i class="iconfont icon-ai62"></i>已反馈线索数量</div>
+              <div class="right">{{alreadyFinish}}</div>
             </div>
           </div>
         </div>
@@ -117,6 +150,17 @@
         // hoverBoxShow:false,//线索总数框显示
         internetClueTotal:0,//互联网线索总数
         reportClueTotal:0,//举报线索总数
+        welfareCueTotal:0, //公益组织线索
+        heartCueTotal:0, //热点线索
+        selfCueTotal:0, //自行发现线索
+        //领导数量统计
+        waitApproval:0,
+        alreadyApproval:0,
+        alreadyFeedback:0,
+        //下级院数量统计
+        waitReceive:0,
+        alreadyReceive:0,
+        alreadyFinish:0,
 
       }
     },
@@ -153,7 +197,7 @@
 
         })
       },
-      //获取互联网线索总数
+      //获取互联网线索总数(管理员)
       getInterClueTotal(){
         let _this = this;
         let url = webApi.Clue.GetWebClues.format({keyword:'',type:'',site:'',order:'cjsj',p:1,ps:20})
@@ -170,7 +214,7 @@
 
         })
       },
-      //获取举报线索总数
+      //获取举报线索总数(管理员)
       getReportClueTotal(){
         let _this = this;
         let url = webApi.Clue.GetReportClues.format({keyword:'',type:'',p:1,ps:20})
@@ -206,20 +250,54 @@
       },
       linkTo(item){
         this.$root.Bus.$emit('boxMenu',item.title);
-        if(item.title == '线索总量'){
-           return
-        }else if(item.title=='关注线索总量'){
-          this.$router.push({
-            path: '/home/followCue'
-          });
-        }else if(item.title=='已办理线索'){
-          this.$router.push({
-            path: '/home/followCue?status=1'
-          });
-        }else if(item.title=='举报接收线索'){
-          this.$router.push({
-            path: '/home/reportCue'
-          });
+        if(this.IdentityType == 1){  //管理员
+          if(item.title == '线索总量'){
+            return
+          }else if(item.title=='关注线索总量'){
+            this.$router.push({
+              path: '/home/followCue'
+            });
+          }else if(item.title=='已办理线索'){
+            this.$router.push({
+              path: '/home/followCue?status=1'
+            });
+          }else if(item.title=='举报接收线索'){
+            this.$router.push({
+              path: '/home/reportCue'
+            });
+          }
+        }else if(this.IdentityType == 3){ //领导
+          if(item.title == '线索总量'){
+            return
+          }else if(item.title=='在办线索总量'){
+            this.$router.push({
+              path: '/home/waitApproval'
+            });
+          }else if(item.title=='已办理线索'){
+            this.$router.push({
+              path: '/home/allreadyApproval'
+            });
+          }else if(item.title=='举报接收线索'){
+            this.$router.push({
+              path: '/home/waitApproval'
+            });
+          }
+        }else if(this.IdentityType == 5){
+          if(item.title == '线索总量'){
+            return
+          }else if(item.title=='待接收线索'){
+            this.$router.push({
+              path: '/home/waitReceive'
+            });
+          }else if(item.title=='已接收线索'){
+            this.$router.push({
+              path: '/home/waitFeedback'
+            });
+          }else if(item.title=='已办理线索'){
+            this.$router.push({
+              path: '/home/complete'
+            });
+          }
         }
       },
       getNewsData() {//获取新闻动态信息、知识库信息
@@ -377,6 +455,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
+            _this.waitApproval = res.data.data;
             setDataCount(_this.dataCount[1],{title: '在办线索总量', val: res.data.data,icon:'fa-indent'});
           }
         }).catch(function(err){
@@ -389,6 +468,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
+            _this.alreadyApproval = res.data.data;
             setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-check-circle'});
           }
         }).catch(function(err){
@@ -414,31 +494,34 @@
       },
       getSubDataCount(setDataCount){//获取下级院主页数据统计信息
         let _this = this;
+        let subTotal = 0;//线索总量
         _this.dataCount = [//数据统计
           {title: "线索总量", val: 0,icon:'fa-list'},
-          {title: "待接收线索", val: 0,icon:'fa-indent'},
+          {title: "待确认接收线索", val: 0,icon:'fa-indent'},
           {title: "已接收线索", val: 0,icon:'fa-check-square'},
           {title: "已办理线索", val: 0,icon:'fa-check-circle'}
         ];
-        // _this.axios({
-        //   method: 'post',
-        //   url: webApi.Host + webApi.Stats.CountClues,
-        //   timeout: 10000,
-        // }).then(function(res){
-        //   if(res.data.code==0){
-        //     setDataCount(_this.dataCount[0],{title: '线索总量', val: res.data.data.Total,icon:'fa-list'});
-        //   }
-        // }).catch(function(err){
-        //   console.log(err)
-        // })
-
         _this.axios({
           method: 'post',
           url: webApi.Host + webApi.Stats.CountUnConfirmClues,
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[1],{title: '待接收线索', val: res.data.data,icon:'fa-indent'});
+            _this.waitReceive = res.data.data;
+            setDataCount(_this.dataCount[1],{title: '待确认接收线索', val: res.data.data,icon:'fa-indent'});
+            subTotal+=res.data.data;
+            _this.axios({
+              method: 'post',
+              url: webApi.Host + webApi.Stats.CountSubReciveClues,
+              timeout: 10000,
+            }).then(function(res){
+              if(res.data.code==0){
+                subTotal+=res.data.data;
+                setDataCount(_this.dataCount[0],{title: '线索总量', val: subTotal,icon:'fa-list'});
+              }
+            }).catch(function(err){
+              console.log(err)
+            })
           }
         }).catch(function(err){
           console.log(err)
@@ -450,6 +533,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
+            _this.alreadyReceive = res.data.data;
             setDataCount(_this.dataCount[2],{title: '已接收线索', val: res.data.data,icon:'fa-check-square'});
           }
         }).catch(function(err){
@@ -462,6 +546,7 @@
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
+            _this.alreadyFinish = res.data.data;
             setDataCount(_this.dataCount[3],{title: '已办理线索', val: res.data.data,icon:'fa-check-circle'});
           }
         }).catch(function(err){

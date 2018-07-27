@@ -211,9 +211,9 @@
          let url = webApi.Clue.GetWebClues.format({keyword:_this.keyword,type:_this.type,site:_this.site,order:_this.order,p:_this.page,ps:_this.pageSize})
          _this.axios({
            method:'get',
-           url:url
+           url:url,
+           timeout:10000
          }).then(function(res){
-             console.log(res.data)
            _this.isLoad = false;
            if(res.data.code == 0){
              let data = res.data.data.data;
@@ -379,7 +379,6 @@
             method:'post',
             url:webApi.ClueManager.UnFollowClue.format({xsid:clueId,xssjbly:clueType})
           }).then(function(res){
-            console.log(res)
             if(res.data.code == 0){
               _this.getInternetCueList()
             }else {

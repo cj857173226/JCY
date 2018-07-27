@@ -4,21 +4,21 @@
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">初核意见</div>
             <div class="advise-content">
-                <span class="no-result" v-show="textData == ''">暂无初核意见</span>
-                <span v-html="textData"></span>
+                <span class="no-result" v-show="firstData == ''">暂无初核意见</span>
+                <span v-html="firstData"></span>
             </div>
         </div>
-        <div class="advise advise-notice">
+        <div class="advise advise-notice" v-show="isSubmitFirst">
             <i class="timeline-icon fa fa-circle-thin"></i>
-            <span>已提交，等待领导审批</span>
-            <span>已审批</span>
+            <span v-show="isSubmitFirst&&!isSubmitLeader">已提交，等待领导审批</span>
+            <span v-show="isSubmitFirst&&isSubmitLeader">已审批</span>
         </div>
-        <div class="advise">
+        <div class="advise" v-show="isSubmitFirst&&!isSubmitLeader">
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">审批意见</div>
             <div class="advise-content">
-                <!-- <span v-html="textData"></span> -->
-                <pre>{{textData}}</pre>
+                <!-- <span v-html="leaderData"></span> -->
+                <pre>{{leaderData}}</pre>
             </div>
         </div>
         <div class="advise edit-advise" v-if="identity == 1 || identity == 3">
@@ -39,8 +39,9 @@
 export default {
     data(){
         return {
-            editorText:'',
-            textData:'',
+            editorText:'', //编辑意见
+            firstData:'', //初核意见
+            leaderData:'', //审批意见
             //编辑器菜单栏设置
             items:[
             'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
@@ -53,16 +54,21 @@ export default {
             'anchor', 'link', 'unlink', '|', 'about'
             ],
             identity:null, //权限
+            XSBH:'',
+            isSubmitFirst:false,
+            isSubmitLeader:false,
         }
     },
     mounted(){
         var _this = this;
         this.identity = localStorage.IdentityType;
+        this.XSBH = this.$route.query.id;
     },
     methods:{
         //获取初核意见
         getFirstText(){
             var _this = this;
+            this.firstData = this.editorText;
             this.axios({
                 
             })
@@ -75,37 +81,41 @@ export default {
         submitBtn(){
             var _this = this;
             if(this.editorText.trim() == ''){
-                console.log('为空');
                 this.$message({
                     message:'请输入内容',
                     type:'error'
                 })
             }else{
-                this.textData = this.editorText
                 if(!localStorage.IdentityType){
                     window.location.reload()
                 }else{
                     if(this.identity == 1){
                         //管理员
-                        // var param = {
-                            
-                        // }
-                        // _this.axios({
-                        //     method:'post',
-                        //     url:webApi.Host + webApi.ClueManager.SaveClueOpinion,
-                        //     data:param,
-                        //     timeout: 10000
-                        // }).then(function(response){
-                        //     if(response.data.code == 0){
+                        var param = {
+                            xsbh:_this.XSBH,
+                            xschyj:_this.editorText,
+                        }
+                        _this.axios({
+                            method:'post',
+                            url:webApi.Host + webApi.ClueManager.SaveClueOpinion,
+                            data:param,
+                            timeout: 10000
+                        }).then(function(response){
+                            if(response.data.code == 0){
+                                _this.$message({
+                                    message:'提交成功',
+                                    type:'success',
+                                })
+                                _this.getFirstText();
+                            }else{
 
-                        //     }else{
+                            }
+                        }).catch(function(error){
 
-                        //     }
-                        // }).catch(function(error){
-
-                        // })
+                        })
                     }else if(this.identity == 3){
                         //领导
+                        
                     }
                 }
             }

@@ -156,7 +156,6 @@ export default {
     },
     //弹层显示具体内容
     showDetail(item){
-      console.log(item);
       var _this = this;
       var content = [];
       for(var i = 0;i<item.length;i++){

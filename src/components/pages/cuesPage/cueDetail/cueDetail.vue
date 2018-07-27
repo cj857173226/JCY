@@ -405,7 +405,6 @@ export default {
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
                                 let preCue = response.data.data.data[0].XSBH;
                                 params['id'] = preCue;
-                                console.log(params);
                                 _this.$router.push({
                                     path:'/home/cueDetail',
                                     query:params
@@ -429,8 +428,6 @@ export default {
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
                                 let preCue = response.data.data.data[0].XSBH;
                                 params['id'] = preCue;
-                                console.log(params);
-                                console.log("互联网线索");
                                 _this.$router.push({
                                     path:'/home/cueDetail',
                                     query:params
@@ -663,7 +660,6 @@ export default {
     //         this.cueList = JSON.parse(localStorage.getItem('cueList')); //获取线索列表
     //         this.cueIndex = parseInt(localStorage.getItem('cueIndex')); //获取线索索引
     //         this.pageNum = parseInt(localStorage.getItem('pageNum')); //获取线索索引
-    //         console.log(this.cueIndex);
     //         this.cueId = this.$route.query.id;
     //     }
     // }
