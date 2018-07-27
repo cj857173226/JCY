@@ -177,6 +177,13 @@
         }else {
           splitNum = 1;
         }
+        if(_this.listName=="市区"){
+          splitNum = 1;
+        }
+        if(_this.mapType=="重庆"){
+          splitNum = 50;
+          maxVal = 10000;
+        }
         var option = {
           tooltip: {
             trigger: 'item',

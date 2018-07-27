@@ -56,13 +56,14 @@ axios.interceptors.response.use(response=>{
     // Check if we've maxed out the total number of retries
     if(config.__retryCount >= config.retry) {
       // Reject with the error
+      Message({
+        message: "请求超时,请重新请求",
+        showClose: true,
+        duration: 2000,
+        type: "error"
+      });
       return Promise.reject(err);
     }
-    Message({
-      message: "请求超时,正在重新请求",
-      showClose: true,
-      duration: 2000
-    });
     // Increase the retry count
     config.__retryCount += 1;
     // Create new promise to handle exponential backoff
