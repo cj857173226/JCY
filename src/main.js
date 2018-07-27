@@ -6,6 +6,7 @@ import router from './router'
 import axios from 'axios' //引入axios
 import 'element-ui/lib/theme-chalk/index.css'; //element-ui主题css
 import ElementUI from 'element-ui'; //引入element-ui
+import { Message } from 'element-ui';//引入element-ui-message
 import 'font-awesome/css/font-awesome.css'; //引入font awsome字体图标
 import '../src/static/webApi.js'; //引入接口
 import '../src/static/common.js';
@@ -36,20 +37,48 @@ axios.interceptors.request.use(config=>{
   return Promise.reject(err);
 })
 //axios响应拦截器
+axios.defaults.retry = 4;//重新请求次数
+axios.defaults.retryDelay = 1200;//请求间隔
 axios.interceptors.response.use(response=>{
   return response;
 },err => {
-  if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1){
-    //超时处理
-    console.log(ElementUI);
-    alert('请求超时,请重新请求');
-  }
   if(err.response){
     if(err.response.status == 403){
       router.push({path:'/login'});
     }
   }
-  return Promise.reject(err);
+  // if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1){
+    var config = err.config;
+    // Set the variable for keeping track of the retry count
+    config.__retryCount = config.__retryCount || 0;
+    // If config does not exist or the retry option is not set, reject
+    if(!config || !config.retry) return Promise.reject(err);
+    // Check if we've maxed out the total number of retries
+    if(config.__retryCount >= config.retry) {
+      // Reject with the error
+      return Promise.reject(err);
+    }
+    Message({
+      message: "请求超时,正在重新请求",
+      showClose: true,
+      duration: 2000
+    });
+    // Increase the retry count
+    config.__retryCount += 1;
+    // Create new promise to handle exponential backoff
+    var backoff = new Promise(function(resolve) {
+      setTimeout(function() {
+        resolve();
+      }, config.retryDelay || 1);
+    });
+    // Return the promise in which recalls axios to retry the request
+    return backoff.then(function() {
+      return axios(config);
+    });
+
+  // }
+
+  // return Promise.reject(err);
 })
 
 
