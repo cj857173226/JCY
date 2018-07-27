@@ -362,10 +362,10 @@ export default {
       .check-wrap{
         height: 200px;
         max-height: 200px;
-        padding: 10px;    
+        padding: 10px;
         background: #fff;
         position: relative;
-        .switch-btn{    
+        .switch-btn{
           position: absolute;
           width: 40px;
           height: 40px;

@@ -31,6 +31,7 @@
               <img v-show="noDataTip == 1" src="../../../assets/search/noData3.png" alt="">
               <img v-show="noDataTip == 2" src="../../../assets/search/noData1.png" alt="">
               <img v-show="noDataTip == 3" src="../../../assets/search/noData2.png" alt="">
+              <img v-show="noDataTip == 4" src="../../../assets/search/noData4.png" alt="">
             </div>
             <div class="cue-list" ref="cueList" >
               <el-table v-show="header.length>0"
@@ -130,7 +131,7 @@ export default {
       currPage:1, //当前页
       totalPages:0,//总页数
       isLoading:false,//是否在加载中
-      noDataTip:1,
+      noDataTip:1,   //无数据提示   1 --> 加载中, 2-->暂无数据 , 3-->单类数据加载, 4-->加载失败
       tableLoad:false, //表格是否加载
       loadCount:0,// 加载计数器
       currId :'', //当前表格查询ID；
@@ -140,7 +141,9 @@ export default {
       isInit:true,//是否首次加载
       source: null, // axios请求对象
       isShowBox:false,
-      dialogData:[]
+      dialogData:[],
+      currTableLoad:false,//当前表格是否在加载
+      currTableIndex: -1,//当前请求表格的索引
     }
   },
   mounted(){
@@ -169,19 +172,18 @@ export default {
     },
     //选择查询结果
     checkResult(currMenu,id,totalPage,isLoad,index,flag){
-
       let _this = this;
-      _this.currMenuIndex = index;
+      _this.currMenuIndex=index;
       if(isLoad){
-        // _this.$message({
-        //   message: '别着急,正在为你加载中',
-        //   type: 'warning'
-        // });
+        _this.currTableLoad = true;
+        _this.currTableIndex = index;
         _this.currMenuOn = currMenu;
         _this.noDataTip=3;
         _this.header = [];
         _this.oTable = [];
       }else {
+        _this.currTableLoad = false;
+        _this.currTableIndex = -1;
           if(flag === undefined){
             _this.currPage = 1;
             _this.currId = id;
@@ -226,7 +228,7 @@ export default {
         //   path:'/home/searchBlank',
         //   query:{keyword:_this.keyword.trim()}
         // });
-        
+
         this.$router.push({
           path:'/home/searchResult',
           query:{keyword:_this.keyword.trim()}
@@ -308,10 +310,16 @@ export default {
               _this.sideMenuList[j]['isLoad'] =false;
             }
           }
+          if(_this.currMenuOn !='' && _this.currTableIndex != -1 &&  _this.currTableLoad){
+            _this.currTableLoad = false;
+            _this.currTableIndex = -1;
+            _this.checkResult(_this.sideMenuList[_this.currMenuIndex].name,_this.sideMenuList[_this.currMenuIndex].numId,_this.sideMenuList[_this.currMenuIndex].hit,_this.sideMenuList[_this.currMenuIndex].isLoad,_this.currMenuIndex);
+          }
+
           if(_this.loadCount == _this.sideMenuList.length ){
 
-            if(_this.currMenuOn !=''){
-              _this.checkResult(_this.sideMenuList[ _this.currMenuIndex].name,_this.sideMenuList[ _this.currMenuIndex].numId,_this.sideMenuList[ _this.currMenuIndex].hit,_this.sideMenuList[ _this.currMenuIndex].isLoad, _this.currMenuIndex)
+            if(_this.currMenuOn !='' ){
+                return
             }else {
               for(let i =0;i<_this.sideMenuList.length;i++){
                 _this.checkResult(_this.sideMenuList[i].name,_this.sideMenuList[i].numId,_this.sideMenuList[i].hit,_this.sideMenuList[i].isLoad, i,'1');
@@ -321,6 +329,7 @@ export default {
                 }else if((_this.sideMenuList.length - 1)== i && _this.hasHit ==0 ){
                   _this.checkResult(_this.sideMenuList[0].name,_this.sideMenuList[0].numId,_this.sideMenuList[0].hit,_this.sideMenuList[0].isLoad, 0);
                 }
+
               }
             }
           }
@@ -343,21 +352,27 @@ export default {
       _this.axios({
         method:'get',
         cancelToken: this.source.token,
-        url:webApi.WebData.SearchDetail.format({sjsybh:_this.currId,keywords:_this.keyword,p:_this.currPage,ps:_this.pageSize})
+        url:webApi.WebData.SearchDetail.format({sjsybh:_this.currId,keywords:_this.keyword,p:_this.currPage,ps:_this.pageSize}),
+        timeout: 1000 * 30,
       }).then((res)=>{
         _this.tableLoad = false;
         if(res.data.code==0){
           let header = [];
           let tbody = [];
           let data = res.data.data;
+          console.log(data)
           if(data.length>0){
             for ( let key in data[0]){
-              header.push(key)
+              if(key.trim()!=='表名称'|| key.trim() !='经纬度'){
+                header.push(key)
+              }
             }
             for(let i=0;i<data.length ;i++){
               let arr = [];
               for(let val in data[i]){
-                arr.push(data[i][val]);
+                if(val.trim()!=='表名称'||val.trim() !='经纬度'){
+                  arr.push(data[i][val]);
+                }
               }
               tbody.push(arr)
             }
@@ -380,6 +395,7 @@ export default {
       }).catch((err)=>{
         _this.tableLoad = false;
         if(err.message.trim()!='中断请求'){
+          _this.noDataTip = 4;
           _this.$message({
             message: '发生错误',
             type: 'error'
