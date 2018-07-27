@@ -360,17 +360,16 @@ export default {
           let header = [];
           let tbody = [];
           let data = res.data.data;
-          console.log(data)
           if(data.length>0){
             for ( let key in data[0]){
-              if(key.trim()!=='表名称'|| key.trim() !='经纬度'){
+              if(key.trim()!='表名称' && key.trim() !='经纬度'){
                 header.push(key)
               }
             }
             for(let i=0;i<data.length ;i++){
               let arr = [];
               for(let val in data[i]){
-                if(val.trim()!=='表名称'||val.trim() !='经纬度'){
+                if(val.trim()!='表名称' && val.trim() !='经纬度'){
                   arr.push(data[i][val]);
                 }
               }

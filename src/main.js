@@ -57,24 +57,28 @@ axios.interceptors.response.use(response=>{
     if(config.__retryCount >= config.retry) {
       // Reject with the error
       return Promise.reject(err);
+      Message({
+        message: "请求超时,正在重新请求",
+        showClose: true,
+        duration: 2000
+      });
     }
-    Message({
-      message: "请求超时,正在重新请求",
-      showClose: true,
-      duration: 2000
-    });
+
     // Increase the retry count
     config.__retryCount += 1;
-    // Create new promise to handle exponential backoff
-    var backoff = new Promise(function(resolve) {
-      setTimeout(function() {
-        resolve();
-      }, config.retryDelay || 1);
-    });
-    // Return the promise in which recalls axios to retry the request
-    return backoff.then(function() {
-      return axios(config);
-    });
+    console.log(config)
+    if(config.url.indexOf('SearchIndex')<0 && config.url.indexOf('SearchDetail')<0 ){
+      // Create new promise to handle exponential backoff
+      var backoff = new Promise(function(resolve) {
+        setTimeout(function() {
+          resolve();
+        }, config.retryDelay || 1);
+      });
+      // Return the promise in which recalls axios to retry the request
+      return backoff.then(function() {
+        return axios(config);
+      });
+    }
 
   // }
 
