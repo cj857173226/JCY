@@ -314,7 +314,7 @@
         _this.axios({//新闻动态
           method: 'get',
           url: (webApi.News.GetTopNews).format({'top': 6}),
-          timeout: 1,
+          timeout: 10000,
         }).then(function(res){
           if(res.data.code==0) {
             setDataContent(res.data.data.data);
@@ -328,7 +328,7 @@
         _this.axios({//知识库
           method: 'get',
           url: (webApi.Knowledge.GetTop).format({'top': 6}),
-          timeout: 1,
+          timeout: 10000,
         }).then(function(res){
           if(res.data.code==0) {
             setDataContent(res.data.data.data);

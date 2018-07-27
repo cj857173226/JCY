@@ -1,16 +1,16 @@
 <template>
     <div class="amap-page-container" v-loading="isLoad">
         <el-amap ref="map" vid="amap" :center="center" :zoom="zoom" class="amap-demo">
-            <el-amap-marker :events="item.events" v-for="(item,index) in markers1" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers2" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers3" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers4" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers5" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers6" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers7" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers8" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers9" :position="item.position" :template="item.template"></el-amap-marker>
-            <el-amap-marker :events="item.events"  v-for="(item,index) in markers10" :position="item.position" :template="item.template"></el-amap-marker>
+            <el-amap-marker :events="item.events" v-for="(item,index) in markers1" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers2" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers3" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers4" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers5" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers6" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers7" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers8" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers9" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
+            <el-amap-marker :events="item.events"  v-for="(item,index) in markers10" :position="item.position" :template="item.template" :key="index"></el-amap-marker>
             <el-amap-info-window
                 :position="currentWindow.position"
                 :visible = "currentWindow.visible"
@@ -100,7 +100,7 @@ export default {
                 _this.axios({
                     method:'get',
                     url:webApi.WebData.GetData.format({sjsybh:id,p:1,ps:10000}),
-                    timeout: 10000
+                    timeout: 1000 * 10
                 }).then(function(response){
                     if(response.data.code == 0){
                         _this.isLoad = false;

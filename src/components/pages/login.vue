@@ -66,18 +66,11 @@
       } else {
         this.noChrome = true;
       }
-
-      window.onkeyup=function(e){
-       if(e.keyCode ==13){
-         _this. loginClick()
-       }
-      }
-
     },
     methods: {
       //登陆
       loginClick() {
-        let isCheck = this.$refs.checkbox_pwd.checked
+        let isCheck = this.$refs.checkbox_pwd.checked;
         let url = webApi.Host + webApi.Auth.Login;
         let that = this;
         var jsonVal = {
@@ -131,6 +124,7 @@
         }
       }
     },
+
   }
 </script>
 
