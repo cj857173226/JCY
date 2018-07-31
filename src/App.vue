@@ -145,6 +145,12 @@ button:active{
     text-align: center !important;
   }
 
+  /* 高德地图样式 */
+  .amap-marker-label{
+      border:solid 1px #ddd;
+      padding: 10px;
+  }
+
   @media (max-width: 1440px) {
     .el-table td,
     .el-table th{

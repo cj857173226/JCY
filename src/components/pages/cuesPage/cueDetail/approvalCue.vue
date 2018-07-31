@@ -55,6 +55,7 @@ export default {
             ],
             identity:null, //权限
             XSBH:'',
+            GZBH:'',
             isSubmitFirst:false,
             isSubmitLeader:false,
         }
@@ -63,6 +64,9 @@ export default {
         var _this = this;
         this.identity = localStorage.IdentityType;
         this.XSBH = this.$route.query.id;
+        if(this.$route.query.gzid){
+            this.GZBH = this.$route.query.gzid;
+        }
     },
     methods:{
         //获取初核意见
@@ -70,7 +74,17 @@ export default {
             var _this = this;
             this.firstData = this.editorText; //
             this.axios({
-                method:webApi.ClueManager.GetApprovalResult
+                method:'get',
+                url:webApi.ClueManager.GetApprovalResult.format({gzbh:this.GZBH}),
+                timeout:10000
+            }).then(function(response){
+                if(response.data.code == 0){
+                    console.log(response.data.data);
+                }else{
+
+                }
+            }).catch(function(error){
+
             })
         },
         //获取审批意见

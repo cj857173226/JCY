@@ -18,8 +18,8 @@
         <div class="detail-item">
             <span class="item-title resource-box">举报内容</span><span class="item-content resource-content ">{{cueData.JBNR}}</span>
         </div>
-        <div class="detail-item">
-            <span class="item-title resource-box">举报地点</span><span class="item-content resource-content " style="height:300px"><cue-map></cue-map></span>
+        <div class="detail-item" v-if='JWD.length > 0'>
+            <span class="item-title resource-box">举报地点</span><span class="item-content resource-content " style="height:300px"><cue-map :JWD="JWD" :FBDD="FBDD"></cue-map></span>
         </div>
         <div class="detail-item" v-show="cueData.TP.length">
             <span class="item-title resource-box">图片内容</span>
@@ -53,6 +53,8 @@ export default {
             TP:[],
             SP:[],
             isLoad:false,
+            JWD:[], //经纬度
+            FBDD:'', //发布地点
         }
     },
     mounted(){
@@ -73,6 +75,15 @@ export default {
                     _this.cueData = response.data.data[0];
                     if(response.data.data[0].SFYD == 0){
                         _this.readed();
+                    }
+                    if(_this.cueData.JWD){
+                        var jwd = [];
+                        jwd.push(parseFloat(_this.cueData.JWD.split(',')[0]));
+                        jwd.push(parseFloat(_this.cueData.JWD.split(',')[1]));
+                        _this.JWD = jwd;
+                        _this.FBDD = _this.cueData.SFDD;
+                        console.log(_this.JWD);
+                        console.log(_this.FBDD);
                     }
                     var tp = JSON.parse(_this.cueData.TP);
                     var sp = JSON.parse(_this.cueData.SP);
