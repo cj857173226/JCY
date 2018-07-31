@@ -218,12 +218,16 @@ export default {
             let tbody = [];
             let data = res.data.data
             for ( let key in data[0]){
-              header.push(key)
+              if(key.trim()!='表名称') {
+                header.push(key)
+              }
             }
            for(let i=0;i<data.length ;i++){
              let arr = [];
              for(let val in data[i]){
-               arr.push(data[i][val]);
+               if(val.trim()!='表名称' ){
+                 arr.push(data[i][val]);
+               }
              }
              tbody.push(arr)
            }
@@ -362,10 +366,10 @@ export default {
       .check-wrap{
         height: 200px;
         max-height: 200px;
-        padding: 10px;    
+        padding: 10px;
         background: #fff;
         position: relative;
-        .switch-btn{    
+        .switch-btn{
           position: absolute;
           width: 40px;
           height: 40px;

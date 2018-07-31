@@ -1,7 +1,7 @@
 <template>
     <div id="send">
         <el-select class="select" v-model="text">
-            <el-option :label="item.DWMC" v-bind:value="item" :name="item.DWBH" v-for="(item,index) in XJY" :key="index">{{item.DWMC}}</el-option>
+            <el-option v-bind:value="item.DWMC" v-for="(item,index) in XJY" :key="index">{{item.DWMC}}</el-option>
         </el-select>
         <el-button @click="confirmBtn">确认分流</el-button>
     </div>
@@ -39,14 +39,21 @@ export default {
         //确认分流
         confirmBtn(){
             var _this = this;
+            let obj = {};
+            for(var i = 0;i<this.XJY.length;i++){
+                if(_this.XJY[i].DWMC == _this.text){
+                    obj = _this.XJY[i];
+                }
+            }
+            console.log(obj);
             this.axios({
                 method:'post',
-                url:webApi.ClueManager.DispatchClue.format({id:this.$route.query.id,cbdwbh:this.text.DWBH,cbdwmc:this.text.DWMC}),
+                url:webApi.ClueManager.DispatchClue.format({id:this.$route.query.id,cbdwbh:obj.DWBM,cbdwmc:obj.DWMC}),
                 timeout:10000
             }).then(function(response){
                 if(response.data.code == 0){
                     _this.$message({
-                        message:'已成功分流至'+_this.text.DWMC,
+                        message:'已成功分流至'+ obj.DWMC,
                         type:'success'
                     })
                 }else{

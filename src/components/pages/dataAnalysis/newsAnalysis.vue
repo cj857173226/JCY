@@ -24,8 +24,8 @@
         <!--</el-form>-->
       <!--</div>-->
     </div>
-    <div id="newsAnalysis_body">
-      <div id="newsAnalysis_main" ref="heatmap" v-loading="isLoading"  element-loading-background="transparent">
+    <div id="newsAnalysis_body" v-loading="isLoading">
+      <div id="newsAnalysis_main" ref="heatmap">
       </div>
       <div class="map_return"  v-show="isReturn" @click="returnChina">
         <i class="fa fa-reply"></i>
@@ -37,7 +37,7 @@
           <p>总量/条</p>
         </li>
       </ul>
-      <ul id="region_list" ref="listBody" v-loading="isLoading" element-loading-background="transparent">
+      <ul id="region_list" ref="listBody" >
         <li v-for="(item,index) in freqData" :key="index">
           <p v-text="item.DM"></p>
           <p v-text="item.PC"></p>
@@ -104,7 +104,7 @@
           url: (webApi.News.GetCityFreq).format({
             province: province
           }),
-          timeout: 15000,
+          timeout: 10000,
         })
           .then(function(res){
             if(res.data.code==0) {
@@ -176,6 +176,13 @@
           splitNum = 1;
         }else {
           splitNum = 1;
+        }
+        if(_this.listName=="市区"){
+          splitNum = 1;
+        }
+        if(_this.mapType=="重庆"){
+          splitNum = 50;
+          maxVal = 10000;
         }
         var option = {
           tooltip: {
@@ -396,7 +403,7 @@
             display: inline-block;
             width: 50%;
             text-align: center;
-            margin-right: -3px;
+            margin-right: -4px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;

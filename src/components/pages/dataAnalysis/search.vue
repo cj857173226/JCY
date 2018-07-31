@@ -20,14 +20,18 @@
       <div id="pie-chart">
          <!-- <search-pie></search-pie> -->
       </div>
+      <div id="word-cloud">
+        <word-cloud></word-cloud>
+      </div>
     </div>
 </template>
 
 <script>
 import searchPie from '../../pubilcComponents/eChartComponents/searchPie';
+import wordCloud from '../../pubilcComponents/eChartComponents/dataWordCloud'
 export default {
   name:'searchAll',
-  components:{searchPie},
+  components:{searchPie,wordCloud},
   data(){
     return{
       keyword:'',
@@ -119,7 +123,14 @@ export default {
     }
     #pie-chart{
       width: 100%;
-      height: 300px;
+      height: 50px;
+      margin:0 auto;
+
+    }
+    #word-cloud {
+      /*display: none;*/
+      width: 80%;
+      height: 350px;
       margin:0 auto;
     }
   }

@@ -1,7 +1,7 @@
 <template>
     <div id="main" v-loading="isLoad">
         <div class="detail-item">
-            <span class="item-title">举报门类</span><span class="item-content">{{cueData.XSLB}}</span>
+            <span class="item-title">举报领域</span><span class="item-content">{{cueData.XSLB}}</span>
         </div>
         <div class="detail-item">
             <span class="item-title">举报人姓名</span><span class="item-content">{{cueData.JBRXM}}</span>
@@ -17,6 +17,9 @@
         </div>
         <div class="detail-item">
             <span class="item-title resource-box">举报内容</span><span class="item-content resource-content ">{{cueData.JBNR}}</span>
+        </div>
+        <div class="detail-item">
+            <span class="item-title resource-box">举报地点</span><span class="item-content resource-content " style="height:300px"><cue-map></cue-map></span>
         </div>
         <div class="detail-item" v-show="cueData.TP.length">
             <span class="item-title resource-box">图片内容</span>
@@ -38,7 +41,9 @@
 </template>
 
 <script>
+import cueMap from '../../../pubilcComponents/toolComponets/cueLightMap'
 export default {
+    components:{cueMap},
     data(){
         return {
             cueData:{
