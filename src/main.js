@@ -47,7 +47,7 @@ axios.interceptors.response.use(response=>{
       router.push({path:'/login'});
     }
   }
-  // if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1){
+  if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1){
     var config = err.config;
     // Set the variable for keeping track of the retry count
     config.__retryCount = config.__retryCount || 0;
@@ -79,7 +79,7 @@ axios.interceptors.response.use(response=>{
       });
     }
 
-  // }
+  }
 
   // return Promise.reject(err);
 })
