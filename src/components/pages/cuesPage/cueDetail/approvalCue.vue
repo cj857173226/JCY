@@ -7,19 +7,21 @@
                 <span class="no-result" v-show="firstData == ''">暂无初核意见</span>
                 <span v-html="firstData"></span>
             </div>
+            <div v-show="firstData != ''" style="font-size: 12px;color: #696969;">{{firstTime}}</div>
         </div>
-        <div class="advise advise-notice" v-show="!isSubmitFirst">
+        <div class="advise advise-notice" v-show="isSubmitFirst">
             <i class="timeline-icon fa fa-circle-thin"></i>
-            <span v-show="!isSubmitFirst&&!isSubmitLeader">已提交，等待领导审批</span>
+            <span v-show="isSubmitFirst&&!isSubmitLeader">已提交，等待领导审批</span>
             <span v-show="isSubmitFirst&&isSubmitLeader">已审批</span>
         </div>
-        <div class="advise" v-show="isSubmitFirst&&isSubmitLeader">
+        <div class="advise" v-if="isSubmitFirst&&isSubmitLeader">
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">审批意见</div>
             <div class="advise-content">
                 <!-- <span v-html="leaderData"></span> -->
                 <pre>{{leaderData}}</pre>
             </div>
+            <div v-show="leaderData != ''" style="font-size: 12px;color: #696969;">{{leaderTime}}</div>
         </div>
         <div class="advise edit-advise" v-if="((identity == 1 && !isSubmitFirst) || (identity == 1 && isSubmitFirst && isSubmitLeader)) || (identity == 3 && isSubmitFirst)">
             <div class="advise-title">编写意见</div>
@@ -41,7 +43,9 @@ export default {
         return {
             editorText:'', //编辑意见
             firstData:'', //初核意见
+            firstTime:'', //初核时间
             leaderData:'', //审批意见
+            leaderTime:'', //审批时间
             //编辑器菜单栏设置
             items:[
             'source', '|', 'undo', 'redo', '|', 'preview', 'template', 'code', 'cut', 'copy', 'paste',
@@ -62,15 +66,16 @@ export default {
     },
     mounted(){
         var _this = this;
-        this.identity = localStorage.IdentityType;
-        this.XSBH = this.$route.query.id;
-        if(this.$route.query.gzid){
+        this.identity = localStorage.IdentityType;  //获取身份权限
+        this.XSBH = this.$route.query.id; //获取线索编号
+        if(this.$route.query.gzid){  //获取关注编号
             this.GZBH = this.$route.query.gzid;
         }
+        this.getAdvise();
     },
     methods:{
-        //获取初核意见
-        getFirstText(){
+        //获取初核/审核意见
+        getAdvise(){
             var _this = this;
             this.firstData = this.editorText; //
             this.axios({
@@ -79,17 +84,28 @@ export default {
                 timeout:10000
             }).then(function(response){
                 if(response.data.code == 0){
-                    console.log(response.data.data);
+                    if(response.data.data[0].CHYJ){
+                        _this.firstData = response.data.data[0].CHYJ;
+                        _this.firstTime = response.data.data[0].CJSJ;
+                        _this.isSubmitFirst = true;
+                    }else{
+                        _this.firstData = '';
+                        _this.isSubmitFirst = false;
+                    }
+                    if(response.data.data[0].SPYJ){
+                        _this.leaderData = response.data.data[0].SPYJ;
+                        _this.leaderTime = response.data.data[0].SPSJ;
+                        _this.isSubmitLeader = true;
+                    }else{
+                        _this.leaderData = '';
+                        _this.isSubmitLeader = false;
+                    }
                 }else{
 
                 }
             }).catch(function(error){
 
             })
-        },
-        //获取审批意见
-        getLeaderTetx(){
-
         },
         //提交审批
         submitBtn(){

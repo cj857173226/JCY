@@ -13,10 +13,13 @@ export default {
         return{
             XJY:[], //下级院数据
             text:'',
+            GZBH:'',
         }
     },
     mounted(){
-        this.XJYget();
+        if(this.$route.query.gzid){
+            this.XJYget();
+        }
     },
     methods:{
         //获取下级院
@@ -48,7 +51,7 @@ export default {
             console.log(obj);
             this.axios({
                 method:'post',
-                url:webApi.ClueManager.DispatchClue.format({id:this.$route.query.id,cbdwbh:obj.DWBM,cbdwmc:obj.DWMC}),
+                url:webApi.ClueManager.DispatchClue.format({id:this.$route.query.gzid,cbdwbh:obj.DWBM,cbdwmc:obj.DWMC}),
                 timeout:10000
             }).then(function(response){
                 if(response.data.code == 0){
