@@ -210,7 +210,22 @@
           timeout: 10000,
           url: url
         }).then(function(res){
-          console.log(res);
+          if(res.data.code==0) {
+            res.data.data.forEach(function(item){
+              if(item.XSSJBLY=="1") {
+                item.XSSJBLY = "举报线索";
+              }else if(item.XSSJBLY=="2") {
+                item.XSSJBLY = "互联网线索";
+              }else if(item.XSSJBLY=="3") {
+                item.XSSJBLY = "公益组织线索";
+              }else if(item.XSSJBLY=="4") {
+                item.XSSJBLY = "热点线索";
+              }else if(item.XSSJBLY=="5") {
+                item.XSSJBLY = "自行发现线索";
+              }
+            })
+            _this.clueList = res.data.data;
+          }
         }).catch(function(err){
 
         })
@@ -236,6 +251,8 @@
           type = 3
         }else if(text == '热点线索'){
           type = 4
+        }else if(text == '自行发现线索'){
+          type = 5
         }
         this.$router.push({
           path:'/home/cueDetail',
