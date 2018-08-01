@@ -20,8 +20,7 @@
               <li class="menu-item" :class="{'menu-item-on':item.name == currMenuOn}" v-for="(item,index) in sideMenuList" :id="item.numId" @click.stop.prevent="currMenuIndex == index;checkResult(item.name,item.numId,item.hit,item.isLoad,index)">
                 <div class="text" :title="item.name">{{item.name}}</div>
                 <div class="hit">
-                  <i class="el-icon-loading" style="color: #333333" v-show="item.isLoad" ></i>
-                  <span v-show="!item.isLoad">({{item.hit>999? '999+':item.hit}})</span>
+                  <span >({{item.hit>999? '999+':item.hit}})</span>
                 </div>
               </li>
             </ul>
@@ -149,7 +148,7 @@ export default {
   mounted(){
     let _this = this;
     _this.tableResize();//表格高度自适应
-    _this.search()
+    _this.search();
   },
   methods:{
     //关闭弹层
@@ -224,11 +223,6 @@ export default {
       _this.cancel();
       if(!_this.keyword ==''){
         document.getElementById('sideMenu').scrollTop =0;
-        // this.$router.push({
-        //   path:'/home/searchBlank',
-        //   query:{keyword:_this.keyword.trim()}
-        // });
-
         this.$router.push({
           path:'/home/searchResult',
           query:{keyword:_this.keyword.trim()}
@@ -263,13 +257,12 @@ export default {
                 let obj =  {};
                 obj['name']=data[key];
                 obj['numId'] = key;
-                obj['isLoad'] =true;
+                obj['hit'] = 0;
                 arr.push(obj)
               }
               _this.sideMenuList = arr;
-              for (let i =0;i<_this.sideMenuList.length;i++){
-                _this.keywordHit(_this.sideMenuList[i].numId)
-              }
+              _this.keywordHit();
+
           }
         }).catch((err)=>{
           _this.isLoading = false;
@@ -290,59 +283,87 @@ export default {
       _this.currPage = page;
       _this.getTableData()
     },
-
     //关键字命中
-    keywordHit(id){
+    keywordHit(){
       let _this = this;
-      let sjsybh = id;
+      _this.isLoading= true;
       _this.source = _this.axios.CancelToken.source();
       _this.axios({
-        methods:'get',
-        cancelToken: _this.source.token,
-        url:webApi.WebData.SearchIndex.format({sjsybh:sjsybh,keywords:_this.keyword}),
+        method:'get',
+        cancelToken:_this.source.token,
+        url:webApi.WebData.SearchIndex.format({keywords:_this.keyword})
       }).then((res)=>{
         if(res.data.code == 0){
-          let data = res.data.data
-          _this.loadCount +=1;
-          for(let j in _this.sideMenuList){
-            if(_this.sideMenuList[j].numId == data.sjsybh){
-              _this.sideMenuList[j]['hit'] = data.result;
-              _this.sideMenuList[j]['isLoad'] =false;
-            }
-          }
-          if(_this.currMenuOn !='' && _this.currTableIndex != -1 &&  _this.currTableLoad){
-            _this.currTableLoad = false;
-            _this.currTableIndex = -1;
-            _this.checkResult(_this.sideMenuList[_this.currMenuIndex].name,_this.sideMenuList[_this.currMenuIndex].numId,_this.sideMenuList[_this.currMenuIndex].hit,_this.sideMenuList[_this.currMenuIndex].isLoad,_this.currMenuIndex);
-          }
-
-          if(_this.loadCount == _this.sideMenuList.length ){
-
-            if(_this.currMenuOn !='' ){
-                return
-            }else {
-              for(let i =0;i<_this.sideMenuList.length;i++){
-                _this.checkResult(_this.sideMenuList[i].name,_this.sideMenuList[i].numId,_this.sideMenuList[i].hit,_this.sideMenuList[i].isLoad, i,'1');
-                if(_this.hasHit){
-                  _this.checkResult(_this.sideMenuList[i].name,_this.sideMenuList[i].numId,_this.sideMenuList[i].hit,_this.sideMenuList[i].isLoad, i);
-                  break
-                }else if((_this.sideMenuList.length - 1)== i && _this.hasHit ==0 ){
-                  _this.checkResult(_this.sideMenuList[0].name,_this.sideMenuList[0].numId,_this.sideMenuList[0].hit,_this.sideMenuList[0].isLoad, 0);
+          if(res.data.data.length>0){
+            let data = res.data.data;
+            for(let i = 0;i<data.length;i++){
+              for(let j = 0;j<_this.sideMenuList.length;j++){
+                if(data[i]['_id'] == _this.sideMenuList[j]['numId'])
+                {
+                  _this.sideMenuList[j]['hit'] = data[i].amount;
                 }
-
+              }
+            }
+            for(let i =0;i<_this.sideMenuList.length;i++){
+              _this.checkResult(_this.sideMenuList[i].name,_this.sideMenuList[i].numId,_this.sideMenuList[i].hit,_this.sideMenuList[i].isLoad, i,'1');
+              if(_this.hasHit){
+                _this.checkResult(_this.sideMenuList[i].name,_this.sideMenuList[i].numId,_this.sideMenuList[i].hit,_this.sideMenuList[i].isLoad, i);
+                break
+              }else if((_this.sideMenuList.length - 1)== i && _this.hasHit ==0 ){
+                _this.checkResult(_this.sideMenuList[0].name,_this.sideMenuList[0].numId,_this.sideMenuList[0].hit,_this.sideMenuList[0].isLoad, 0);
               }
             }
           }
         }
+        _this.isLoading= false;
       }).catch((err)=>{
-       if(err.message.trim()!= '中断请求'){
-         _this.$message({
-           message: '发生错误',
-           type: 'error'
-         });
-       }
+        _this.isLoading= false;
       })
     },
+
+    // keywordHit2(){
+    //   let _this = this;
+    //   let sjsybh = _this.sideMenuList[_this.loadCount].numId;
+    //   _this.source = _this.axios.CancelToken.source();
+    //   _this.axios({
+    //     methods:'get',
+    //     cancelToken: _this.source.token,
+    //     url:webApi.WebData.SearchIndex.format({sjsybh:sjsybh,keywords:_this.keyword}),
+    //   }).then((res)=>{
+    //     if(res.data.code == 0){
+    //       let data = res.data.data
+    //       _this.sideMenuList[_this.loadCount]['hit'] = data.result;
+    //       _this.sideMenuList[_this.loadCount]['isLoad'] =false;
+    //
+    //       if(_this.currMenuOn !='' && _this.currTableIndex != -1 &&  _this.currTableLoad){
+    //         _this.currTableLoad = false;
+    //         _this.currTableIndex = -1;
+    //         _this.checkResult(_this.sideMenuList[_this.currMenuIndex].name,_this.sideMenuList[_this.currMenuIndex].numId,_this.sideMenuList[_this.currMenuIndex].hit,_this.sideMenuList[_this.currMenuIndex].isLoad,_this.currMenuIndex);
+    //       }
+    //       _this.loadCount += 1;
+    //       if(_this.loadCount< _this.sideMenuList.length){
+    //         _this.keywordHit()
+    //         if(_this.loadCount == _this.sideMenuList.length -1){
+    //           if(_this.currMenuOn !='' ){
+    //             return
+    //           }else {
+    //
+    //           }
+    //         }
+    //       }else {
+    //         return
+    //       }
+    //
+    //     }
+    //   }).catch((err)=>{
+    //    // if(err.message.trim()!= '中断请求'){
+    //    //   _this.$message({
+    //    //     message: '发生错误',
+    //    //     type: 'error'
+    //    //   });
+    //    // }
+    //   })
+    // },
 
     //获取表格数据
     getTableData(){
@@ -355,6 +376,7 @@ export default {
         url:webApi.WebData.SearchDetail.format({sjsybh:_this.currId,keywords:_this.keyword,p:_this.currPage,ps:_this.pageSize}),
         timeout: 1000 * 30,
       }).then((res)=>{
+        console.log(res)
         _this.tableLoad = false;
         if(res.data.code==0){
           let header = [];

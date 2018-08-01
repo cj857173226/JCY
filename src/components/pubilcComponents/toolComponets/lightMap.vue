@@ -100,7 +100,7 @@ export default {
                 _this.axios({
                     method:'get',
                     url:webApi.WebData.GetData.format({sjsybh:id,p:1,ps:10000}),
-                    timeout: 1000 * 10
+                    timeout: 1000 * 30
                 }).then(function(response){
                     if(response.data.code == 0){
                         _this.isLoad = false;
@@ -129,7 +129,7 @@ export default {
 
                     }
                 }).catch(function(error){
-
+                  _this.isLoad = false;
                 })
         },
         //数据上图
