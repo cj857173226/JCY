@@ -197,6 +197,18 @@
 
         })
       },
+      //未办理线索总数(领导)
+      getUnhandleClueTotal(){
+
+      },
+      //已办理线索总数(领导)
+      getHandledClueTotal(){
+
+      },
+      //结果反馈总数(领导)
+      getResultClueTotal(){
+
+      },
       //获取互联网线索总数(管理员)
       getInterClueTotal(){
         let _this = this;

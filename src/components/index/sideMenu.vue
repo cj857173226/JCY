@@ -150,7 +150,7 @@
 
     <router-link to="/home/search">
       <el-menu-item index="14" :class="isThisNav == '全文搜索' || isThisNav == '全文搜索结果'?'is-actived':''" @click="switchNav('全文搜索')">
-        <i class="fa fa-info-circle"></i>
+        <i class="fa fa-search"></i>
         <span slot="title">大数据检索</span>
       </el-menu-item>
     </router-link>
