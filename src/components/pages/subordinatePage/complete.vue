@@ -139,6 +139,7 @@
         tableH:0, //表格高度
         keyword:'', //关键字
         isLoad:false,//数据是否在加载
+        xslb: ""//线索类别
       }
     },
     mounted(){
@@ -204,6 +205,8 @@
           pageNum: _this.pageNum,//页码
           pageSize: _this.pageSize,//页大小
           order: _this.order,//排序
+          keywords: _this.keyword,//关键字
+          xslb: _this.xslb//线索类别
         })
         _this.axios({
           method: "get",
