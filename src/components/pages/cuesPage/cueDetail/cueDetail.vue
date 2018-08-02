@@ -365,14 +365,67 @@ export default {
                         })
                     }else if(this.cueFrom == '待审批'){
                         //领导 待审批
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetApprovalClues.format({type:0,keyword:keyword,beginDate:beginDate,endDate:endDate,pageNum:_this.pageNum - 1,pageSize:20}),
+                            timeout:10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+                        }).catch(function(error){
+                            _this.isLoad = false;
+
+                        });
                     }else if(this.cueFrom == '已审批'){
                         //领导 已审批
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetApprovalClues.format({type:1,keyword:keyword,beginDate:beginDate,endDate:endDate,pageNum:_this.pageNum - 1,pageSize:20}),
+                            timeout:10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+                        }).catch(function(error){
+                            _this.isLoad = false;
+
+                        });
                     }else if(this.cueFrom == '结果反馈'){
                         //领导 结果反馈
                     }
                 }else{
                     localStorage.setItem('cueIndex',this.cueIndex - 1);//修改线索索引
                     let preCue = this.cueList[this.cueIndex - 1].XSBH; //上一页线索编号
+                    if(this.cueList[this.cueIndex + 1].XSSJBLY == '举报线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 1){
+                        params['type2'] = 1;
+                    }else if(this.cueList[this.cueIndex + 1].XSSJBLY == '互联网线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 2){
+                        params['type2'] = 2;
+                    }else if(this.cueList[this.cueIndex + 1].XSSJBLY == '公益组织线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 3){
+                        params['type2'] = 3;
+                    }else if(this.cueList[this.cueIndex + 1].XSSJBLY == '热点线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 4){
+                        params['type2'] = 4;
+                    }else if(this.cueList[this.cueIndex + 1].XSSJBLY == '自行发现线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 5){
+                        params['type2'] = 5;
+                    }
                     params['id'] = preCue;
                     //上一条
                     this.$router.push({
@@ -382,6 +435,9 @@ export default {
                     _this.reload();
                 }
             }else if(index == 2){
+                console.log(this.cueList);
+                console.log(this.cueIndex);
+                console.log(this.cueType);
                 if(this.cueList.length != 20 && this.cueIndex == this.cueList.length-1){
                     this.$message({
                         message:'已是最后一条',
@@ -539,14 +595,67 @@ export default {
                         })
                     }else if(this.cueFrom == '待审批'){
                         //领导 待审批
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetApprovalClues.format({type:0,keyword:keyword,beginDate:beginDate,endDate:endDate,pageNum:_this.pageNum + 1,pageSize:20}),
+                            timeout:10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+                        }).catch(function(error){
+                            _this.isLoad = false;
+
+                        });
                     }else if(this.cueFrom == '已审批'){
                         //领导 已审批
+                        this.isLoad = true;
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetApprovalClues.format({type:1,keyword:keyword,beginDate:beginDate,endDate:endDate,pageNum:_this.pageNum + 1,pageSize:20}),
+                            timeout:10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+                        }).catch(function(error){
+                            _this.isLoad = false;
+
+                        });
                     }else if(this.cueFrom == '结果反馈'){
                         //领导 结果反馈
                     }
                 }else{
                     localStorage.setItem('cueIndex',this.cueIndex + 1); //修改线索索引
                     let preCue = this.cueList[this.cueIndex + 1].XSBH; //下一页线索编号
+                    if(this.cueList[this.cueIndex + 1].XSSJBLY == '举报线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 1){
+                        params['type2'] = 1;
+                    }else if(this.cueList[this.cueIndex + 1].XSSJBLY == '互联网线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 2){
+                        params['type2'] = 2;
+                    }else if(this.cueList[this.cueIndex + 1].XSSJBLY == '公益组织线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 3){
+                        params['type2'] = 3;
+                    }else if(this.cueList[this.cueIndex + 1].XSSJBLY == '热点线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 4){
+                        params['type2'] = 4;
+                    }else if(this.cueList[this.cueIndex + 1].XSSJBLY == '自行发现线索' || this.cueList[this.cueIndex + 1].XSSJBLY == 5){
+                        params['type2'] = 5;
+                    }
                     params['id'] = preCue;
                     //下一条
                     this.$router.push({
@@ -574,8 +683,12 @@ export default {
                         if(response.data.code == 0){
                             _this.isFollow = false;
                             _this.followPage = _this.isFollow;
+                            _this.isThisNav = 1;
                         }else{
-
+                            _this.$message({
+                                message:response.data.errorMessage,
+                                type:'error'
+                            })
                         }
                     }).catch(function(error){
                         _this.isLoad = false;
@@ -594,6 +707,7 @@ export default {
                             _this.isFollow = true;
                             _this.followPage = _this.isFollow;
                             _this.gzId = response.data.data;
+                            _this.$root.Bus.$emit('sendGZBH',_this.gzId);
                         }else{
 
                         }
@@ -608,7 +722,20 @@ export default {
                     return;
                 }else{
                     //调用接收线索接口
-                    this.confirmReceive = true;
+                    this.axios({
+                        method:'post',
+                        url:webApi.ClueManager.RecvClues.format({id:this.$route.query.gzid}),
+                        timeout:10000
+                    }).then(function(response){
+                        if(response.data.code == 0){
+                            _this.confirmReceive = true;
+                            _this.$root.Bus.$emit('changeWaitConfirm');
+                        }else{
+
+                        }
+                    }).catch(function(error){
+
+                    })
                 }
             }
         },
@@ -637,6 +764,30 @@ export default {
             }else if(this.cueFrom == '关注线索'){
                 this.$router.push({
                     path:'/home/followCue' ////返回关注线索页
+                });
+            }else if(this.cueFrom == '待接收'){
+                this.$router.push({
+                    path:'/home/waitReceive' ////返回下级院待接收页
+                });
+            }else if(this.cueFrom == '待反馈'){
+                this.$router.push({
+                    path:'/home/waitFeedback' ////返回下级院待接反馈页
+                });
+            }else if(this.cueFrom == '已反馈'){
+                this.$router.push({
+                    path:'/home/complete' ////返回下级院已反馈页
+                });
+            }else if(this.cueFrom == '待审批'){
+                this.$router.push({
+                    path:'/home/waitApproval' ////返回下级院已反馈页
+                });
+            }else if(this.cueFrom == '已审批'){
+                this.$router.push({
+                    path:'/home/allreadyApproval' ////返回下级院已反馈页
+                });
+            }else if(this.cueFrom == '结果反馈'){
+                this.$router.push({
+                    path:'/home/approvalResult' ////返回下级院已反馈页
                 });
             }
         },

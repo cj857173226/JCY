@@ -10,7 +10,7 @@
       <!--关注线索筛选-->
       <div class="follow_filter">
         <el-form class="follow_form" :inline="true" >
-          <el-form-item label="所属领域 :">
+        <el-form-item label="所属领域 :">
           <el-select class="follow_select" v-model="xslb">
             <el-option label="全部" value="" ></el-option>
             <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
@@ -242,13 +242,13 @@
         var _this = this;
         var type2 = 0;
         if(text == '举报线索'){
-         type2 = 1
+         type2 = 1;
         }else if(text == '互联网线索'){
-         type2 = 2
+         type2 = 2;
         }else if(text == '公益诉讼线索'){
-         type2 = 3
+         type2 = 3;
         }else if(text == '热点线索'){
-         type2 = 4
+         type2 = 4;
         }
         localStorage.setItem('cueList',JSON.stringify(_this.followList));
         localStorage.setItem('cueIndex',index);

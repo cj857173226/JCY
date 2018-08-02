@@ -1,7 +1,7 @@
 <template>
     <div id="main">
         <div id="chart-header">
-            本月线索统计
+            最近30天线索统计情况
         </div>
         <div id="line-chart-box" v-loading.lock="isLoad">
             <div id="lineChart"></div>

@@ -3,7 +3,7 @@
         <div id="cue-lightMap">
         </div>
         <span id="satellite" @click="switchMap" :class="isSatellite?'active':''">
-            <span ><i class="fa fa-bandcamp"></i>卫星</span>
+            <span ><i class="fa fa-globe"></i>卫星</span>
         </span>
     </div>
 </template>

@@ -71,24 +71,27 @@
             <li>
               <img src="../../../assets/UAV/UAV2.jpg" alt="">
             </li>
-            <!--<li>-->
-              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<img src="../../../assets/UAV/UAV1.jpg" alt="">-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<img src="../../../assets/UAV/UAV2.jpg" alt="">-->
-            <!--</li>-->
+            <li>
+              <img src="../../../assets/UAV/UAV3.png" alt="">
+            </li>
+            <li>
+              <img src="../../../assets/UAV/UAV4.png" alt="">
+            </li>
+            <li>
+              <img src="../../../assets/UAV/UAV5.png" alt="">
+            </li>
+            <li>
+              <img src="../../../assets/UAV/UAV6.png" alt="">
+            </li>
+            <li>
+              <img src="../../../assets/UAV/UAV7.png" alt="">
+            </li>
+            <li>
+              <img src="../../../assets/UAV/UAV8.png" alt="">
+            </li>
+            <li>
+              <img src="../../../assets/UAV/UAV9.png" alt="">
+            </li>
           </ul>
           <!--分页-->
           <div class="page-wrap" style="clear: both;">
@@ -443,7 +446,7 @@
             float: left;
             width: calc(20% - 10px);
             height: 300px;
-            min-width: 250px;
+            min-width: 230px;
             margin-right: 10px;
             margin-bottom: 40px;
             overflow: hidden;

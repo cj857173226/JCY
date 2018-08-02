@@ -8,6 +8,12 @@
     </div>
     <div class="follow_filter">
       <el-form class="follow_form" :inline="true" >
+        <el-form-item label="所属领域 :">
+          <el-select class="follow_select" v-model="xslb">
+            <el-option label="全部" value="" ></el-option>
+            <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="线索发布时间 :">
           <el-date-picker
             v-model="timeSearch"
@@ -92,8 +98,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
-              <el-button @click="comfirmReceive()" type="text" size="small">接收</el-button>
+              <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small">查看</el-button>
+              <el-button @click="comfirmReceive(scope.row.GZBH)" type="text" size="small">接收</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -123,18 +129,8 @@
         type: 0,//type=0:待确认接收；1：正在办理；2：已反馈结果;3：全部
         order: "cjsj",//排序
         timeSearch: ['2017-01-01',this.timeFormat(new Date())],//时间
-        typeList: ["食药安全","英烈保护",
-          "国有财产","食品安全","国土资源","环境保护"],//线索门类
+        typeList: [],//线索门类
         clueList: [
-          {
-            JBNR:'回去玩传奇我请问你我v区区我',
-            GJC:'扰民,经营,情况,局,烧烤,噪音,中,反映',
-            XSLB:'环境污染',
-            XSSJBLY:'互联网线索',
-            XSFBSJ:'2014-04-28 00:00:00',
-            XSCJSJ:'2018-06-21 07:17:14',
-            XSBH:'QW121FF1HF2F1H0BF1381231'
-          },
         ], //待接收线索
 
         tableH:0, //表格高度
@@ -150,13 +146,47 @@
       localStorage.removeItem('cueIndex');
       localStorage.removeItem('pageNum');
       localStorage.removeItem('order');
-      this.getClueList();//获取数据列表
+      localStorage.removeItem('keyword');
+      localStorage.removeItem('cueType');
+      this.getClueType(); //获取线索类别
       this.tableResize();
+      this.resize(); //初始化表格高度
+      this.getClueList();//获取数据列表
     },
     methods:{
+      //获取门类
+      getClueType(){
+        let _this = this;
+        _this.axios({
+          method:'get',
+          url:webApi.Host + webApi.Clue.GetClueTypes
+        }).then(function(res){
+          if(res.data.code == 0){
+            let data = res.data.data;
+            _this.typeList = data;
+          }
+        }).catch(function(err){
+          console.log(err);
+        })
+      },
       //确认接受
-      comfirmReceive(){
+      comfirmReceive(gzid){
+        var _this = this;
+        this.axios({
+            method:'post',
+            url:webApi.ClueManager.RecvClues.format({id:gzid}),
+            timeout:10000
+        }).then(function(response){
+            if(response.data.code == 0){
+                _this.confirmReceive = true;
+                _this.getClueList();
+                _this.$root.Bus.$emit('changeWaitConfirm');
+            }else{
 
+            }
+        }).catch(function(error){
+
+        })
       },
       //时间初始化
       timeFormat(date) {
@@ -220,7 +250,7 @@
           url: url
         }).then(function(res){
           if(res.data.code==0) {
-            res.data.data.forEach(function(item){
+            res.data.data.result.forEach(function(item){
               if(item.XSSJBLY=="1") {
                 item.XSSJBLY = "举报线索";
               }else if(item.XSSJBLY=="2") {
@@ -233,7 +263,8 @@
                 item.XSSJBLY = "自行发现线索";
               }
             })
-            _this.clueList = res.data.data;
+            _this.totalPages = res.data.data.count;
+            _this.clueList = res.data.data.result;
           }
 
           console.log(res);
@@ -243,10 +274,10 @@
       },
       //跳转分页
       pageTo(){
-
+        this.getClueList();//获取数据列表
       },
-      //审批
-      detail(index,text,id){
+      //详情
+      detail(index,text,id,gzid){
         var type = 0;
         localStorage.setItem('cueList',JSON.stringify(this.clueList));
         localStorage.setItem('beginDate',this.timeSearch[0]);
@@ -254,6 +285,8 @@
         localStorage.setItem('cueIndex',index);
         localStorage.setItem('pageNum',this.pageNum);
         localStorage.setItem('order',this.order);
+        localStorage.setItem('keyword',this.keyword);
+        localStorage.setItem('cutType',this.xslb);
         if(text == '举报线索'){
           type = 1
         }else if(text == '互联网线索'){
@@ -267,7 +300,7 @@
         }
         this.$router.push({
           path:'/home/cueDetail',
-          query:{type:9,type2:type,id:id,nav:1}
+          query:{type:9,type2:type,id:id,nav:1,gzid:gzid}
         });
       },
       //表格高度自适应
@@ -280,7 +313,16 @@
       },
       resize(){
         let _this = this;
-        _this.tableH = _this.$refs.cueList.clientHeight;
+        let width = document.body.offsetWidth;
+        var box = document.getElementById('content');
+        if(width >= 1363) {
+          box.style.height = 'calc(100% - 122px)';
+        }else if(width < 1364) {
+          box.style.height = 'calc(100% - 174px)';
+        }
+        this.$nextTick(function(){
+          _this.tableH = _this.$refs.cueList.clientHeight;
+        })
       }
     },
     //实例销毁钩子
@@ -319,7 +361,7 @@
       padding-left: 15px;
       padding-top: 5px;
       margin: 15px 20px 0;
-      height: 50px;
+      /*height: 50px;*/
       .follow_form {
         .el-form-item {
           margin-bottom: 10px;

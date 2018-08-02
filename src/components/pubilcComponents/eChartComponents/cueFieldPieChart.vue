@@ -1,22 +1,22 @@
 <template>
-    <div id="main">
-        <div id="chart-header">
-            线索来源数据占比情况
+    <div id="cue-field-main">
+        <div id="cue-field-chart-header">
+            线索领域数据各来源占比情况
         </div>
-        <div id="pie-chart-box">
-            <div id="choose-type">
+        <div id="field-pie-chart-box">
+            <div id="field-choose-type">
                 <ul>
                     <li :class="['cue-type',isNav == 1?'active':'']" @click="changeNav(1)">全部</li>
-                    <li :class="['cue-type',isNav == 2?'active':'']" @click="changeNav(2)">举报线索</li>
-                    <li :class="['cue-type',isNav == 3?'active':'']" @click="changeNav(3)">互联网线索</li>
-                    <li :class="['cue-type',isNav == 4?'active':'']" @click="changeNav(4)">公益诉讼线索</li>
-                    <li :class="['cue-type',isNav == 5?'active':'']" @click="changeNav(5)">热点线索</li>
-                    <li :class="['cue-type',isNav == 6?'active':'']" @click="changeNav(6)">自行发现线索</li>
+                    <li :class="['cue-type',isNav == 2?'active':'']" @click="changeNav(2)">环境保护</li>
+                    <li :class="['cue-type',isNav == 3?'active':'']" @click="changeNav(3)">食药安全</li>
+                    <li :class="['cue-type',isNav == 4?'active':'']" @click="changeNav(4)">国土资源</li>
+                    <li :class="['cue-type',isNav == 5?'active':'']" @click="changeNav(5)">国有财产</li>
+                    <li :class="['cue-type',isNav == 6?'active':'']" @click="changeNav(6)">英烈保护</li>
                 </ul>
             </div>
-            <div id="pie-chart" v-loading.lock="isLoad">
+            <div id="field-pie-chart" v-loading.lock="isLoad">
                 <div v-show="!isLoad&&noData" class="no-data">暂无数据</div>
-                <div v-show="!isLoad&&!noData" id="pieChart"></div>
+                <div v-show="!isLoad&&!noData" id="cue-field-pie-Chart"></div>
             </div>
         </div>
     </div>
@@ -62,11 +62,11 @@ export default {
                         data:data
                     }
                 ],
-                color: ['#ed9203','#87cefa','#566770','#078840','#6395ec','#db4734']
+                color: ['#252839','#677077','#b5b5b7','#f2b632','#6395ec','#db4734']
             }
-            var chart = document.getElementById('pieChart');
-            var width = document.getElementById('pie-chart').clientWidth;
-            var height = document.getElementById('pie-chart').clientHeight;
+            var chart = document.getElementById('cue-field-pie-Chart');
+            var width = document.getElementById('field-pie-chart').clientWidth;
+            var height = document.getElementById('field-pie-chart').clientHeight;
             chart.style.width = width + 'px';
             chart.style.height = height + 'px';
             this.myChart = echarts.init(chart);
@@ -186,11 +186,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    #main{
+    #cue-field-main{
         width: 100%;
         border: solid 1px #ddd;
         border-radius: 5px;
-        #chart-header{
+        #cue-field-chart-header{
             width: 100%;
             height: 30px;
             line-height: 30px;
@@ -200,9 +200,9 @@ export default {
             padding-left: 10px;
             font-weight: bold;
         }
-        #pie-chart-box{
+        #field-pie-chart-box{
             width: 100%;
-            #choose-type{
+            #field-choose-type{
                 width: 100px;
                 float: left;
                 border-right: solid 1px #ddd;
@@ -220,7 +220,7 @@ export default {
                     }
                 }
             }
-            #pie-chart{
+            #field-pie-chart{
                 width: calc(100% - 100px);
                 height: 250px;
                 margin-left: 100px;

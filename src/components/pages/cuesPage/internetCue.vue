@@ -134,7 +134,7 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="details(scope.$index,scope.row.XSBH ,scope.row.SFYD,'2')" title="详情" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
+              <el-button @click="details(scope.$index,scope.row.XSBH ,scope.row.SFYD,'2',scope.row.GZBH)" title="详情" type="text" size="small"><i class="fa fa-file-text"></i></el-button>
               <el-button v-show="scope.row.SFGZ =='0'" title="未关注(关注)" @click="followClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart-o"></i></el-button>
               <el-button v-show="scope.row.SFGZ =='1'" title="已关注(取消关注)" @click="cancelFollowClue(scope.row.XSBH ,'2')" style="color: #F66" type="text" size="small"><i class="fa fa-heart"></i></el-button>
             </template>
@@ -312,7 +312,7 @@
         _this.getInternetCueList();
       },
       // 查看详情
-      details(index,id,SFYD,xssjbly){
+      details(index,id,SFYD,xssjbly,GZBH){
         let _this = this;
         localStorage.setItem('cueList',JSON.stringify(_this.internetCueList));
         localStorage.setItem('cueIndex',index);
@@ -321,10 +321,14 @@
         localStorage.setItem('site',_this.site);
         localStorage.setItem('order',_this.order);
         localStorage.setItem('keyword',_this.keyword);
+        var param = {
+          type:2,
+          id:id
+        }
         if(SFYD != 0){
           this.$router.push({
             path:'/home/cueDetail',
-            query:{type:2,id:id}
+            query:param
           });
         }else {
           _this.axios({
@@ -333,12 +337,12 @@
           }).then((res)=>{
             this.$router.push({
               path:'/home/cueDetail',
-              query:{type:2,id:id}
+              query:param
             });
           }).catch((err)=>{
             this.$router.push({
               path:'/home/cueDetail',
-              query:{type:2,id:id}
+              query:param
             });
           })
         }

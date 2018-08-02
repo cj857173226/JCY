@@ -14,6 +14,39 @@
             </div> -->
 
         </div>
+
+        <div class="follow_filter">
+            <el-form class="follow_form" :inline="true" >
+                <el-form-item label="所属领域 :">
+                    <el-select class="follow_select" v-model="xslb">
+                        <el-option label="全部" value="" ></el-option>
+                        <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="线索发布时间 :">
+                    <el-date-picker
+                        v-model="timeSearch"
+                        type="daterange"
+                        align="right"
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        range-separator="-"
+                        unlink-panels
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="关键词 :" >
+                    <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="search">搜索 <i class="iconfont icon-sousuo"></i></el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+
         <div id="content">
             <div class="table-list" ref="cueList">
                 <el-table
@@ -103,25 +136,63 @@ export default {
             pageNum:1, //当前页
             totalPages: 0, //总条数
             waitApproval: [
-                {
-                    JBNR:'回去玩传奇我请问你我v区区我',
-                    GJC:'扰民,经营,情况,局,烧烤,噪音,中,反映',
-                    XSLB:'环境污染',
-                    XSSJBLY:'互联网线索',
-                    XSFBSJ:'2014-04-28 00:00:00',
-                    XSCJSJ:'2018-06-21 07:17:14',
-                    XSBH:'QW121FF1HF2F1H0BF1381231'
-                },
             ], //待审批线索
 
             tableH:0, //表格高度
             keyword:'', //关键字
+            xslb:'', //线索类别
+            typeList:[] , //线索类别
+            timeSearch: '' , //时间
         }
     },
     mounted(){
+        localStorage.removeItem('cueList');
+        localStorage.removeItem('beginDate');
+        localStorage.removeItem('endDate');
+        localStorage.removeItem('cueIndex');
+        localStorage.removeItem('pageNum');
+        localStorage.removeItem('keyword');
+        localStorage.removeItem('cueType');
+        this.initTime();
         this.tableResize();
+        this.getData();
+        this.resize();
     },
     methods:{
+        //搜索
+        search(){
+
+        },
+        //获取门类
+        getClueType(){
+            let _this = this;
+            _this.axios({
+            method:'get',
+            url:webApi.Host + webApi.Clue.GetClueTypes
+            }).then(function(res){
+            if(res.data.code == 0){
+                let data = res.data.data;
+                _this.typeList = data;
+            }
+            }).catch(function(err){
+            console.log(err);
+            })
+        },
+        //默认时间
+        initTime(){
+            var time = new Date();
+            var begin = '2017-01-01';
+            var end = time.getFullYear() + '-' + addZero(time.getMonth() + 1) + '-' + addZero(time.getDate());
+            this.timeSearch = [begin,end];
+
+            function addZero(obj){
+                if(obj < 10){
+                    return '0' + obj;
+                }else{
+                    return obj
+                }
+            }
+        },
         //搜索
         getInternetCueList(){
 
@@ -130,9 +201,50 @@ export default {
         pageTo(){
 
         },
+        //获取数据
+        getData(){
+            var _this = this;
+            var begin = this.timeSearch[0];
+            var end = this.timeSearch[1];
+            this.isLoad = true;
+            this.axios({
+                method:'get',
+                url:webApi.ClueManager.GetApprovalClues.format({type:1,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize,xslb:this.xslb}),
+                timeout:10000
+            }).then(function(response){
+                _this.isLoad = false;
+                if(response.data.code == 0){
+                    response.data.data.forEach(function(item){
+                    if(item.XSSJBLY=="1") {
+                        item.XSSJBLY = "举报线索";
+                    }else if(item.XSSJBLY=="2") {
+                        item.XSSJBLY = "互联网线索";
+                    }else if(item.XSSJBLY=="3") {
+                        item.XSSJBLY = "公益组织线索";
+                    }else if(item.XSSJBLY=="4") {
+                        item.XSSJBLY = "热点线索";
+                    }else if(item.XSSJBLY=="5") {
+                        item.XSSJBLY = "自行发现线索";
+                    }
+                    })
+                    _this.waitApproval = response.data.data;
+
+                }
+            }).catch(function(error){
+                _this.isLoad = false;
+
+            });
+        },
         //审批
-        detail(text,id){
+        detail(index,text,id){
             var type = 0;
+            localStorage.setItem('cueList',JSON.stringify(this.waitApproval));
+            localStorage.setItem('beginDate',this.timeSearch[0]);
+            localStorage.setItem('endDate',this.timeSearch[1]);
+            localStorage.setItem('cueIndex',index);
+            localStorage.setItem('pageNum',this.pageNum);
+            localStorage.setItem('keyword',this.keyword);
+            localStorage.setItem('cueType',this.xslb);
             if(text == '举报线索'){
                 type = 1
             }else if(text == '互联网线索'){
@@ -141,10 +253,12 @@ export default {
                 type = 3
             }else if(text == '热点线索'){
                 type = 4
+            }else if(text == '自行发现线索'){
+                type = 5
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:8,type2:type,nav:4,id:id}
+                query:{type:6,type2:type,nav:2,id:id}
             });
         },
         //表格高度自适应
@@ -157,6 +271,13 @@ export default {
         },
         resize(){
             let _this = this;
+            let width = document.body.offsetWidth;
+            var box = document.getElementById('content');
+            if(width >= 1363) {
+            box.style.height = 'calc(100% - 122px)';
+            }else if(width < 1364) {
+            box.style.height = 'calc(100% - 174px)';
+            }
             _this.tableH = _this.$refs.cueList.clientHeight;
         }
     },
@@ -228,6 +349,29 @@ export default {
             width: 2px;
             height: 20px;
             background: #dcdcdc;
+            }
+        }
+    }
+    /*筛选*/
+    .follow_filter {
+        background-color: #eeeeee;
+        color: #333333;
+        padding-left: 15px;
+        padding-top: 5px;
+        margin: 15px 20px 0;
+        .follow_form {
+            .el-form-item {
+            margin-bottom: 10px;
+            }
+            .follow_select {
+            width: 130px;
+            }
+            .follow_date {
+            width: 130px;
+            min-width: 135px;
+            }
+            .follow_input {
+            width: 180px;
             }
         }
     }

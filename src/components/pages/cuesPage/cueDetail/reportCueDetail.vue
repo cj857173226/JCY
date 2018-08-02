@@ -72,25 +72,35 @@ export default {
             }).then(function(response){
                 _this.isLoad = false;
                 if(response.data.code == 0){
-                    _this.cueData = response.data.data[0];
-                    if(response.data.data[0].SFYD == 0){
-                        _this.readed();
+                    if(response.data.data.length > 0){
+                        _this.cueData = response.data.data[0];
+                        if(_this.cueData.GZBH){
+                            _this.$root.Bus.$emit('sendGZBH',_this.cueData.GZBH);
+                        }
+                        if(response.data.data[0].SFYD == 0){
+                            _this.readed();
+                        }
+                        if(_this.cueData.JWD){
+                            var jwd = [];
+                            jwd.push(parseFloat(_this.cueData.JWD.split(',')[0]));
+                            jwd.push(parseFloat(_this.cueData.JWD.split(',')[1]));
+                            _this.JWD = jwd;
+                            _this.FBDD = _this.cueData.SFDD;
+                            console.log(_this.JWD);
+                            console.log(_this.FBDD);
+                        }
+                        var tp = JSON.parse(_this.cueData.TP);
+                        var sp = JSON.parse(_this.cueData.SP);
+                        _this.cueData.TP = tp;
+                        _this.cueData.SP = sp;
+                        _this.getTPSPData();
+                        _this.$emit("followData",response.data.data[0].SFGZ)
+                    }else{
+                        _this.$message({
+                            message:'该线索为空',
+                            type:'error'
+                        })
                     }
-                    if(_this.cueData.JWD){
-                        var jwd = [];
-                        jwd.push(parseFloat(_this.cueData.JWD.split(',')[0]));
-                        jwd.push(parseFloat(_this.cueData.JWD.split(',')[1]));
-                        _this.JWD = jwd;
-                        _this.FBDD = _this.cueData.SFDD;
-                        console.log(_this.JWD);
-                        console.log(_this.FBDD);
-                    }
-                    var tp = JSON.parse(_this.cueData.TP);
-                    var sp = JSON.parse(_this.cueData.SP);
-                    _this.cueData.TP = tp;
-                    _this.cueData.SP = sp;
-                    _this.getTPSPData();
-                    _this.$emit("followData",response.data.data[0].SFGZ)
                 }else{
 
                 }
