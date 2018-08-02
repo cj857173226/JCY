@@ -1,7 +1,7 @@
 <template>
     <div id="cue-field">
         <div id="cue-field-header">
-            各线索来源情况
+            最近30天线索来源分布情况
         </div>
         <div id="line-cue-field-box" v-loading.lock="isLoad">
             <div id="cue-field-chart"></div>

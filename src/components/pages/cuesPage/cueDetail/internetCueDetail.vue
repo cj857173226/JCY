@@ -142,17 +142,27 @@ export default {
             }).then(function(response){
                 _this.isLoad = false;
                 if(response.data.code == 0){
-                  _this.cueData = response.data.data[0];
-                  if(_this.cueData.SFSJGZ == 1 && _this.cueData.SJGZSJ != ''){
-                      _this.getTrack(_this.cueData.SJGZSJ);
-                  }
-                  if(_this.cueData.TPJH != null&&_this.cueData.TPJH != ''){
-                      _this.getImg(_this.cueData.TPJH);
-                  }
-                  if(response.data.data[0].SFYD == 0){
-                      _this.readed();
-                  }
-                  _this.$emit("followData",response.data.data[0].SFGZ)
+                    if(response.data.data.length >0){
+                        _this.cueData = response.data.data[0];
+                        if(_this.cueData.GZBH){
+                            _this.$root.Bus.$emit('sendGZBH',_this.cueData.GZBH);
+                        }
+                        if(_this.cueData.SFSJGZ == 1 && _this.cueData.SJGZSJ != ''){
+                            _this.getTrack(_this.cueData.SJGZSJ);
+                        }
+                        if(_this.cueData.TPJH != null&&_this.cueData.TPJH != ''){
+                            _this.getImg(_this.cueData.TPJH);
+                        }
+                        if(response.data.data[0].SFYD == 0){
+                            _this.readed();
+                        }
+                        _this.$emit("followData",response.data.data[0].SFGZ)
+                    }else{
+                        _this.$message({
+                            message:'该线索为空',
+                            type:'error'
+                        })
+                    }
                 }else{
 
                 }

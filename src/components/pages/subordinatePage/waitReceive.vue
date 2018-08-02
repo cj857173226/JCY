@@ -92,8 +92,8 @@
             label="操作"
             width="100">
             <template slot-scope="scope">
-              <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH)" type="text" size="small">查看</el-button>
-              <el-button @click="comfirmReceive()" type="text" size="small">接收</el-button>
+              <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH,scope.row.GZBH)" type="text" size="small">查看</el-button>
+              <el-button @click="comfirmReceive(scope.row.GZBH)" type="text" size="small">接收</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -126,15 +126,6 @@
         typeList: ["食药安全","英烈保护",
           "国有财产","食品安全","国土资源","环境保护"],//线索门类
         clueList: [
-          {
-            JBNR:'回去玩传奇我请问你我v区区我',
-            GJC:'扰民,经营,情况,局,烧烤,噪音,中,反映',
-            XSLB:'环境污染',
-            XSSJBLY:'互联网线索',
-            XSFBSJ:'2014-04-28 00:00:00',
-            XSCJSJ:'2018-06-21 07:17:14',
-            XSBH:'QW121FF1HF2F1H0BF1381231'
-          },
         ], //待接收线索
 
         tableH:0, //表格高度
@@ -154,8 +145,23 @@
     },
     methods:{
       //确认接受
-      comfirmReceive(){
+      comfirmReceive(gzid){
+        var _this = this;
+        this.axios({
+            method:'post',
+            url:webApi.ClueManager.RecvClues.format({id:gzid}),
+            timeout:10000
+        }).then(function(response){
+            if(response.data.code == 0){
+                _this.confirmReceive = true;
+                _this.getClueList();
+                _this.$root.Bus.$emit('changeWaitConfirm');
+            }else{
 
+            }
+        }).catch(function(error){
+
+        })
       },
       //时间初始化
       timeFormat(date) {
@@ -242,8 +248,8 @@
       pageTo(){
 
       },
-      //审批
-      detail(index,text,id){
+      //详情
+      detail(index,text,id,gzid){
         var type = 0;
         localStorage.setItem('cueList',JSON.stringify(this.clueList));
         localStorage.setItem('beginDate',this.timeSearch[0]);
@@ -264,7 +270,7 @@
         }
         this.$router.push({
           path:'/home/cueDetail',
-          query:{type:9,type2:type,id:id,nav:1}
+          query:{type:9,type2:type,id:id,nav:1,gzid:gzid}
         });
       },
       //表格高度自适应

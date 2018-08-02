@@ -23,7 +23,7 @@
             </div>
             <div v-show="leaderData != ''" style="font-size: 12px;color: #696969;">{{leaderTime}}</div>
         </div>
-        <div class="advise edit-advise" v-if="((identity == 1 && !isSubmitFirst) || (identity == 1 && isSubmitFirst && isSubmitLeader)) || (identity == 3 && isSubmitFirst)">
+        <div class="advise edit-advise" v-if="((identity == 1 && !isSubmitFirst) || (identity == 1 && isSubmitFirst && isSubmitLeader)) || identity == 3">
             <div class="advise-title">编写意见</div>
             <editor id="approval-edit" height="300px" width="100%" :content="editorText"
             pluginsPath="@/../static/kindeditor/plugins/"
@@ -68,16 +68,16 @@ export default {
         var _this = this;
         this.identity = localStorage.IdentityType;  //获取身份权限
         this.XSBH = this.$route.query.id; //获取线索编号
-        if(this.$route.query.gzid){  //获取关注编号
-            this.GZBH = this.$route.query.gzid;
-        }
-        this.getAdvise();
+        this.$root.Bus.$on('sendGZBH',function(obj){
+            _this.GZBH = obj;
+            _this.getAdvise();
+        })
     },
     methods:{
         //获取初核/审核意见
         getAdvise(){
             var _this = this;
-            this.firstData = this.editorText; //
+            // this.firstData = this.editorText; //
             this.axios({
                 method:'get',
                 url:webApi.ClueManager.GetApprovalResult.format({gzbh:this.GZBH}),
@@ -136,7 +136,7 @@ export default {
                                     message:'提交成功',
                                     type:'success',
                                 })
-                                _this.getFirstText();
+                                _this.getAdvise();
                             }else{
 
                             }

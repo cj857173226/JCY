@@ -41,10 +41,15 @@ export default {
             'anchor', 'link', 'unlink', '|', 'about'
             ],
             identity: null,
+            GZBH:'',
         }
     },
     mounted(){
+        var _this = this;
         this.identity = localStorage.IdentityType;
+        this.$root.Bus.$on('sendGZBH',function(obj){
+            _this.GZBH = obj;
+        })
     },
     methods:{
         //获取办理结果
@@ -58,7 +63,7 @@ export default {
                 this.isLoad = true;
                 this.axios({
                     method:'post',
-                    url:webApi.ClueManager.ReportResult.format({id:this.$route.query.id,bljgjs:this.textData}),
+                    url:webApi.ClueManager.ReportResult.format({id:this.GZBH,bljgjs:this.textData}),
                     timeout: 10000
                 }).then(function(response){
                     _this.isLoad = false;

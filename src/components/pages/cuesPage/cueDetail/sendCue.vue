@@ -17,9 +17,11 @@ export default {
         }
     },
     mounted(){
-        if(this.$route.query.gzid){
-            this.XJYget();
-        }
+        var _this = this;
+        this.$root.Bus.$on('sendGZBH',function(obj){
+            _this.GZBH = obj;
+            _this.XJYget();
+        })
     },
     methods:{
         //获取下级院
@@ -51,7 +53,7 @@ export default {
             console.log(obj);
             this.axios({
                 method:'post',
-                url:webApi.ClueManager.DispatchClue.format({id:this.$route.query.gzid,cbdwbh:obj.DWBM,cbdwmc:obj.DWMC}),
+                url:webApi.ClueManager.DispatchClue.format({id:this.GZBH,cbdwbh:obj.DWBM,cbdwmc:obj.DWMC}),
                 timeout:10000
             }).then(function(response){
                 if(response.data.code == 0){

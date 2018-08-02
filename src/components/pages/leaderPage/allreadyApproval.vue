@@ -17,27 +17,33 @@
 
         <div class="follow_filter">
             <el-form class="follow_form" :inline="true" >
-            <el-form-item label="线索发布时间 :">
-            <el-date-picker
-                v-model="timeSearch"
-                type="daterange"
-                align="right"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-                range-separator="-"
-                unlink-panels
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
-            </el-date-picker>
-            </el-form-item>
-            <el-form-item label="关键词 :" >
-                <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
-                </el-input>
-            </el-form-item>
+                <el-form-item label="所属领域 :">
+                    <el-select class="follow_select" v-model="xslb">
+                        <el-option label="全部" value="" ></el-option>
+                        <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="线索发布时间 :">
+                    <el-date-picker
+                        v-model="timeSearch"
+                        type="daterange"
+                        align="right"
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        range-separator="-"
+                        unlink-panels
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="关键词 :" >
+                    <el-input  class="follow_input" v-model="keyword" placeholder="请输入关键词">
+                    </el-input>
+                </el-form-item>
 
-            <el-form-item>
-                <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="search">搜索 <i class="iconfont icon-sousuo"></i></el-button>
-            </el-form-item>
+                <el-form-item>
+                    <el-button style="border: 1px solid #dcdfe6;" class="follow_btn"  @click="search">搜索 <i class="iconfont icon-sousuo"></i></el-button>
+                </el-form-item>
             </el-form>
         </div>
         <div id="content">
@@ -147,14 +153,40 @@ export default {
             pageNum:1,
             pageSize:20,
 
+            xslb:'' ,//线索类别
+            typeList: [] ,// 线索类别
+
         }
     },
     mounted(){
-        this.initTime();
-        this.tableResize();
-        this.getData();
+        localStorage.removeItem('cueList');
+        localStorage.removeItem('beginDate');
+        localStorage.removeItem('endDate');
+        localStorage.removeItem('cueIndex');
+        localStorage.removeItem('pageNum');
+        localStorage.removeItem('keyword');
+        localStorage.removeItem('cueType');
+        this.getClueType(); //获取线索类别
+        this.initTime(); //初始化时间
+        this.tableResize();  //表格高度初始化
+        this.getData(); // 获取数据
     },
     methods:{
+        //获取门类
+        getClueType(){
+            let _this = this;
+            _this.axios({
+            method:'get',
+            url:webApi.Host + webApi.Clue.GetClueTypes
+            }).then(function(res){
+            if(res.data.code == 0){
+                let data = res.data.data;
+                _this.typeList = data;
+            }
+            }).catch(function(err){
+            console.log(err);
+            })
+        },
         //默认时间
         initTime(){
             var time = new Date();
@@ -182,7 +214,7 @@ export default {
             this.isLoad = true;
             this.axios({
                 method:'get',
-                url:webApi.ClueManager.GetApprovalClues.format({type:1,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize}),
+                url:webApi.ClueManager.GetApprovalClues.format({type:1,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize,xslb:this.xslb}),
                 timeout:10000
             }).then(function(response){
                 if(response.data.code == 0){
@@ -201,6 +233,13 @@ export default {
         //审批
         detail(text,id){
             var type = 0;
+            localStorage.setItem('cueList',JSON.stringify(this.waitApproval));
+            localStorage.setItem('beginDate',this.timeSearch[0]);
+            localStorage.setItem('endDate',this.timeSearch[1]);
+            localStorage.setItem('cueIndex',index);
+            localStorage.setItem('pageNum',this.pageNum);
+            localStorage.setItem('keyword',this.keyword);
+            localStorage.setItem('cueType',this.xslb);
             if(text == '举报线索'){
                 type = 1
             }else if(text == '互联网线索'){
@@ -209,6 +248,8 @@ export default {
                 type = 3
             }else if(text == '热点线索'){
                 type = 4
+            }else if(text == '自行发现线索'){
+                type = 5
             }
             this.$router.push({
                 path:'/home/cueDetail',
@@ -225,6 +266,13 @@ export default {
         },
         resize(){
             let _this = this;
+            let width = document.body.offsetWidth;
+            var box = document.getElementById('content');
+            if(width >= 1363) {
+                box.style.height = 'calc(100% - 122px)';
+            }else if(width < 1364) {
+                box.style.height = 'calc(100% - 174px)';
+            }
             _this.tableH = _this.$refs.cueList.clientHeight;
         }
     },
@@ -306,7 +354,6 @@ export default {
         padding-left: 15px;
         padding-top: 5px;
         margin: 15px 20px 0;
-        height: 50px;
         .follow_form {
             .el-form-item {
             margin-bottom: 10px;

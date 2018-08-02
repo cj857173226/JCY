@@ -10,7 +10,7 @@
     <router-link to="/home/waitApproval" v-if="IdentityType==3?true:false">
       <el-menu-item index="7" :class="isThisNav == '待审批' ?'is-actived':''" @click="switchNav('待审批')">
         <i class="fa fa-pencil-square-o"></i>
-        <span slot="title">待审批<span class="note-tag">(0)</span></span>
+        <span slot="title">待审批<span class="note-tag">({{waitApproval}})</span></span>
       </el-menu-item>
     </router-link>
 
@@ -31,7 +31,7 @@
     <router-link to="/home/waitReceive" v-if="IdentityType==5?true:false">
       <el-menu-item index="10" :class="isThisNav == '待接收'?'is-actived':''" @click="switchNav('待接收')">
         <i class="fa fa-th-list"></i>
-        <span slot="title">待确认接收<span class="note-tag">(0)</span></span>
+        <span slot="title">待确认接收<span class="note-tag">({{waitReceive}})</span></span>
       </el-menu-item>
     </router-link>
 
@@ -202,6 +202,8 @@
         IdentityType: localStorage.getItem('IdentityType'),//身份信息
         openeds: ['2','5','6','7','7-3'],
         isThisNav: '',
+        waitReceive:0, //待接收 下级院
+        waitApproval:0, //待审批 领导
       }
     },
     mounted(){
@@ -286,11 +288,56 @@
       var _this = this;
       this.$root.Bus.$on('changeIdentity',function(val){
         _this.IdentityType = val;
+        console.log(1);
+        if(_this.IdentityType == 5){
+          _this.countWaitConfirm();
+        }
+        if(_this.IdentityType == 3){
+          _this.countWaitApproval();
+        }
+      })
+      this.$root.Bus.$on('changeWaitConfirm',function(){
+        _this.countWaitConfirm();
+        console.log(2);
+      })
+      this.$root.Bus.$on('changeWaitApproval',function(){
+        _this.countWaitApproval();
+        console.log(3);
       })
     },
     methods:{
       switchNav(title){
         this.isThisNav = title;
+      },
+      //统计待确认接收线索
+      countWaitConfirm(){
+        var _this = this;
+        _this.axios({
+          method: 'post',
+          url: webApi.Host + webApi.Stats.CountUnConfirmClues,
+          timeout: 10000,
+        }).then(function(res){
+          if(res.data.code==0){
+            _this.waitReceive = res.data.data;
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
+      },
+      //统计待办理线索
+      countWaitApproval(){
+        var _this = this;
+        _this.axios({
+          method: 'get',
+          url: webApi.Host + webApi.Stats.CountHanddingClues,
+          timeout: 10000,
+        }).then(function(res){
+          if(res.data.code==0){
+            _this.waitApproval = res.data.data;
+          }
+        }).catch(function(err){
+          console.log(err)
+        })
       }
     }
   }
