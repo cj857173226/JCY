@@ -1,12 +1,12 @@
 <template>
     <div id="result">
         <div class="result-text">
-            <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">处理结果</div>
             <div class="advise-content">
                 <span class="no-result" v-show="textData == ''">暂无处理结果</span>
                 <span v-show="textData!=''" v-html="textData"></span>
             </div>
+            <div v-show="textData != ''" style="font-size: 12px;color: #696969;">{{time}}</div>
         </div>
         <div class="result-text result-edit" v-if="identity == 5">
             <div class="advise-title">编写处理结果</div>
@@ -42,6 +42,7 @@ export default {
             ],
             identity: null,
             GZBH:'',
+            time:'', //时间
         }
     },
     mounted(){
@@ -49,17 +50,38 @@ export default {
         this.identity = localStorage.IdentityType;
         this.$root.Bus.$on('sendGZBH',function(obj){
             _this.GZBH = obj;
+            _this.getResult();
         })
     },
     methods:{
         //获取办理结果
+        getResult(){
+            var _this = this;
+            this.axios({
+                methodL:'get',
+                url:webApi.ClueManager.GetResult.format({gzbh:this.GZBH}),
+                timeout:10000
+            }).then(function(response){
+                if(response.data.code == 0){
+                    // _this.editorText = response.data
+                    if(response.data.data[0].BLJGJS&&response.data.data[0].BLJGFKSJ){
+                        _this.textData = response.data.data[0].BLJGJS;
+                        _this.time = response.data.data[0].BLJGJS;
+                    }
+                }else{
+
+                }
+            }).catch(function(error){
+
+            })
+        },
         //提交按钮
         submitBtn(){
             var _this = this;
             if(this.editorText.trim() == ''){
                 console.log("为空");
             }else{
-                this.textData = this.editorText
+                this.textData = this.editorText;
                 this.isLoad = true;
                 this.axios({
                     method:'post',
@@ -68,7 +90,11 @@ export default {
                 }).then(function(response){
                     _this.isLoad = false;
                     if(response.data.code == 0){
-                        this.textData = '';
+                        _this.editorText = '';
+                        _this.$message({
+                            message:'已成功提交',
+                            type:'success'
+                        })
                     }else{
 
                     }

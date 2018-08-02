@@ -47,7 +47,7 @@
             </el-form>
         </div>
         <div id="content">
-            <div class="table-list" ref="cueList">
+            <div class="table-list" ref="cueList" v-loading="isLoad">
                 <el-table
                     ref="oTable"
                     :data="waitApproval"
@@ -134,17 +134,7 @@ export default {
             pageSize:10, //每页条数
             pageNum:1, //当前页
             totalPages: 0, //总条数
-            waitApproval: [
-                {
-                    JBNR:'回去玩传奇我请问你我v区区我',
-                    GJC:'扰民,经营,情况,局,烧烤,噪音,中,反映',
-                    XSLB:'环境污染',
-                    XSSJBLY:'互联网线索',
-                    XSFBSJ:'2014-04-28 00:00:00',
-                    XSCJSJ:'2018-06-21 07:17:14',
-                    XSBH:'QW121FF1HF2F1H0BF1381231'
-                },
-            ], //待审批线索
+            waitApproval: [], //待审批线索
 
             tableH:0, //表格高度
             keyword:'', //关键字
@@ -166,6 +156,7 @@ export default {
         localStorage.removeItem('pageNum');
         localStorage.removeItem('keyword');
         localStorage.removeItem('cueType');
+        this.resize();
         this.getClueType(); //获取线索类别
         this.initTime(); //初始化时间
         this.tableResize();  //表格高度初始化
@@ -217,9 +208,23 @@ export default {
                 url:webApi.ClueManager.GetApprovalClues.format({type:1,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize,xslb:this.xslb}),
                 timeout:10000
             }).then(function(response){
+                _this.isLoad = false;
                 if(response.data.code == 0){
-                    _this.isLoad = false;
-
+                    response.data.data.result.forEach(function(item){
+                        if(item.XSSJBLY=="1") {
+                            item.XSSJBLY = "举报线索";
+                        }else if(item.XSSJBLY=="2") {
+                            item.XSSJBLY = "互联网线索";
+                        }else if(item.XSSJBLY=="3") {
+                            item.XSSJBLY = "公益组织线索";
+                        }else if(item.XSSJBLY=="4") {
+                            item.XSSJBLY = "热点线索";
+                        }else if(item.XSSJBLY=="5") {
+                            item.XSSJBLY = "自行发现线索";
+                        }
+                    })
+                    _this.waitApproval = response.data.data.result;
+                    _this.totalPages = response.data.data.count;
                 }
             }).catch(function(error){
                 _this.isLoad = false;
@@ -227,8 +232,9 @@ export default {
             });
         },
         //跳转分页
-        pageTo(){
-
+        pageTo(val){
+            this.pageNum = val;
+            this.getData();
         },
         //审批
         detail(text,id){
@@ -273,7 +279,9 @@ export default {
             }else if(width < 1364) {
                 box.style.height = 'calc(100% - 174px)';
             }
-            _this.tableH = _this.$refs.cueList.clientHeight;
+            _this.$nextTick(()=>{
+                _this.tableH = _this.$refs.cueList.clientHeight;
+            })
         }
     },
     //实例销毁钩子
