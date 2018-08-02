@@ -129,7 +129,7 @@ export default {
 
                     }
                 }).catch(function(error){
-                    _this.isLoad = false;
+                  _this.isLoad = false;
                 })
         },
         //数据上图
