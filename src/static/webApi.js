@@ -1,3 +1,4 @@
+
 var webApi = {
   Host:'http://daniu.51vip.biz:10698/gyssApp_test',
 //权限控制器。根据方法设置token
@@ -50,7 +51,8 @@ var webApi = {
   },
 //业务处理控制器。根据方法设置token
   ClueManager : {
-    GetFollowClues: '/api/ClueManager/GetFollowClues?xssjbly={xssjbly}&xslb={xslb}&keyword={keyword}&beginDate={beginDate}&endDate={endDate}&pageNum={pageNum}&pageSize={pageSize}&order={order}', //获取关注线索列表; 方式:GET; 是否需要token:需要；参数说明:[xssjbly=》线索数据表来源。1:举报线索；2：互联网线索；3：公益组织线索；4：热点线索；5：自行发现线索；xslb=》线索类别；keyword=》关键字；beginDate=》开始时间；endDate=》结束时间；pageNum=》页码；pageSize=》页大小；order=》排序字段；]
+    GetFollowClues: '/api/ClueManager/GetFollowClues?xssjbly={xssjbly}&xslb={xslb}&sfbl={sfbl}&keyword={keyword}&beginDate={beginDate}&endDate={endDate}&pageNum={pageNum}&pageSize={pageSize}&order={order}', //获取关注线索列表; 方式:GET; 是否需要token:需要；参数说明:[xssjbly=》线索数据表来源。1:举报线索；2：互联网线索；3：公益组织线索；4：热点线索；5：自行发现线索；xslb=》线索类别；sfbl=》是否办理。true:已办理，false：未办理，为空：全部；keyword=》关键字；beginDate=》开始时间；endDate=》结束时间；pageNum=》页码；pageSize=》页大小；order=》排序字段；]
+    GetLDFollowClues: '/api/ClueManager/GetLDFollowClues?xssjbly={xssjbly}&xslb={xslb}&keyword={keyword}&sfbl={sfbl}&beginDate={beginDate}&endDate={endDate}&pageNum={pageNum}&pageSize={pageSize}&order={order}', //获取领导关注线索列表; 方式:GET; 是否需要token:需要；参数说明:[xssjbly=》线索数据表来源。1:举报线索；2：互联网线索；3：公益组织线索；4：热点线索；5：自行发现线索；xslb=》线索类别；keyword=》关键字；sfbl=》是否办理。1：未办理，2：已办理；beginDate=》开始时间；endDate=》结束时间；pageNum=》页码；pageSize=》页大小；order=》排序字段；]
     FollowClue: '/api/ClueManager/FollowClue?xsid={xsid}&xssjbly={xssjbly}', //关注线索; 方式:POST; 是否需要token:需要；参数说明:[xsid=》线索编号；xssjbly=》线索数据表来源。1:举报线索；2：互联网线索；3：公益组织线索；4：热点线索；5：自行发现线索；]
     UnFollowClue: '/api/ClueManager/UnFollowClue?xsid={xsid}&xssjbly={xssjbly}', //取消关注线索; 方式:POST; 是否需要token:需要；参数说明:[xsid=》线索编号；xssjbly=》线索数据表来源。1:举报线索；2：互联网线索；3：公益组织线索；4：热点线索；5：自行发现线索；]
     UpdateClueType: '/api/ClueManager/UpdateClueType', //修改线索的所属类别; 方式:POST; 是否需要token:需要；参数说明:[data=》包含线索编号(xsbh)、修改后的线索类别(xslb)、以及可以包含对线索的备注信息(bz)；]

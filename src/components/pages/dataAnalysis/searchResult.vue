@@ -16,6 +16,20 @@
         </div>
         <div id="main-body" class="clearfix"   ref="mainBody" v-loading="tableLoad">
           <div id="sideMenu-wrap"  ref="sideMenuWrap" v-loading="isLoading">
+            <div class="search-wrap">
+              <input class="search-ipt"  type="text" v-model="titleKeyword" placeholder="请输入检索标题" @focus="inputTitle" @blur="searchBlur()" v-on:input="inputTitle" @keyup.13="searchTitle()">
+              <span class="search-btn" @click.stop.prevent="searchTitle()">
+              <i class="iconfont icon-sousuo"></i>
+              </span>
+              <ul v-show="tipTitleList.length > 0">
+                <li v-for="(item, index) in tipTitleList" :key="index" @mousedown="searchTitle(item.name)">
+                  <span v-text="item.name"></span>
+                </li>
+              </ul>
+              <!--<datalist id="titleList">-->
+                <!--<option  v-for="(item,index) in allTableList" :key="index" :value="item.name"></option>-->
+              <!--</datalist>-->
+            </div>
             <ul class="side-menu" id="sideMenu">
               <li class="menu-item" :class="{'menu-item-on':item.name == currMenuOn}" v-for="(item,index) in sideMenuList" :id="item.numId" @click.stop.prevent="currMenuIndex == index;checkResult(item.name,item.numId,item.hit,item.isLoad,index)">
                 <div class="text" :title="item.name">{{item.name}}</div>
@@ -115,7 +129,10 @@ export default {
   data(){
     return {
       tableH:0, //表格高度
-      keyword:this.$route.query.keyword,
+      keyword: this.$route.query.keyword,
+      titleKeyword: "",//标题关键字
+      tipTitleList: [],//提示名称列表
+      allTableList: [],//标题名称列表
       sideMenuList:[
 
       ],
@@ -151,6 +168,37 @@ export default {
     _this.search();
   },
   methods:{
+    searchBlur() {//搜索标题失焦
+      this.tipTitleList = [];
+    },
+    inputTitle() {//输入标题
+      let _this = this;
+      let keyword = _this.titleKeyword;
+      _this.tipTitleList = [];
+      if(keyword) {
+        for(let i = 0; i < _this.allTableList.length; i++) {
+          if(_this.allTableList[i].name.indexOf(keyword) > -1) {
+            _this.tipTitleList.push(_this.allTableList[i])
+          }
+        }
+      }
+    },
+    searchTitle(name) {//检索标题
+      let _this = this;
+      let keyword = _this.titleKeyword;
+      name = name || keyword;
+      _this.sideMenuList = [];
+      document.getElementById('sideMenu').scrollTop =0;
+      if(keyword) {
+        for(let i = 0; i < _this.allTableList.length; i++) {
+          if(_this.allTableList[i].name.indexOf(name) > -1) {
+            _this.sideMenuList.push(_this.allTableList[i])
+          }
+        }
+      }else {
+        _this.sideMenuList = _this.allTableList;
+      }
+    },
     //关闭弹层
     closeDialog(){
       this.isShowBox = false;
@@ -261,6 +309,7 @@ export default {
                 arr.push(obj)
               }
               _this.sideMenuList = arr;
+              _this.allTableList = arr;
               _this.keywordHit();
 
           }
@@ -656,6 +705,74 @@ export default {
            color: #3bcb00;
          }
        }
+       /*搜索框*/
+       .search-wrap{
+         position: relative;
+         background: #FFFFFF;
+         height: 42px;
+         width: 90%;
+         margin-top: 4px;
+         margin-left: 5%;
+         border: 1px solid #dcdcdc;
+         -webkit-border-radius: 8px;
+         -moz-border-radius: 8px;
+         border-radius: 8px;
+         .search-ipt{
+           width: calc( 100% - 48px);
+           float: left;
+           font-size: 16px;
+           height: 100%;
+           border: none;
+           padding-left: 10px;
+           color: #999999;
+           background: transparent;
+         }
+         .search-btn{
+           float: left;
+           position: relative;
+           height: 100%;
+           line-height: 40px;
+           width: 48px;
+           color: #999999;
+           text-align: center;
+           cursor: pointer;
+         }
+         .search-btn:after{
+           content: '';
+           position: absolute;
+           left: 0;
+           top: 10px;
+           width: 2px;
+           height: 20px;
+           background: #dcdcdc;
+         }
+         /*提示框*/
+         ul {
+           position: absolute;
+           top: 46px;
+           left: 0;
+           width: 100%;
+           background-color: #fff;
+           z-index: 2;
+           padding: 10px 0;
+           font-size: 14px;
+           max-height: 300px;
+           overflow-y: auto;
+           border: 1px solid darkgray;
+           li {
+             white-space: nowrap;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             height: 30px;
+             line-height: 30px;
+             padding: 0 15px  15px;
+             &:hover {
+               background-color: rgba(221,255,218,0.83);
+               cursor: pointer;
+             }
+           }
+         }
+       }
      }
      #result-wrap{
        float: left;
@@ -739,6 +856,31 @@ export default {
             .menu-item:hover{
             }
             .menu-item-on{
+            }
+          }
+          /*搜索框*/
+          .search-wrap{
+            height: 32px;
+            .search-ipt{
+              width: calc( 100% - 38px);
+              font-size: 14px;
+            }
+            .search-btn{
+              line-height: 32px;
+              width: 38px;
+            }
+            .search-btn:after{
+              content: '';
+              left: 0;
+              top: 8px;
+              width: 2px;
+              height: 14px;
+            }
+            /*提示框*/
+            ul {
+              position: absolute;
+              top: 36px;
+              left: 0;
             }
           }
         }

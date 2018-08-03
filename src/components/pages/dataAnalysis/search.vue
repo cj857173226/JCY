@@ -123,12 +123,12 @@ export default {
     }
     #pie-chart{
       width: 100%;
-      height: 50px;
+      height: 300px;
       margin:0 auto;
 
     }
     #word-cloud {
-      /*display: none;*/
+      display: none;
       width: 80%;
       height: 350px;
       margin:0 auto;

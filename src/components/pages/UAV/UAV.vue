@@ -153,11 +153,15 @@
         pageSize: 20,//每页数量
         total: 2,//总数量
         imgList: [//图片数据
-          '../../../assets/UAV/UAV1.jpg',
-          '@/assets/UAV/UAV1.jpg',
-          '@/assets/UAV/UAV1.jpg',
-          '@/assets/UAV/UAV1.jpg',
-          '@/assets/UAV/UAV1.jpg',
+          "../../../assets/UAV/UAV1.jpg",
+          "../../../assets/UAV/UAV2.jpg",
+          "../../../assets/UAV/UAV3.png",
+          "../../../assets/UAV/UAV4.png",
+          "../../../assets/UAV/UAV5.png",
+          "../../../assets/UAV/UAV6.png",
+          "../../../assets/UAV/UAV7.png",
+          "../../../assets/UAV/UAV8.png",
+          "../../../assets/UAV/UAV9.png"
         ],
       }
     },

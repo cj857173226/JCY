@@ -529,6 +529,7 @@
             }).then(function(res){
               if(res.data.code==0){
                 subTotal+=res.data.data;
+                console.log(subTotal)
                 setDataCount(_this.dataCount[0],{title: '线索总量', val: subTotal,icon:'fa-list'});
               }
             }).catch(function(err){

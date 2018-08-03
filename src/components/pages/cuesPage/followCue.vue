@@ -16,8 +16,9 @@
             <el-option v-for="(item,index) in typeList"  :key="index" :value="item">{{item}}</el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="是否审批 :">
-          <el-select style="width: 70px;" v-model="sfsp">
+        <el-form-item label="是否办理 :">
+          <el-select style="width: 90px;" v-model="sfbl">
+            <el-option label="全部" value=""></el-option>
             <el-option label="是" value="true"></el-option>
             <el-option label="否" value="false"></el-option>
           </el-select>
@@ -158,7 +159,7 @@
         total: 0,//总条数
         timeSearch:[],
         xssjbly: "",//线索数据来源
-        sfsp: "true",//是否审批
+        sfbl: "",//是否办理
       }
     },
     mounted() {
@@ -281,7 +282,7 @@
           "xslb": _this.xslb,
           "order": "",
           "xssjbly": _this.xssjbly,
-          // "sfsp": _this.sfsp
+          "sfbl": _this.sfbl
         };
         _this.isLoading = true;
         _this.axios({
@@ -391,9 +392,9 @@
       resize(){
         let _this = this;
         let width = document.body.offsetWidth;
-        if(width < 1610 && width > 1440) {
+        if(width < 1710 && width > 1440) {
           _this.$refs.cueList.style.height = 'calc(100% - 204px)';
-        }else if(width >= 1610) {
+        }else if(width >= 1710) {
           _this.$refs.cueList.style.height = 'calc(100% - 148px)';
         }else if(width <= 1440) {
           _this.$refs.cueList.style.height = 'calc(100% - 190px)';
