@@ -47,11 +47,10 @@
             </el-form>
         </div>
         <div id="content">
-            <div class="table-list" ref="cueList">
+            <div class="table-list" ref="cueList" v-loading="isLoad">
                 <el-table
                     ref="oTable"
                     :data="waitApproval"
-                    :max-height="tableH"
                     :height="tableH"
                     style="width: 100%">
                     <el-table-column
@@ -107,7 +106,7 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH)"  type="text" size="small">审批</el-button>
+                            <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH,scope.row.SPRBH)"  type="text" size="small">审批</el-button>
                         </template>
                     </el-table-column>
                     </el-table>
@@ -130,6 +129,7 @@ export default {
     name:'review-cue',
     data(){
         return{
+            isLoad:false,//数据加载
             pageSize:10, //每页条数
             pageNum:1, //当前页
             totalPages: 0, //总条数
@@ -203,20 +203,21 @@ export default {
             }).then(function(response){
                 _this.isLoad = false;
                 if(response.data.code == 0){
-                    response.data.data.forEach(function(item){
-                    if(item.XSSJBLY=="1") {
-                        item.XSSJBLY = "举报线索";
-                    }else if(item.XSSJBLY=="2") {
-                        item.XSSJBLY = "互联网线索";
-                    }else if(item.XSSJBLY=="3") {
-                        item.XSSJBLY = "公益组织线索";
-                    }else if(item.XSSJBLY=="4") {
-                        item.XSSJBLY = "热点线索";
-                    }else if(item.XSSJBLY=="5") {
-                        item.XSSJBLY = "自行发现线索";
-                    }
+                    response.data.data.result.forEach(function(item){
+                        if(item.XSSJBLY=="1") {
+                            item.XSSJBLY = "举报线索";
+                        }else if(item.XSSJBLY=="2") {
+                            item.XSSJBLY = "互联网线索";
+                        }else if(item.XSSJBLY=="3") {
+                            item.XSSJBLY = "公益组织线索";
+                        }else if(item.XSSJBLY=="4") {
+                            item.XSSJBLY = "热点线索";
+                        }else if(item.XSSJBLY=="5") {
+                            item.XSSJBLY = "自行发现线索";
+                        }
                     })
-                    _this.waitApproval = response.data.data;
+                    _this.waitApproval = response.data.data.result;
+                    _this.totalPages = response.data.data.count;
                     _this.$root.Bus.$emit('changeWaitApproval');
                 }
             }).catch(function(error){
@@ -225,11 +226,12 @@ export default {
             });
         },
         //跳转分页
-        pageTo(){
-
+        pageTo(val){
+            this.pageNum = val;
+            this.getData();
         },
         //审批
-        detail(index,text,id){
+        detail(index,text,id,spid){
             var type = 0;
             localStorage.setItem('cueList',JSON.stringify(this.waitApproval));
             localStorage.setItem('beginDate',this.timeSearch[0]);
@@ -251,7 +253,7 @@ export default {
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:6,type2:type,nav:2,id:id}
+                query:{type:6,type2:type,nav:2,id:id,spid:spid}
             });
         },
         //表格高度自适应
@@ -271,7 +273,10 @@ export default {
             }else if(width < 1364) {
             box.style.height = 'calc(100% - 174px)';
             }
-            _this.tableH = _this.$refs.cueList.clientHeight;
+            _this.$nextTick(()=>{
+                _this.tableH = _this.$refs.cueList.clientHeight;
+            })
+            console.log(_this.tableH);
         }
     },
     //实例销毁钩子

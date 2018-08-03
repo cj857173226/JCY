@@ -19,7 +19,7 @@
             <span class="item-title resource-box">举报内容</span><span class="item-content resource-content ">{{cueData.JBNR}}</span>
         </div>
         <div class="detail-item" v-if='JWD.length > 0'>
-            <span class="item-title resource-box">举报地点</span><span class="item-content resource-content " style="height:300px"><cue-map :JWD="JWD" :FBDD="FBDD"></cue-map></span>
+            <span class="item-title resource-box">事发地点卫星图</span><span class="item-content resource-content " style="height:300px"><cue-map :JWD="JWD" :FBDD="FBDD"></cue-map></span>
         </div>
         <div class="detail-item" v-show="cueData.TP.length">
             <span class="item-title resource-box">图片内容</span>

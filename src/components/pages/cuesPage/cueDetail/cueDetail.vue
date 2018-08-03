@@ -208,6 +208,7 @@ export default {
             let cueFrom = localStorage.getItem('cueFrom'); //获取数据来源
             let beginDate = localStorage.getItem('beginDate'); //获取开始时间
             let endDate = localStorage.getItem('endDate'); //获取结束时间
+            let sfbl = localStorage.getItem('sfbl'); //获取结束时间
             if(index == 1){
                 if(this.cueIndex == 0&&this.pageNum == 1){
                     this.$message({
@@ -276,7 +277,7 @@ export default {
                         this.isLoad = true;
                         this.axios({
                             method:'get',
-                            url:webApi.ClueManager.GetFollowClues.format({keyword:keyword,pageNum:_this.pageNum - 1,pageSize:20,beginDate:beginDate,endDate:endDate,xslb:cueType,order:'fbsj',xssjbly:cueFrom}),
+                            url:webApi.ClueManager.GetFollowClues.format({keyword:keyword,pageNum:_this.pageNum - 1,pageSize:20,beginDate:beginDate,endDate:endDate,xslb:cueType,order:order,xssjbly:cueFrom}),
                             timeout: 10000
                         }).then(function(response){
                             _this.isLoad = false;
@@ -411,6 +412,38 @@ export default {
                         });
                     }else if(this.cueFrom == '结果反馈'){
                         //领导 结果反馈
+                        this.isLoad = true;
+                        if(cueFrom == '举报线索'){
+                            cueFrom = 1;
+                        }else if(cueFrom = '互联网线索'){
+                            cueFrom = 2;
+                        }else if(cueFrom = '公益组织线索'){
+                            cueFrom = 3;
+                        }else if(cueFrom = '热点线索'){
+                            cueFrom = 4;
+                        }else if(cueFrom = '自行发现线索'){
+                            cueFrom = 5;
+                        }
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetLDFollowClues.format({xssjbly:cueFrom,sfbl:sfbl,keyword:keyword,beginDate:begin,endDate:end,pageNum:_this.pageNum - 1,pageSize:20,xslb:_this.cueType,order:order}),
+                            timeout:10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+                        }).catch(function(error){
+                            _this.isLoad = false;
+
+                        });
                     }
                 }else{
                     localStorage.setItem('cueIndex',this.cueIndex - 1);//修改线索索引
@@ -641,6 +674,38 @@ export default {
                         });
                     }else if(this.cueFrom == '结果反馈'){
                         //领导 结果反馈
+                        this.isLoad = true;
+                        if(cueFrom == '举报线索'){
+                            cueFrom = 1;
+                        }else if(cueFrom = '互联网线索'){
+                            cueFrom = 2;
+                        }else if(cueFrom = '公益组织线索'){
+                            cueFrom = 3;
+                        }else if(cueFrom = '热点线索'){
+                            cueFrom = 4;
+                        }else if(cueFrom = '自行发现线索'){
+                            cueFrom = 5;
+                        }
+                        this.axios({
+                            method:'get',
+                            url:webApi.ClueManager.GetLDFollowClues.format({xssjbly:cueFrom,sfbl:sfbl,keyword:keyword,beginDate:begin,endDate:end,pageNum:_this.pageNum + 1,pageSize:20,xslb:_this.cueType,order:order}),
+                            timeout:10000
+                        }).then(function(response){
+                            _this.isLoad = false;
+                            if(response.data.code == 0){
+                                localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
+                                let preCue = response.data.data.data[0].XSBH;
+                                params['id'] = preCue;
+                                _this.$router.push({
+                                    path:'/home/cueDetail',
+                                    query:params
+                                });
+                                _this.reload();
+                            }
+                        }).catch(function(error){
+                            _this.isLoad = false;
+
+                        });
                     }
                 }else{
                     localStorage.setItem('cueIndex',this.cueIndex + 1); //修改线索索引
