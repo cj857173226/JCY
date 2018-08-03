@@ -50,6 +50,7 @@ export default {
         this.identity = localStorage.IdentityType;
         this.$root.Bus.$on('sendGZBH',function(obj){
             _this.GZBH = obj;
+            console.log(_this.GZBH);
             _this.getResult();
         })
     },

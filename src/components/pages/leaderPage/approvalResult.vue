@@ -141,6 +141,9 @@ export default {
             tableH:0, //表格高度
             keyword:'', //关键字
             xslb:'', //线索类别
+            xssjbly:'', //线索来源
+            sfbl:'2', //是否办理
+            order:'fbsj', //排序字段
             typeList:[] , //线索类别
             timeSearch: '' , //时间
         }
@@ -209,7 +212,7 @@ export default {
             this.isLoad = true;
             this.axios({
                 method:'get',
-                url:webApi.ClueManager.GetApprovalClues.format({type:1,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize,xslb:this.xslb}),
+                url:webApi.ClueManager.GetLDFollowClues.format({xssjbly:this.xssjbly,sfbl:this.sfbl,type:1,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize,xslb:this.xslb,order:this.order}),
                 timeout:10000
             }).then(function(response){
                 _this.isLoad = false;
