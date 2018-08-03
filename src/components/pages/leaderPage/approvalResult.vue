@@ -48,10 +48,10 @@
         </div>
 
         <div id="content">
-            <div class="table-list" ref="cueList">
+            <div class="table-list" ref="cueList" v-loading="isLoad">
                 <el-table
                     ref="oTable"
-                    :data="waitApproval"
+                    :data="approvalResult"
                     :max-height="tableH"
                     :height="tableH"
                     style="width: 100%">
@@ -108,7 +108,7 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="detail(scope.row.XSSJBLY,scope.row.XSBH)"  type="text" size="small">查看</el-button>
+                            <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH)"  type="text" size="small">查看</el-button>
                         </template>
                     </el-table-column>
                     </el-table>
@@ -131,11 +131,12 @@ export default {
     name:'review-cue',
     data(){
         return{
+            isLoad:false, //数据加载
             isThisNav:1,//导航
             pageSize:10, //每页条数
             pageNum:1, //当前页
             totalPages: 0, //总条数
-            waitApproval: [
+            approvalResult: [
             ], //待审批线索
 
             tableH:0, //表格高度
@@ -156,6 +157,8 @@ export default {
         localStorage.removeItem('pageNum');
         localStorage.removeItem('keyword');
         localStorage.removeItem('cueType');
+        localStorage.removeItem('cueFrom');
+        localStorage.removeItem('sfbl');
         this.initTime();
         this.tableResize();
         this.getData();
@@ -164,7 +167,8 @@ export default {
     methods:{
         //搜索
         search(){
-
+            this.pageNum = 1;
+            this.getData();
         },
         //获取门类
         getClueType(){
@@ -196,13 +200,10 @@ export default {
                 }
             }
         },
-        //搜索
-        getInternetCueList(){
-
-        },
         //跳转分页
-        pageTo(){
-
+        pageTo(val){
+            this.pageNum = val;
+            this.getData();
         },
         //获取数据
         getData(){
@@ -212,12 +213,12 @@ export default {
             this.isLoad = true;
             this.axios({
                 method:'get',
-                url:webApi.ClueManager.GetLDFollowClues.format({xssjbly:this.xssjbly,sfbl:this.sfbl,type:1,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize,xslb:this.xslb,order:this.order}),
+                url:webApi.ClueManager.GetLDFollowClues.format({xssjbly:this.xssjbly,sfbl:this.sfbl,keyword:this.keyword,beginDate:begin,endDate:end,pageNum:this.pageNum,pageSize:this.pageSize,xslb:this.xslb,order:this.order}),
                 timeout:10000
             }).then(function(response){
                 _this.isLoad = false;
                 if(response.data.code == 0){
-                    response.data.data.forEach(function(item){
+                    response.data.data.data.forEach(function(item){
                     if(item.XSSJBLY=="1") {
                         item.XSSJBLY = "举报线索";
                     }else if(item.XSSJBLY=="2") {
@@ -230,7 +231,8 @@ export default {
                         item.XSSJBLY = "自行发现线索";
                     }
                     })
-                    _this.waitApproval = response.data.data;
+                    _this.approvalResult = response.data.data.data;
+                    _this.totalPages = response.data.data.total;
 
                 }
             }).catch(function(error){
@@ -241,13 +243,15 @@ export default {
         //审批
         detail(index,text,id){
             var type = 0;
-            localStorage.setItem('cueList',JSON.stringify(this.waitApproval));
+            localStorage.setItem('cueList',JSON.stringify(this.approvalResult));
             localStorage.setItem('beginDate',this.timeSearch[0]);
             localStorage.setItem('endDate',this.timeSearch[1]);
             localStorage.setItem('cueIndex',index);
             localStorage.setItem('pageNum',this.pageNum);
             localStorage.setItem('keyword',this.keyword);
             localStorage.setItem('cueType',this.xslb);
+            localStorage.setItem('sfbl',this.sfbl);
+            localStorage.setItem('cueFrom',this.xssjbly);
             if(text == '举报线索'){
                 type = 1
             }else if(text == '互联网线索'){
@@ -261,7 +265,7 @@ export default {
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:6,type2:type,nav:2,id:id}
+                query:{type:8,type2:type,nav:1,id:id}
             });
         },
         //表格高度自适应
@@ -281,7 +285,9 @@ export default {
             }else if(width < 1364) {
             box.style.height = 'calc(100% - 174px)';
             }
-            _this.tableH = _this.$refs.cueList.clientHeight;
+            _this.$nextTick(()=>{
+                _this.tableH = _this.$refs.cueList.clientHeight;
+            })
         }
     },
     //实例销毁钩子

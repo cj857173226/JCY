@@ -1,5 +1,5 @@
 <template>
-    <div id="main">
+    <div id="main" v-loading="isLoad">
         <div class="advise">
             <i class="timeline-icon fa fa-circle-thin"></i>
             <div class="advise-title">初核意见</div>
@@ -23,7 +23,7 @@
             </div>
             <div v-show="leaderData != ''" style="font-size: 12px;color: #696969;">{{leaderTime}}</div>
         </div>
-        <div class="advise edit-advise" v-if="((identity == 1 && !isSubmitFirst) || (identity == 1 && isSubmitFirst && isSubmitLeader)) || identity == 3">
+        <div v-loading="isSubmitLoad" class="advise edit-advise" v-if="((identity == 1 && !isSubmitFirst) || (identity == 1 && isSubmitFirst && isSubmitLeader)) || identity == 3">
             <div class="advise-title">编写意见</div>
             <editor id="approval-edit" height="300px" width="100%" :content="editorText"
             pluginsPath="@/../static/kindeditor/plugins/"
@@ -41,6 +41,7 @@
 export default {
     data(){
         return {
+            isLoad:false, //数据加载
             editorText:'', //编辑意见
             firstData:'', //初核意见
             firstTime:'', //初核时间
@@ -62,6 +63,7 @@ export default {
             GZBH:'',
             isSubmitFirst:false,
             isSubmitLeader:false,
+            isSubmitLoad: false, //提交等待
         }
     },
     mounted(){
@@ -78,11 +80,13 @@ export default {
         getAdvise(){
             var _this = this;
             // this.firstData = this.editorText; //
+            this.isLoad = true;
             this.axios({
                 method:'get',
                 url:webApi.ClueManager.GetApprovalResult.format({gzbh:this.GZBH}),
                 timeout:10000
             }).then(function(response){
+                _this.isLoad = false;
                 if(response.data.code == 0){
                     if(response.data.data[0].CHYJ){
                         _this.firstData = response.data.data[0].CHYJ;
@@ -104,6 +108,7 @@ export default {
 
                 }
             }).catch(function(error){
+                _this.isLoad = false;
 
             })
         },
@@ -125,13 +130,16 @@ export default {
                             xsbh:_this.XSBH,
                             xschyj:_this.editorText,
                         }
+                        _this.isSubmitLoad = true;
                         _this.axios({
                             method:'post',
                             url:webApi.Host + webApi.ClueManager.SaveClueOpinion,
                             data:param,
                             timeout: 10000
                         }).then(function(response){
+                            _this.isSubmitLoad = false;
                             if(response.data.code == 0){
+                                _this.editorText = '';
                                 _this.$message({
                                     message:'提交成功',
                                     type:'success',
@@ -141,11 +149,36 @@ export default {
 
                             }
                         }).catch(function(error){
-
+                            _this.isLoad = false;
                         })
                     }else if(this.identity == 3){
                         //领导
-                        
+                        if(this.$route.query.spid){
+                            var param = {
+                                spbh:this.$route.query.spid,
+                                spyj:this.editorText
+                            }
+                            this.isSubmitLoad = true;
+                            this.axios({
+                                method:'post',
+                                url:webApi.Host + webApi.ClueManager.Approval,
+                                data:param,
+                                timeout:10000
+                            }).then(function(response){
+                                _this.isSubmitLoad = false;
+                                if(response.data.code == 0){
+                                    _this.editorText = '';
+                                    _this.$message({
+                                        message:'提交成功',
+                                        type:'success',
+                                    })
+                                    _this.getAdvise();
+                                }
+                            }).catch(function(error){
+                                _this.isSubmitLoad = false;
+
+                            })
+                        }
                     }
                 }
             }

@@ -285,7 +285,7 @@
         };
         _this.isLoading = true;
         _this.axios({
-          url: (webApi.ClueManager.GetFollowClues).format(data),
+          url: webApi.ClueManager.GetFollowClues.format(data),
           timeout: 10000
         }).then(function(res){
           if(res.data.code==0){

@@ -1,12 +1,28 @@
 <template>
     <div id="result">
         <div class="result-text">
-            <div class="advise-title">处理结果</div>
+            <!-- <div class="advise-title">处理结果</div>
             <div class="advise-content">
                 <span class="no-result" v-show="textData == ''">暂无处理结果</span>
                 <span v-show="textData!=''" v-html="textData"></span>
             </div>
-            <div v-show="textData != ''" style="font-size: 12px;color: #696969;">{{time}}</div>
+            <div v-show="textData != ''" style="font-size: 12px;color: #696969;">{{time}}</div> -->
+            
+            <div class="detail-item">
+                <span class="item-title">处理日期</span><span class="item-content">{{time}}</span>
+            </div>
+            <div class="detail-item">
+                <span class="item-title resource-box">处理内容</span><span class="item-content resource-content "v-html="textData"></span>
+            </div>
+            <div class="detail-item">
+                <span class="item-title resource-box">附件</span><span class="item-content resource-content ">
+
+                </span>
+            </div>
+            <div class="detail-item">
+                <div class="push-btn" @click="pushSystem">推送到统一业务系统</div>
+            </div>
+
         </div>
         <div class="result-text result-edit" v-if="identity == 5">
             <div class="advise-title">编写处理结果</div>
@@ -55,6 +71,13 @@ export default {
         })
     },
     methods:{
+        //推送
+        pushSystem(){
+            this.$message({
+                message:'暂未开放此功能',
+                type:'error'
+            })
+        },
         //获取办理结果
         getResult(){
             var _this = this;
@@ -67,7 +90,7 @@ export default {
                     // _this.editorText = response.data
                     if(response.data.data[0].BLJGJS&&response.data.data[0].BLJGFKSJ){
                         _this.textData = response.data.data[0].BLJGJS;
-                        _this.time = response.data.data[0].BLJGJS;
+                        _this.time = response.data.data[0].BLJGFKSJ;
                     }
                 }else{
 
@@ -120,6 +143,51 @@ export default {
         .result-text{
             position: relative;
             padding-left: 40px;
+            .detail-item{
+                margin: 15px 0;
+                .push-btn{
+                    width: 170px;
+                    height: 50px;
+                    border-radius: 5px;
+                    background: #00a65a;
+                    line-height: 50px;
+                    text-align: center;
+                    padding: 0 5px;
+                    color: #fff;
+                    cursor: pointer;
+                }
+                .push-btn:active{
+                    background: #099555;
+                }
+                span{
+                    display: inline-block;
+                }
+                .item-title{
+                    width: 300px;
+                    height: 30px;
+                    line-height: 30px;
+                    text-align: center;
+                    float: left;
+                    background: #c0ecaa;
+                }
+                .item-content{
+                    border: solid 1px #ddd;
+                    height: 30px;
+                    line-height: 30px;
+                    padding: 0px 10px;
+                    width: calc(100% - 300px);
+                }
+                .resource-box{
+                    float: none;
+                    width: 100%;
+                }
+                .resource-content{
+                    height: initial;
+                    padding: 10px;
+                    width: 100%;
+                    height: inherit;
+                }
+            }
             .timeline-icon{
                 position: absolute;
                 width: 20px;
