@@ -41,7 +41,6 @@ var webApi = {
     CountSubHandled: '/api/Stats/CountSubHandled', //计算下级院已办总线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountMonthSubReciveClues: '/api/Stats/CountMonthSubReciveClues', //计算已接收线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountSubReciveClues: '/api/Stats/CountSubReciveClues', //计算已接收总线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
-    CountAllHandled: '/api/Stats/CountAllHandled', //计算已办理的线索总数; 方式:POST; 是否需要token:需要；参数说明:[]
     CountUnhandled: '/api/Stats/CountUnhandled', //计算未处理线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountUnConfirmClues: '/api/Stats/CountUnConfirmClues', //计算待确认线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountReciveClues: '/api/Stats/CountReciveClues', //计算接收线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
