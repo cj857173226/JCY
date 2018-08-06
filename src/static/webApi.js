@@ -1,11 +1,8 @@
-import axios from 'axios' //引入axios;
-let Host = "";
-axios({
-  // url: '../../static/serverconfig.json'
-  url: '@/../static/serverconfig.json'
-}).then(function(res){
-  webApi.Host = res.data.Host;
-})
+var Host;
+var xhr = new XMLHttpRequest();
+xhr.open('get', '@/../static/serverconfig.json',false);
+xhr.send(null);
+Host = (JSON.parse(xhr.responseText)).Host;
 var webApi = {
   // Host:'http://daniu.51vip.biz:10698/gyssApp_test',
   Host: Host,
@@ -109,5 +106,5 @@ var webApi = {
     DownLoadFile: '/api/WxClue/DownLoadFile/{id}', //下载文件流; 方式:GET; 参数说明:[id=》文件编号；]
   },
 }
-console.log(webApi.Host)
 window.webApi = webApi;
+
