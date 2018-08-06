@@ -171,6 +171,7 @@
       localStorage.removeItem('cueFrom');
       localStorage.removeItem('beginDate');
       localStorage.removeItem('endDate');
+      this.resize();
       this.tableResize();
       this.getDefaultDate();
       this.getFollowList();//获取关注线索列表
@@ -259,6 +260,7 @@
         localStorage.setItem('cueFrom',_this.xssjbly);
         localStorage.setItem('beginDate',_this.timeSearch[0]);
         localStorage.setItem('endDate',_this.timeSearch[1]);
+        localStorage.setItem('sfbl',_this.sfbl);
         this.$router.push({
           path:'/home/cueDetail',
           query:{type:5,type2:type2,id:id,gzid:gzid}
@@ -392,14 +394,14 @@
       resize(){
         let _this = this;
         let width = document.body.offsetWidth;
-        if(width < 1710 && width > 1440) {
+        if(width > 1440) {
           _this.$refs.cueList.style.height = 'calc(100% - 204px)';
-        }else if(width >= 1710) {
-          _this.$refs.cueList.style.height = 'calc(100% - 148px)';
         }else if(width <= 1440) {
           _this.$refs.cueList.style.height = 'calc(100% - 190px)';
         }
-        _this.tableH = _this.$refs.cueList.clientHeight;
+        _this.$nextTick(()=>{
+          _this.tableH = _this.$refs.cueList.clientHeight;
+        })
       }
     },
     //实例销毁钩子

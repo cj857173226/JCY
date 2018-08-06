@@ -28,7 +28,7 @@
       <button class="login-btn" :disabled="isLogin" @click="loginClick()">登&emsp;录</button>
     </div>
     <div class="CR">
-      <!-- Copyright © 2018长日科技成都有限公司. All rights reserved. -->
+      Copyright © 2018长日科技成都有限公司. All rights reserved.
     </div>
     <div id="login-load" v-show="isLogin"><img src="../../assets/wait.gif" /> </div>
     <div id="isChrome" v-show="noChrome"> 检测到您不是使用的谷歌浏览器,为了避免页面显示不正常。&nbsp;

@@ -204,6 +204,7 @@
         isThisNav: '',
         waitReceive:0, //待接收 下级院
         waitApproval:0, //待审批 领导
+        endDate:'', //
       }
     },
     mounted(){
@@ -304,8 +305,21 @@
         _this.countWaitApproval();
         console.log(3);
       })
+      this.initTime();
     },
     methods:{
+      //初始化时间
+      initTime(){
+        var date = new Date();
+        this.endDate = date.getFullYear() + '-' + addZero(date.getMonth() + 1) + '-' + addZero(date.getDate());
+        function addZero(obj){
+          if(obj<10){
+            return '0' + obj;
+          }else{
+            return obj
+          }
+        }
+      },
       switchNav(title){
         this.isThisNav = title;
       },
@@ -327,13 +341,24 @@
       //统计待办理线索
       countWaitApproval(){
         var _this = this;
+        // _this.axios({
+        //   method: 'get',
+        //   url: webApi.Host + webApi.Stats.CountHanddingClues,
+        //   timeout: 10000,
+        // }).then(function(res){
+        //   if(res.data.code==0){
+        //     _this.waitApproval = res.data.data;
+        //   }
+        // }).catch(function(err){
+        //   console.log(err)
+        // })
         _this.axios({
           method: 'get',
-          url: webApi.Host + webApi.Stats.CountHanddingClues,
+          url: webApi.ClueManager.GetApprovalClues.format({type:0,xslb:'',keyword:'',beginDate:'2017-01-01',endDate:_this.endDate,pageNum:1,pageSize:1}),
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            _this.waitApproval = res.data.data;
+            _this.waitApproval = res.data.data.count;
           }
         }).catch(function(err){
           console.log(err)

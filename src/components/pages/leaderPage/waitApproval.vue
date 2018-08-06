@@ -106,7 +106,7 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH,scope.row.SPRBH)"  type="text" size="small">审批</el-button>
+                            <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH,scope.row.BH)"  type="text" size="small">审批</el-button>
                         </template>
                     </el-table-column>
                     </el-table>

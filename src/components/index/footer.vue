@@ -1,6 +1,6 @@
 <template>
   <div id="footer">
-    <!-- Copyright © 2018长日科技成都有限公司. All rights reserved. -->
+    Copyright © 2018长日科技成都有限公司. All rights reserved.
   </div>
 </template>
 

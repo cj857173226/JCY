@@ -151,7 +151,7 @@
         keyword: "",//关键字
         timeSearch: '',//时间范围
         pageSize: 20,//每页数量
-        total: 2,//总数量
+        total: 9,//总数量
         imgList: [//图片数据
           "../../../assets/UAV/UAV1.jpg",
           "../../../assets/UAV/UAV2.jpg",

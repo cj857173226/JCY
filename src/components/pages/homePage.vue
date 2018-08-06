@@ -162,14 +162,29 @@
         alreadyReceive:0,
         alreadyFinish:0,
 
+        endDate:'',
+
       }
     },
     mounted() {
       // this.getUerInfo();//获取用户权限
+      this.initTime();
       this.getDataCount();//数据统计信息
       this.getNewsData();//新闻和知识库信息
     },
     methods: {
+      //初始化时间
+      initTime(){
+        var date = new Date();
+        this.endDate = date.getFullYear() + '-' + addZero(date.getMonth() + 1) + '-' + addZero(date.getDate());
+        function addZero(obj){
+          if(obj<10){
+            return '0' + obj;
+          }else{
+            return obj
+          }
+        }
+      },
       //   获取用户信息
       getUerInfo(){
         let _this = this ;
@@ -207,7 +222,18 @@
       },
       //结果反馈总数(领导)
       getResultClueTotal(){
-
+        var _this = this;
+        this.axios({
+          method:'get',
+          url: webApi.ClueManager.GetLDFollowClues.format({xssjbly:'',xslb:'',keyword:'',sfbl:2,beginDate:'2017-01-01',endDate:_this.endDate,pageNum:1,pageSize:1,order:'fbsj'}),
+            timeout: 10000,
+          }).then(function(res){
+            if(res.data.code==0){
+              _this.alreadyFeedback = res.data.data.total;
+             }
+          }).catch(function(err){
+            console.log(err)
+        })
       },
       //获取互联网线索总数(管理员)
       getInterClueTotal(){
@@ -368,6 +394,7 @@
               _this.getSubDataCount(setDataCount);//获取下级院主页统计信息
             }else if(_this.IdentityType=="3"){
               _this.getLeaderDataCount(setDataCount); //获取领导统计信息
+              _this.getResultClueTotal();
             }
         };
         if(!_this.IdentityType){
@@ -413,12 +440,12 @@
         })
 
         _this.axios({
-          method: 'post',
-          url: webApi.Host + webApi.Stats.CountAllHandled,
+          method: 'get',
+          url: webApi.ClueManager.GetFollowClues.format({xssjbly:'',xslb:'',sfbl:true,keyword:'',beginDate:'2017-01-01',endDate:_this.endDate,pageNum:1,pageSize:1,order:'fbsj'}),
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-check-circle'});
+            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data.total,icon:'fa-check-circle'});
           }
         }).catch(function(err){
           console.log(err)
@@ -475,13 +502,13 @@
         })
 
         _this.axios({
-          method: 'post',
-          url: webApi.Host + webApi.Stats.CountAllHandled,
+          method: 'get',
+          url: webApi.ClueManager.GetApprovalClues.format({type:1,xslb:'',keyword:'',beginDate:'2017-01-01',endDate:_this.endDate,pageNum:1,pageSize:1}),
           timeout: 10000,
         }).then(function(res){
           if(res.data.code==0){
-            _this.alreadyApproval = res.data.data;
-            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data,icon:'fa-check-circle'});
+            _this.alreadyApproval = res.data.data.count;
+            setDataCount(_this.dataCount[2],{title: '已办理线索', val: res.data.data.count,icon:'fa-check-circle'});
           }
         }).catch(function(err){
           console.log(err)

@@ -9,7 +9,8 @@
             <div v-show="textData != ''" style="font-size: 12px;color: #696969;">{{time}}</div> -->
             
             <div class="detail-item">
-                <span class="item-title">处理日期</span><span class="item-content">{{time}}</span>
+                <span class="item-title">处理日期</span>
+                <span class="item-content">{{time}}</span>
             </div>
             <div class="detail-item">
                 <span class="item-title resource-box">处理内容</span><span class="item-content resource-content "v-html="textData"></span>
@@ -19,13 +20,26 @@
 
                 </span>
             </div>
-            <div class="detail-item">
+            <div class="detail-item" v-if="identity == 1">
                 <div class="push-btn" @click="pushSystem">推送到统一业务系统</div>
             </div>
 
         </div>
         <div class="result-text result-edit" v-if="identity == 5">
             <div class="advise-title">编写处理结果</div>
+            <div class="advise-choose-time">
+                <span class="advise-choose-time-title">选择处理日期</span><el-date-picker
+                    v-model="timeChoose"
+                    type="daterange"
+                    align="right"
+                    format="yyyy-MM-dd"
+                    value-format="yyyy-MM-dd"
+                    range-separator="-"
+                    unlink-panels
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </div>
             <editor id="result-edit" height="300px" width="100%" v-bind:content="editorText"
             pluginsPath="@/../static/kindeditor/plugins/"
             :loadStyleMode="true"
@@ -59,6 +73,7 @@ export default {
             identity: null,
             GZBH:'',
             time:'', //时间
+            timeChoose:'' ,
         }
     },
     mounted(){
@@ -233,6 +248,19 @@ export default {
         }
         .result-edit{
             margin-top: 10px;
+            .advise-choose-time{
+                margin-top: 10px;
+                .advise-choose-time-title{
+                    display: inline-block;
+                    height: 40px;
+                    vertical-align: top;
+                    text-align: center;
+                    line-height: 40px;
+                    background: #c0ecaa;
+                    color: #333;
+                    padding: 0 10px;
+                }
+            }
             #submit-btn{
                 display: inline-block;
                 width: 100px;

@@ -108,7 +108,7 @@
                         label="操作"
                         width="100">
                         <template slot-scope="scope">
-                            <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH)"  type="text" size="small">查看</el-button>
+                            <el-button @click="detail(scope.$index,scope.row.XSSJBLY,scope.row.XSBH,scope.row.BH)"  type="text" size="small">查看</el-button>
                         </template>
                     </el-table-column>
                     </el-table>
@@ -241,7 +241,7 @@ export default {
             });
         },
         //审批
-        detail(index,text,id){
+        detail(index,text,id,spid){
             var type = 0;
             localStorage.setItem('cueList',JSON.stringify(this.approvalResult));
             localStorage.setItem('beginDate',this.timeSearch[0]);
@@ -265,7 +265,7 @@ export default {
             }
             this.$router.push({
                 path:'/home/cueDetail',
-                query:{type:8,type2:type,nav:1,id:id}
+                query:{type:8,type2:type,nav:1,id:id,spid:spid}
             });
         },
         //表格高度自适应

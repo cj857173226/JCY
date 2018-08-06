@@ -11,7 +11,7 @@
                 <li :class="isThisNav == 1?'active':''" @click="chooseNav(1)">
                     <i class="fa fa-file-text-o"></i>
                     线索详情
-                </li><li v-show="followPage" :class="isThisNav == 2?'active':''" @click="chooseNav(2)">
+                </li><li v-show="(followPage&&IdentityType == 1) || (followPage&&IdentityType == 3)" :class="isThisNav == 2?'active':''" @click="chooseNav(2)">
                     <i class="fa fa-pencil-square-o"></i>
                     审批信息
                 </li><li v-show="followPage&&IdentityType == 1" :class="isThisNav == 3?'active':''" @click="chooseNav(3)" v-if="IdentityType==1?true:false">
@@ -277,7 +277,7 @@ export default {
                         this.isLoad = true;
                         this.axios({
                             method:'get',
-                            url:webApi.ClueManager.GetFollowClues.format({keyword:keyword,pageNum:_this.pageNum - 1,pageSize:20,beginDate:beginDate,endDate:endDate,xslb:cueType,order:order,xssjbly:cueFrom}),
+                            url:webApi.ClueManager.GetFollowClues.format({keyword:keyword,pageNum:_this.pageNum - 1,pageSize:20,beginDate:beginDate,endDate:endDate,xslb:cueType,order:order,xssjbly:cueFrom,sfbl:sfbl}),
                             timeout: 10000
                         }).then(function(response){
                             _this.isLoad = false;
@@ -539,7 +539,7 @@ export default {
                         this.isLoad = true;
                         this.axios({
                             method:'get',
-                            url:webApi.ClueManager.GetFollowClues.format({keyword:keyword,pageNum:_this.pageNum + 1,pageSize:20,beginDate:beginDate,endDate:endDate,xslb:cueType,order:'fbsj',xssjbly:cueFrom}),
+                            url:webApi.ClueManager.GetFollowClues.format({keyword:keyword,pageNum:_this.pageNum + 1,pageSize:20,beginDate:beginDate,endDate:endDate,xslb:cueType,order:'fbsj',xssjbly:cueFrom,sfbl:sfbl}),
                             timeout: 10000
                         }).then(function(response){
                             _this.isLoad = false;
