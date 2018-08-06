@@ -56,7 +56,7 @@
             </span>
         </div>
 
-        <div class="detail-item" v-show="cueData.SFSJGZ == 1">
+        <div class="detail-item" v-show="cueData.SFSJGZ == 3">
             <span class="item-title track-title">事态跟踪:</span>
             <span class="item-content timeline-content">
                 <ul class="itemline-box">

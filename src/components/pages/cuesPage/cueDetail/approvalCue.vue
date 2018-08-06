@@ -24,6 +24,7 @@
             <div v-show="leaderData != ''" style="font-size: 12px;color: #696969;">{{leaderTime}}</div>
         </div>
         <div v-loading="isSubmitLoad" class="advise edit-advise" v-if="((identity == 1 && !isSubmitFirst) || (identity == 1 && isSubmitFirst && isSubmitLeader)) || identity == 3">
+            <!-- <i class="timeline-icon fa fa-circle-thin"></i> -->
             <div class="advise-title">编写意见</div>
             <editor id="approval-edit" height="300px" width="100%" :content="editorText"
             pluginsPath="@/../static/kindeditor/plugins/"
@@ -41,7 +42,7 @@
 export default {
     data(){
         return {
-            isLoad:false, //数据加载
+            isLoad:true, //数据加载
             editorText:'', //编辑意见
             firstData:'', //初核意见
             firstTime:'', //初核时间
@@ -168,6 +169,7 @@ export default {
                                 _this.isSubmitLoad = false;
                                 if(response.data.code == 0){
                                     _this.editorText = '';
+                                    _this.$root.Bus.$emit('changeWaitApproval')
                                     _this.$message({
                                         message:'提交成功',
                                         type:'success',
@@ -211,6 +213,9 @@ export default {
                 background-color: #fff;
                 color: #c0ecaa;
                 font-size: 18px;
+            }
+            .timeline-icon:last-child:before{
+                display: none;
             }
             .advise-tip{
                 height: 30px;
@@ -284,6 +289,9 @@ export default {
             left: 9px;
         }
         .advise:nth-child(3):before{
+            display: none;
+        }
+        .advise:nth-child(4):before{
             display: none;
         }
         .advise:last-child:before{
