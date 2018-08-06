@@ -1,5 +1,14 @@
+import axios from 'axios' //引入axios;
+let Host = "";
+axios({
+  // url: '../../static/serverconfig.json'
+  url: '@/../static/serverconfig.json'
+}).then(function(res){
+  webApi.Host = res.data.Host;
+})
 var webApi = {
-  Host:'http://daniu.51vip.biz:10698/gyssApp_test',
+  // Host:'http://daniu.51vip.biz:10698/gyssApp_test',
+  Host: Host,
 //权限控制器。根据方法设置token
   Auth : {
     Login: '/api/Auth/Login', //登录; 方式:POST; 是否需要token:不需要；参数说明:[data=》登录数据；]
@@ -100,5 +109,5 @@ var webApi = {
     DownLoadFile: '/api/WxClue/DownLoadFile/{id}', //下载文件流; 方式:GET; 参数说明:[id=》文件编号；]
   },
 }
-
+console.log(webApi.Host)
 window.webApi = webApi;
