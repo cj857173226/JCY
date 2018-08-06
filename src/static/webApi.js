@@ -1,5 +1,11 @@
+var Host;
+var xhr = new XMLHttpRequest();
+xhr.open('get', '@/../static/serverconfig.json',false);
+xhr.send(null);
+Host = (JSON.parse(xhr.responseText)).Host;
 var webApi = {
-  Host:'http://daniu.51vip.biz:10698/gyssApp_test',
+  // Host:'http://daniu.51vip.biz:10698/gyssApp_test',
+  Host: Host,
 //权限控制器。根据方法设置token
   Auth : {
     Login: '/api/Auth/Login', //登录; 方式:POST; 是否需要token:不需要；参数说明:[data=》登录数据；]
@@ -41,7 +47,6 @@ var webApi = {
     CountSubHandled: '/api/Stats/CountSubHandled', //计算下级院已办总线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountMonthSubReciveClues: '/api/Stats/CountMonthSubReciveClues', //计算已接收线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountSubReciveClues: '/api/Stats/CountSubReciveClues', //计算已接收总线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
-    CountAllHandled: '/api/Stats/CountAllHandled', //计算已办理的线索总数; 方式:POST; 是否需要token:需要；参数说明:[]
     CountUnhandled: '/api/Stats/CountUnhandled', //计算未处理线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountUnConfirmClues: '/api/Stats/CountUnConfirmClues', //计算待确认线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
     CountReciveClues: '/api/Stats/CountReciveClues', //计算接收线索数量; 方式:POST; 是否需要token:需要；参数说明:[]
@@ -101,5 +106,5 @@ var webApi = {
     DownLoadFile: '/api/WxClue/DownLoadFile/{id}', //下载文件流; 方式:GET; 参数说明:[id=》文件编号；]
   },
 }
-
 window.webApi = webApi;
+
