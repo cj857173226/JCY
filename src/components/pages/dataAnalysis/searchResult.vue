@@ -111,7 +111,7 @@
               <table>
                 <tr class="dialog-item" v-for="item in dialogData">
                   <td class="item-box">{{item.name}}</td>
-                  <td class="item-box">{{item.value}}</td>
+                  <td class="item-box" style="padding: 5px 20px" v-html="item.value"></td>
                 </tr>
               </table>
             </div>
@@ -212,6 +212,7 @@ export default {
         var obj = {};
         obj['name'] = _this.header[i];
         obj['value'] = item[i];
+        console.log(item[i])
         content.push(obj);
       }
       this.dialogData = content;
