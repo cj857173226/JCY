@@ -57,6 +57,8 @@ import complete from '../components/pages/subordinatePage/complete'//完成
 //无人机取证
 import UAV from '../components/pages/UAV/UAV'
 
+//检验报告
+import inspectionReport from '../components/pages/inspectionReport/inspectionReport'
 Vue.use(Router)
 
 let router =  new Router({
@@ -272,6 +274,14 @@ let router =  new Router({
           component: UAV,
           meta: {
             name: '无人机取证',
+          }
+        },
+        {
+          path: 'inspectionReport',
+          name: inspectionReport,
+          component: inspectionReport,
+          meta: {
+            name: '检验报告',
           }
         },
       ]
