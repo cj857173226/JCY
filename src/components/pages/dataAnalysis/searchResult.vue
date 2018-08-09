@@ -57,9 +57,9 @@
                                   min-width="200">
                   <template slot-scope="scope" >
                     <el-popover trigger="click" placement="top" >
-                      <p style="width:350px; max-height: 250px; overflow: auto;">{{ oTable[scope.$index][key]}}</p>
-                      <div slot="reference" class="td-content">
-                        {{oTable[scope.$index][key]}}
+                      <p style="width:350px; max-height: 250px; overflow: auto;" v-html="oTable[scope.$index][key]"></p>
+                      <div style="height:100%" slot="reference" class="td-content" v-html="oTable[scope.$index][key]">
+                        <!-- {{oTable[scope.$index][key]}} -->
                       </div>
                     </el-popover>
                   </template>
@@ -426,7 +426,6 @@ export default {
         url:webApi.WebData.SearchDetail.format({sjsybh:_this.currId,keywords:_this.keyword,p:_this.currPage,ps:_this.pageSize}),
         timeout: 1000 * 30,
       }).then((res)=>{
-        console.log(res)
         _this.tableLoad = false;
         if(res.data.code==0){
           let header = [];
@@ -441,9 +440,6 @@ export default {
             for(let i=0;i<data.length ;i++){
               let arr = [];
               for(let val in data[i]){
-                if(val.trim() == '正文内容'){
-                  data[i][val] = data[i][val].replace(/[a-z]|[A-Z]|<...>|[0-9]|[<\/>]|[\.=:_\';-]|\s/g,'');
-                }
                 if(val.trim()!='表名称' && val.trim() !='经纬度'){
                   arr.push(data[i][val]);
                 }
@@ -452,6 +448,7 @@ export default {
             }
             _this.header =  header;
             _this.oTable = tbody;
+            console.log(_this.oTable);
           }else {
             _this.noDataTip=2;
             _this.header =  header;
@@ -794,6 +791,18 @@ export default {
        }
        .cue-list{
          height: calc(100% - 64px);
+          .td-content{
+            /deep/ p{
+                margin-top: 0px!important;
+                text-indent: 0em!important;
+                text-align: left!important;
+                /deep/ span{
+                  font-size: 14px!important;
+                  color: #606266!important;
+                  font-family: '微软雅黑'!important;
+                }
+            }
+          }
        }
        .page-wrap{
          margin-top: 24px;
@@ -889,6 +898,18 @@ export default {
         #result-wrap{
           .cue-list{
             height: calc(100% - 56px);
+            .td-content{
+              /deep/ p{
+                  margin-top: 0px!important;
+                  text-indent: 0em!important;
+                  text-align: left;
+                  /deep/ span{
+                    font-size: 14px;
+                    color: #606266;
+                    font-family: '微软雅黑';
+                  }
+              }
+            }
           }
           .page-wrap{
             margin-top: 16px;
