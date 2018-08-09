@@ -441,6 +441,9 @@ export default {
             for(let i=0;i<data.length ;i++){
               let arr = [];
               for(let val in data[i]){
+                if(val.trim() == '正文内容'){
+                  data[i][val] = data[i][val].replace(/[a-z]|[A-Z]|<...>|[0-9]|[<\/>]|[\.=:_\';-]|\s/g,'');
+                }
                 if(val.trim()!='表名称' && val.trim() !='经纬度'){
                   arr.push(data[i][val]);
                 }
@@ -449,8 +452,6 @@ export default {
             }
             _this.header =  header;
             _this.oTable = tbody;
-
-
           }else {
             _this.noDataTip=2;
             _this.header =  header;

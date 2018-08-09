@@ -176,12 +176,12 @@
           </el-menu-item>
         </router-link>
 
-        <router-link to="/home/infoAnalysis">
+        <!-- <router-link to="/home/infoAnalysis">
           <el-menu-item index="6-3" :class="isThisNav == '信息分析'?'is-actived':''" @click="switchNav('信息分析')">
             <i class="fa fa-inbox"></i>
             <span slot="title">深圳环保数据分析</span>
           </el-menu-item>
-        </router-link>
+        </router-link> -->
 
 
       </el-menu-item-group>
@@ -192,7 +192,7 @@
     <!--</el-menu-item>-->
     <router-link to="/home/inspectionReport">
       <el-menu-item index="13" :class="isThisNav == '检验报告' ?'is-actived':''" @click="switchNav('检验报告')">
-        <i class="fa fa-plane"></i>
+        <i class="fa fa-list-alt"></i>
         <span slot="title">检验报告</span>
       </el-menu-item>
     </router-link>
