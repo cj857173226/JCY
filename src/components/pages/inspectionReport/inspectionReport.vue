@@ -1,6 +1,7 @@
 <template>
     <div id="inspectionReport">
-        <div class="not-data">尚未接入检测数据</div>
+        <!--<div class="not-data">尚未接入检测数据</div>-->
+      <img src="../../../assets/inspectionReport/not-data.png" alt="">
     </div>
 </template>
 
