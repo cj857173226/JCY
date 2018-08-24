@@ -171,6 +171,9 @@
       localStorage.removeItem('cueFrom');
       localStorage.removeItem('beginDate');
       localStorage.removeItem('endDate');
+      if(this.$route.query.status) {
+        this.sfbl = 'true';
+      };
       this.resize();
       this.tableResize();
       this.getDefaultDate();

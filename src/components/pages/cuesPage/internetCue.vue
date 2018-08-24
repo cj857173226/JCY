@@ -178,7 +178,7 @@
           page:1, //页码
           pageSize: 20,//每页条数
           totalPages:0,//总条数
-          order:'cjsj',//排序方式
+          order:'fbsj',//排序方式
           site:'',//来源站点
           isLoad:false,//数据是否在加载
           siteCheckShow:false,//是否显示网站筛选框
