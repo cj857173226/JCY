@@ -192,11 +192,7 @@
     <!--</el-menu-item>-->
     <router-link to="/home/inspectionReport">
       <el-menu-item index="13" :class="isThisNav == '检验报告' ?'is-actived':''" @click="switchNav('检验报告')">
-<<<<<<< HEAD
-        <i class="fa fa-sticky-note"></i>
-=======
         <i class="fa fa-list-alt"></i>
->>>>>>> d340dad950af6e8ffad56dd215b788a80c04c141
         <span slot="title">检验报告</span>
       </el-menu-item>
     </router-link>
