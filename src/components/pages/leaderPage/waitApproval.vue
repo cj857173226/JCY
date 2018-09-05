@@ -217,6 +217,7 @@ export default {
                         }
                     })
                     _this.waitApproval = response.data.data.result;
+                    console.log(_this.waitApproval);
                     _this.totalPages = response.data.data.count;
                     _this.$root.Bus.$emit('changeWaitApproval');
                 }

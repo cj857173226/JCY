@@ -71,6 +71,7 @@ export default {
         var _this = this;
         this.identity = localStorage.IdentityType;  //获取身份权限
         this.XSBH = this.$route.query.id; //获取线索编号
+        console.log(this.XSBH);
         this.$root.Bus.$on('sendGZBH',function(obj){
             _this.GZBH = obj;
             _this.getAdvise();

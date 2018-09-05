@@ -230,7 +230,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',
@@ -253,7 +253,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',
@@ -283,7 +283,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',
@@ -306,7 +306,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',
@@ -329,7 +329,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',
@@ -352,7 +352,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',
@@ -375,7 +375,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',
@@ -398,7 +398,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',
@@ -432,7 +432,7 @@ export default {
                             _this.isLoad = false;
                             if(response.data.code == 0){
                                 localStorage.setItem('cueList',JSON.stringify(response.data.data.data));
-                                let preCue = response.data.data.data[0].XSBH;
+                                let preCue = response.data.data.data[19].XSBH;
                                 params['id'] = preCue;
                                 _this.$router.push({
                                     path:'/home/cueDetail',

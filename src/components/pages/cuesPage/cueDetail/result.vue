@@ -130,6 +130,7 @@ export default {
                     _this.isLoad = false;
                     if(response.data.code == 0){
                         _this.editorText = '';
+                        _this.getResult();
                         _this.$message({
                             message:'已成功提交',
                             type:'success'
