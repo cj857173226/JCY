@@ -41,10 +41,11 @@
           </div>
           <div id="result-wrap"  ref="resultWrap">
             <div class="no-data" v-show="header.length==0">
-              <img v-show="noDataTip == 1" src="../../../assets/search/noData3.png" alt="">
-              <img v-show="noDataTip == 2" src="../../../assets/search/noData1.png" alt="">
-              <img v-show="noDataTip == 3" src="../../../assets/search/noData2.png" alt="">
-              <img v-show="noDataTip == 4" src="../../../assets/search/noData4.png" alt="">
+              <img v-show="isLoading" src="../../../assets/search/noData3.png" alt="">
+              <img v-show="noDataTip == 2 && sideMenuList.length!=0" src="../../../assets/search/noData1.png" alt="">
+              <img v-show="noDataTip == 3 && sideMenuList.length!=0" src="../../../assets/search/noData2.png" alt="">
+              <img v-show="noDataTip == 4 && sideMenuList.length!=0" src="../../../assets/search/noData4.png" alt="">
+              <div class="text"  v-show="!isLoading && sideMenuList.length==0">暂无数据</div>
             </div>
             <div class="cue-list" ref="cueList" >
               <el-table v-show="header.length>0"
