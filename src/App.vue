@@ -193,4 +193,10 @@ button:active{
   ::-webkit-scrollbar-button{
   }
 
+  .amap-logo{
+    z-index: 0!important;
+  }
+  .amap-copyright{
+    z-index: 0!important;
+  }
 </style>

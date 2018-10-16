@@ -25,7 +25,7 @@
             <span class="item-title resource-box">图片内容</span>
             <span class="item-content resource-content">
                 <ul id="imgViewer">
-                    <li v-for="item in TP">
+                    <li v-for="(item,index) in TP" :key="index">
                         <img :src="item">
                     </li>
                 </ul>
@@ -34,16 +34,22 @@
         <div class="detail-item" v-show="cueData.SP.length">
             <span class="item-title resource-box">视频内容:</span>
             <span class="item-content resource-content">
-                <video :src="item" controls="controls" v-for="item in SP"></video>
+                <video :src="item" controls="controls" v-for="(item,index) in SP" :key="index"></video>
             </span>
+        </div>
+        <div id="map-big" v-if="showMap" @click.stop="closeMapBig">
+            <div class="map-big-content" @click.stop>
+                <cue-map-big :JWD="JWD" :FBDD="FBDD"></cue-map-big>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import cueMap from '../../../pubilcComponents/toolComponets/cueLightMap'
+import cueMapBig from '../../../pubilcComponents/toolComponets/cueLightMapBig'
 export default {
-    components:{cueMap},
+    components:{cueMap,cueMapBig},
     data(){
         return {
             cueData:{
@@ -55,12 +61,21 @@ export default {
             isLoad:false,
             JWD:[], //经纬度
             FBDD:'', //发布地点
+            showMap:false,//是否显示大地图
         }
     },
     mounted(){
         this.dataGet();
+        var _this = this;
+        this.$root.Bus.$on('showBigMap',function(){
+            _this.showMap = !_this.showMap;
+        })
     },
     methods:{
+        //关闭大地图
+        closeMapBig(){
+            this.showMap = false;
+        },
         //获取数据
         dataGet(){
             var _this = this;
@@ -153,6 +168,24 @@ export default {
 
 <style lang="scss" scoped>
 #main{
+    #map-big{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        background-color: rgba(0,0,0,.2);
+        .map-big-content{
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: #fff;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+    }
     .detail-item{
         margin: 15px 0;
         span{

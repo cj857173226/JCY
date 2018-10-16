@@ -5,6 +5,9 @@
         <span id="satellite" @click="switchMap" :class="isSatellite?'active':''">
             <span ><i class="fa fa-globe"></i>卫星</span>
         </span>
+        <span id="showBigMap" @click="showBigMap">
+            <span ><i class="fa fa-expand"></i>放大</span>
+        </span>
     </div>
 </template>
 
@@ -67,6 +70,10 @@
                     //路况地图
                     this.initDefault();
                 }
+            },
+            //显示大地图
+            showBigMap(){
+                this.$root.Bus.$emit('showBigMap');
             }
         }
     }
@@ -92,7 +99,23 @@
         line-height: 30px;
         color:rgb(119, 119, 119);
         background: #fff;
-        z-index: 10;
+        z-index: 0;
+        border-radius: 5px;    
+        box-shadow: 0 0 5px #5d5d5d;
+        cursor: pointer;
+    }
+    #showBigMap{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: block;
+        padding:0px 5px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        color:rgb(119, 119, 119);
+        background: #fff;
+        z-index: 0;
         border-radius: 5px;    
         box-shadow: 0 0 5px #5d5d5d;
         cursor: pointer;
