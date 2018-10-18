@@ -6,7 +6,7 @@ import login from '../components/pages/login'
 import indexPage from '../components/index/index'
 //主页
 import homePage from '../components/pages/homePage'
-
+// git@github.com:cj857173226/JCY.git
 //线索
   //举报线索
 import reportCue from '../components/pages/cuesPage/reportCue'
